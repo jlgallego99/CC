@@ -9,7 +9,7 @@ Crear el par clave pública/privada, el cual nos pedirá que le asignemos un ema
 ssh-keygen -t ed25519 -C "jlgallego99@correo.ugr.es"
 ```
 
-Este par en mi caso lo almaceno en la carpeta *.ssh* en el home de mi ordenador. Los dos primeros archivos son, respectivamente, la clave privada y la clave pública.
+Este par en mi caso lo almaceno en la carpeta *.ssh* en el home de mi ordenador. Los dos primeros archivos son, respectivamente, la clave privada y la clave pública.  
 ![](./img/par_claves.png)
 
 Ahora es necesario añadir esta clave al gestor ssh de mi entorno, para lo cual primero se inicia el agente ssh que gestionará las claves:
