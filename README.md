@@ -11,4 +11,4 @@ Por ejemplo, estás viendo la serie The Boys y en una escena suena una canción 
 Puedes leer sobre la lógica de negocio de este proyecto [aquí](./docs/logica_negocio.md).
 
 ## Documentación adicional del hito 0
-Se ha documentado la [configuración inicial de Git](./docs/configuracion.md).
+Se ha documentado la [configuración inicial de Git](./docs/configuracion_entorno.md).
