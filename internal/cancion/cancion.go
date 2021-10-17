@@ -33,3 +33,15 @@ const (
 	Personaje
 	Minijuego
 )
+
+type Cancion_info struct {
+	titulo          string
+	compositor      string
+	genero          Genero
+	likes           int
+	dislikes        int
+	sensacion       []Sensacion
+	momento         Momento
+	momento_exacto  string
+	momento_minutos string
+}
