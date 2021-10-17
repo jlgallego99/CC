@@ -57,3 +57,19 @@ type Cancion interface {
 	nuevaSensacion(s Sensacion)
 	cancionesRelacionadas() []Cancion_info
 }
+
+func (c *Cancion_info) porcentajeLikeDislike() (float64, float64) {
+	return 0, 0
+}
+
+func (c *Cancion_info) porcentajeSensaciones() ([]float64, []Sensacion) {
+	return nil, nil
+}
+
+func (c *Cancion_info) nuevaSensacion(s Sensacion) {
+
+}
+
+func (c *Cancion_info) cancionesRelacionadas() []Cancion_info {
+	return nil
+}
