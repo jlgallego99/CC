@@ -3,7 +3,7 @@ package cancion
 type Genero int
 
 const (
-	Desconocido Genero = iota
+	Genero_Desconocido Genero = iota
 	Rock
 	Pop
 	Ambiental
@@ -25,7 +25,7 @@ const (
 type Momento int
 
 const (
-	Desconocido Momento = iota
+	Momento_Desconocido Momento = iota
 	Batalla
 	Ciudad
 	Evento
