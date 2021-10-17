@@ -39,5 +39,3 @@ A continuación se describe lo que pueden hacer estos usuarios en la aplicación
     > Quiere indicar en OSTfind que le gusta esa canción, ya que quiere saber qué otras canciones parecidas que suenen en ciudades de videojuegos puede escuchar.  
     > Descubre que esa canción no está registrada, por lo que la añade él mismo indicando su título, videojuego al que pertenece, género, sensaciones, momento en el que suena (indicando que es una ciudad, y además indicando exactamente en qué ciudad) y si le gusta.  
     > Ahora esa canción figura en la banda sonora del videojuego, y ya puede saber qué otras canciones están relacionadas con esta.  
-
-Podemos ver que el punto central de OSTfind son las canciones, y todas las búsquedas y operaciones se realizan en base a esta entidad.
