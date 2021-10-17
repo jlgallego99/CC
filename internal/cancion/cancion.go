@@ -3,7 +3,8 @@ package cancion
 type Genero int
 
 const (
-	Rock Genero = iota
+	Desconocido Genero = iota
+	Rock
 	Pop
 	Ambiental
 	Electronica
@@ -24,7 +25,8 @@ const (
 type Momento int
 
 const (
-	Batalla Momento = iota
+	Desconocido Momento = iota
+	Batalla
 	Ciudad
 	Evento
 	Zona
@@ -44,6 +46,9 @@ type Cancion_info struct {
 	momento         Momento
 	momento_exacto  string
 	momento_minutos string
+}
+
+func newCancionInfo(titulo string, compositor string, genero Genero, momento Momento, momento_minutos string) {
 }
 
 type Cancion interface {
