@@ -45,3 +45,10 @@ type Cancion_info struct {
 	momento_exacto  string
 	momento_minutos string
 }
+
+type Cancion interface {
+	porcentajeLikeDislike() (float64, float64)
+	porcentajeSensaciones() ([]float64, []Sensacion)
+	nuevaSensacion(s Sensacion)
+	cancionesRelacionadas() []Cancion_info
+}
