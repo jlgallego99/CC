@@ -8,7 +8,7 @@ Sistema colaborativo en el cual los usuarios pueden buscar dónde y cuándo suen
 Puedes leer sobre la lógica de negocio de este proyecto [aquí](./docs/logica_negocio.md).
 
 ## Desarrollo
-- Mediante[historias de usuario](./docs/hu.md) se define el funcionamiento de la aplicación.
+- Mediante [historias de usuario](./docs/hu.md) se define el funcionamiento de la aplicación.
 
 - Estas historias de usuario definen una serie de [objetos de valor, entidades y agregados](./docs/ddd.md) según el domain driven design.
 
