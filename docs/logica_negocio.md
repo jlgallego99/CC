@@ -6,7 +6,6 @@ El sistema será multiusuario, todos ellos colaborando para aportar más informa
 - Añadir información sobre una canción asociada a una serie, película o videojuego.
 - Buscar por canción o por obra (serie, videojuego o película) y así poder ver la banda sonora asociada y su información.
 - Indicar que una canción le gusta.
-- Indicar que una obra (serie, videojuego o película) le gusta (lo cual significa que le gustan todas o la gran mayoría de canciones de esa obra).
 - Recibir recomendaciones personalizadas.
 
 La información de cada canción de la banda sonora incluye:
