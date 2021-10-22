@@ -18,3 +18,7 @@ Puedes leer sobre la lógica de negocio de este proyecto [aquí](./docs/logica_n
 
 ## Documentación adicional
 Se ha documentado la [configuración inicial de Git](./docs/configuracion_entorno.md).
+
+Estudio y elección de [framework y bibliotecas de testing en Go](./docs/test_frameworks.md).
+
+Estudio y elección de [gestores de tareas](./docs/gestores_tareas.md).
