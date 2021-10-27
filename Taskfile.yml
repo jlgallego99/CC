@@ -1,0 +1,8 @@
+version: '3'
+
+tasks:
+  install:
+    cmds:
+      - go build -v $MAIN
+    env:
+      MAIN: ./cmd/ostfind/main.go
