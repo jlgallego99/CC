@@ -1,3 +1,6 @@
+lenguaje:
+  - go
+
 entidad:
   - internal/cancion/cancion.go
   - internal/obra/obra.go
