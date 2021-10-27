@@ -1,3 +1,6 @@
 entidad:
   - internal/cancion/cancion.go
   - internal/obra/obra.go
+
+fichero_tareas:
+  - Taskfile.yml
