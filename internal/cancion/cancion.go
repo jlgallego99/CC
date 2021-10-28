@@ -48,6 +48,15 @@ type Cancion_info struct {
 	momento_minutos string
 }
 
+func (s *Sensacion) valid() bool {
+	switch *s {
+	case Alegria, Tristeza, Epicidad:
+		return true
+	default:
+		return false
+	}
+}
+
 func newCancionInfo(titulo string, compositor string, genero Genero, momento Momento, momento_minutos string) {
 }
 
@@ -67,7 +76,7 @@ func (c *Cancion_info) porcentajeSensaciones() ([]float64, []Sensacion) {
 }
 
 func (c *Cancion_info) nuevaSensacion(s Sensacion) {
-
+	// Validar que la sensación existe
 }
 
 func (c *Cancion_info) cancionesRelacionadas(num int) []Cancion_info {
