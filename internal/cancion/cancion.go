@@ -42,7 +42,7 @@ type Cancion_info struct {
 	genero          Genero
 	likes           int
 	dislikes        int
-	sensacion       []Sensacion
+	sensaciones     []Sensacion
 	momento         Momento
 	momento_exacto  string
 	momento_minutos string
@@ -77,6 +77,9 @@ func (c *Cancion_info) porcentajeSensaciones() ([]float64, []Sensacion) {
 
 func (c *Cancion_info) nuevaSensacion(s Sensacion) {
 	// Validar que la sensación existe
+	if s.valid() {
+		c.sensaciones = append(c.sensaciones, s)
+	}
 }
 
 func (c *Cancion_info) cancionesRelacionadas(num int) []Cancion_info {
