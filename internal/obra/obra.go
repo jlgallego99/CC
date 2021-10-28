@@ -22,6 +22,8 @@ type Pelicula struct {
 
 type Serie struct {
 	titulo    string
+	temporada int
+	capitulo  int
 	canciones []cancion.Cancion
 }
 
