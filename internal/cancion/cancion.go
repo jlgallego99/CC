@@ -37,15 +37,15 @@ const (
 )
 
 type Cancion_info struct {
-	titulo          string
-	compositor      string
-	genero          Genero
-	likes           int
-	dislikes        int
-	sensaciones     []Sensacion
-	momento         Momento
-	momento_exacto  string
-	momento_minutos string
+	Titulo          string
+	Compositor      string
+	Genero          Genero
+	Likes           int
+	Dislikes        int
+	Sensaciones     []Sensacion
+	Momento         Momento
+	Momento_exacto  string
+	Momento_minutos string
 }
 
 func (s *Sensacion) valid() bool {
@@ -78,7 +78,7 @@ func (c *Cancion_info) porcentajeSensaciones() ([]float64, []Sensacion) {
 func (c *Cancion_info) nuevaSensacion(s Sensacion) {
 	// Validar que la sensación existe
 	if s.valid() {
-		c.sensaciones = append(c.sensaciones, s)
+		c.Sensaciones = append(c.Sensaciones, s)
 	}
 }
 
