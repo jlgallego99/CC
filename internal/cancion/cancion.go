@@ -1,5 +1,7 @@
 package cancion
 
+import "errors"
+
 type Genero int
 
 const (
@@ -48,12 +50,12 @@ type Cancion_info struct {
 	Momento_minutos string
 }
 
-func (s *Sensacion) valid() bool {
+func (s *Sensacion) valid() error {
 	switch *s {
 	case Alegria, Tristeza, Epicidad:
-		return true
+		return nil
 	default:
-		return false
+		return errors.New("Sensación no válida")
 	}
 }
 
@@ -75,10 +77,12 @@ func (c *Cancion_info) porcentajeSensaciones() ([]float64, []Sensacion) {
 	return nil, nil
 }
 
-func (c *Cancion_info) nuevaSensacion(s Sensacion) {
-	// Validar que la sensación existe
-	if s.valid() {
+func (c *Cancion_info) nuevaSensacion(s Sensacion) error {
+	if err := s.valid(); err != nil {
 		c.Sensaciones = append(c.Sensaciones, s)
+		return nil
+	} else {
+		return err
 	}
 }
 
