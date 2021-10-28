@@ -50,7 +50,7 @@ type Cancion_info struct {
 	Momento_minutos string
 }
 
-func (s *Sensacion) valid() error {
+func (s *Sensacion) Valid() error {
 	switch *s {
 	case Alegria, Tristeza, Epicidad:
 		return nil
@@ -59,26 +59,26 @@ func (s *Sensacion) valid() error {
 	}
 }
 
-func newCancionInfo(titulo string, compositor string, genero Genero, momento Momento, momento_minutos string) {
+func NewCancionInfo(titulo string, compositor string, genero Genero, momento Momento, momento_minutos string) {
 }
 
 type Cancion interface {
-	porcentajeLikeDislike() (float64, float64)
-	porcentajeSensaciones() ([]float64, []Sensacion)
-	nuevaSensacion(s Sensacion)
-	cancionesRelacionadas(num int) []Cancion_info
+	PorcentajeLikeDislike() (float64, float64)
+	PorcentajeSensaciones() ([]float64, []Sensacion)
+	NuevaSensacion(s Sensacion)
+	CancionesRelacionadas(num int) []Cancion_info
 }
 
-func (c *Cancion_info) porcentajeLikeDislike() (float64, float64) {
+func (c *Cancion_info) PorcentajeLikeDislike() (float64, float64) {
 	return 0, 0
 }
 
-func (c *Cancion_info) porcentajeSensaciones() ([]float64, []Sensacion) {
+func (c *Cancion_info) PorcentajeSensaciones() ([]float64, []Sensacion) {
 	return nil, nil
 }
 
-func (c *Cancion_info) nuevaSensacion(s Sensacion) error {
-	if err := s.valid(); err != nil {
+func (c *Cancion_info) NuevaSensacion(s Sensacion) error {
+	if err := s.Valid(); err != nil {
 		c.Sensaciones = append(c.Sensaciones, s)
 		return nil
 	} else {
@@ -86,6 +86,6 @@ func (c *Cancion_info) nuevaSensacion(s Sensacion) error {
 	}
 }
 
-func (c *Cancion_info) cancionesRelacionadas(num int) []Cancion_info {
+func (c *Cancion_info) CancionesRelacionadas(num int) []Cancion_info {
 	return nil
 }
