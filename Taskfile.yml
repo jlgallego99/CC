@@ -1,8 +1,18 @@
 version: '3'
 
+env:
+  MAIN: ./cmd/ostfind/main.go
+
 tasks:
+  check:
+    cmds:
+      - go build -v ./internal/cancion
+      - go build -v ./internal/obra
+
+  run:
+    cmds:
+      - go run $MAIN
+
   install:
     cmds:
       - go build -v $MAIN
-    env:
-      MAIN: ./cmd/ostfind/main.go
