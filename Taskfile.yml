@@ -5,14 +5,17 @@ env:
 
 tasks:
   check:
+    desc: Comprueba que los paquetes compilan bien y no tienen errores
     cmds:
       - go build -v ./internal/cancion
       - go build -v ./internal/obra
 
   run:
+    desc: Ejecuta OSTfind directamente
     cmds:
       - go run $MAIN
 
   install:
+    desc: Genera el ejecutable de OSTfind
     cmds:
       - go build -v $MAIN
