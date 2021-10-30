@@ -77,10 +77,10 @@ func NewCancionInfo(titulo string, compositor string, genero Genero, momento Mom
 type Cancion interface {
 	PorcentajeLikeDislike() (float64, float64)
 	PorcentajeSensaciones() ([]float64, []Sensacion)
-	NuevaSensacion(s Sensacion)
+	NuevaSensacion(s Sensacion) error
 	CancionesRelacionadas(num int) []Cancion_info
-	Like() error
-	Dislike() error
+	Like()
+	Dislike()
 }
 
 func (c *Cancion_info) PorcentajeLikeDislike() (float64, float64) {
@@ -147,10 +147,10 @@ func (c *Cancion_info) CancionesRelacionadas(num int) []Cancion_info {
 	return nil
 }
 
-func (c *Cancion_info) Like() error {
-	return nil
+func (c *Cancion_info) Like() {
+	c.Likes++
 }
 
-func (c *Cancion_info) Dislike() error {
-	return nil
+func (c *Cancion_info) Dislike() {
+	c.Dislikes++
 }
