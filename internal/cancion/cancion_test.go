@@ -8,7 +8,13 @@ import (
 
 var _ = Describe("Cancion", func() {
 	var cancionCorrecta cancion.Cancion_info
+	var cancionIncorrecta cancion.Cancion_info
+	var cancionesVacio []cancion.Cancion_info
+	var canciones []cancion.Cancion_info
+
 	sensacionCorrecta := cancion.Tristeza
+
+	var porcentajes []float64
 
 	sensacionesOrdenadas := []cancion.Sensacion{cancion.Alegria, cancion.Ansiedad, cancion.Ansiedad, cancion.Miedo, cancion.Miedo, cancion.Desafio}
 	sensacionesDesordenadas := []cancion.Sensacion{cancion.Ansiedad, cancion.Miedo, cancion.Ansiedad, cancion.Alegria, cancion.Desafio, cancion.Miedo}
@@ -82,7 +88,6 @@ var _ = Describe("Cancion", func() {
 		})
 
 		Context("Las sensaciones están desordenadas", func() {
-			var porcentajes []float64
 			BeforeEach(func() {
 				cancionCorrecta.Sensaciones = sensacionesDesordenadas
 				porcentajes = cancionCorrecta.PorcentajeSensaciones()
@@ -107,7 +112,6 @@ var _ = Describe("Cancion", func() {
 		})
 
 		Context("No hay ninguna sensación", func() {
-			var porcentajes []float64
 			BeforeEach(func() {
 				cancionCorrecta.Sensaciones = make([]cancion.Sensacion, 0)
 				porcentajes = cancionCorrecta.PorcentajeSensaciones()
@@ -169,6 +173,42 @@ var _ = Describe("Cancion", func() {
 				cancionCorrecta.QuitarDislike()
 
 				Expect(cancionCorrecta.Dislikes).To(Equal(0))
+			})
+		})
+	})
+
+	Describe("Existe en un slice de canciones", func() {
+		BeforeEach(func() {
+			cancionIncorrecta = cancion.Cancion_info{
+				Titulo:          "z",
+				Compositor:      "x",
+				Genero:          cancion.Jazz,
+				Likes:           0,
+				Dislikes:        0,
+				Sensaciones:     make([]cancion.Sensacion, 0),
+				Momento:         cancion.Batalla,
+				Momento_exacto:  "",
+				Momento_minutos: "",
+			}
+
+			cancionesVacio = make([]cancion.Cancion_info, 0)
+			canciones = make([]cancion.Cancion_info, 5)
+			canciones = append(canciones, cancionCorrecta)
+		})
+
+		Context("El slice de canciones está vacío", func() {
+			It("La canción no debe existir en el slice de canciones", func() {
+				Expect(cancionCorrecta.ExisteEn(cancionesVacio)).To(BeFalse())
+			})
+		})
+
+		Context("El slice de canciones no está vacío", func() {
+			It("La canción debe existir en el slice de canciones", func() {
+				Expect(cancionCorrecta.ExisteEn(canciones)).To(BeTrue())
+			})
+
+			It("La canción no debe existir en el slice de canciones", func() {
+				Expect(cancionIncorrecta.ExisteEn(canciones)).NotTo(BeTrue())
 			})
 		})
 	})

@@ -177,7 +177,7 @@ func (c *Cancion_info) QuitarDislike() {
 
 func (c *Cancion_info) ExisteEn(canciones []Cancion_info) bool {
 	for _, v := range canciones {
-		if reflect.DeepEqual(c, v) {
+		if reflect.DeepEqual(*c, v) {
 			return true
 		}
 	}
