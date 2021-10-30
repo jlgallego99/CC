@@ -128,4 +128,22 @@ var _ = Describe("Cancion", func() {
 			})
 		})
 	})
+
+	Describe("Se añaden likes o dislikes", func() {
+		Context("No hay ningún like", func() {
+			It("Debe registrar un nuevo like", func() {
+				cancionCorrecta.Like()
+
+				Expect(cancionCorrecta.Likes).To(Equal(1))
+			})
+		})
+
+		Context("No hay ningún dislike", func() {
+			It("Debe registrar un nuevo dislike", func() {
+				cancionCorrecta.Dislike()
+
+				Expect(cancionCorrecta.Likes).To(Equal(1))
+			})
+		})
+	})
 })
