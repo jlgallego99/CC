@@ -38,7 +38,7 @@ func (col *Colaborador) Dislike(c cancion.Cancion_info) error {
 		return errors.New("El usuario ya le ha dado dislike a esta canción")
 	}
 
-	col.CancionesOdiadas = append(col.CancionesOdiadas)
+	col.CancionesOdiadas = append(col.CancionesOdiadas, c)
 	c.Dislike()
 
 	return nil
