@@ -2,6 +2,7 @@ package cancion
 
 import (
 	"errors"
+	"math"
 )
 
 type Genero int
@@ -116,6 +117,7 @@ func (c *Cancion_info) PorcentajeSensaciones() ([]float64, error) {
 
 	for _, v := range ocurrencias {
 		p := float64(v) / float64(len(c.Sensaciones))
+		p = math.Round(p*100) / 100
 		porcentajes = append(porcentajes, p)
 	}
 
