@@ -5,37 +5,37 @@ import (
 )
 
 type Obra interface {
-	Canciones() []cancion.Cancion
+	Canciones() []cancion.Cancion_info
 	Momento() string
-	NuevaCancion(c cancion.Cancion)
+	NuevaCancion(c cancion.Cancion_info)
 }
 
 type Videojuego struct {
-	titulo    string
-	canciones []cancion.Cancion
+	Titulo string
+	OST    []cancion.Cancion_info
 }
 
 type Pelicula struct {
-	titulo    string
-	canciones []cancion.Cancion
+	Titulo string
+	OST    []cancion.Cancion_info
 }
 
 type Serie struct {
-	titulo    string
-	temporada int
-	capitulo  int
-	canciones []cancion.Cancion
+	Titulo    string
+	Temporada int
+	Capitulo  int
+	OST       []cancion.Cancion_info
 }
 
-func (v *Videojuego) Canciones() []cancion.Cancion {
+func (v *Videojuego) Canciones() []cancion.Cancion_info {
 	return nil
 }
 
-func (p *Pelicula) Canciones() []cancion.Cancion {
+func (p *Pelicula) Canciones() []cancion.Cancion_info {
 	return nil
 }
 
-func (s *Serie) Canciones() []cancion.Cancion {
+func (s *Serie) Canciones() []cancion.Cancion_info {
 	return nil
 }
 
@@ -51,37 +51,37 @@ func (s *Serie) Momento() string {
 	return ""
 }
 
-func (v *Videojuego) NuevaCancion(c cancion.Cancion) {
+func (v *Videojuego) NuevaCancion(c cancion.Cancion_info) {
 
 }
 
-func (p *Pelicula) NuevaCancion(c cancion.Cancion) {
+func (p *Pelicula) NuevaCancion(c cancion.Cancion_info) {
 
 }
 
-func (s *Serie) NuevaCancion(c cancion.Cancion) {
+func (s *Serie) NuevaCancion(c cancion.Cancion_info) {
 
 }
 
-func NewVideojuego(titulo string, canciones []cancion.Cancion) *Videojuego {
+func NewVideojuego(titulo string, canciones []cancion.Cancion_info) *Videojuego {
 	return &Videojuego{
-		titulo:    titulo,
-		canciones: canciones,
+		Titulo: titulo,
+		OST:    canciones,
 	}
 }
 
-func NewPelicula(titulo string, canciones []cancion.Cancion) *Pelicula {
+func NewPelicula(titulo string, canciones []cancion.Cancion_info) *Pelicula {
 	return &Pelicula{
-		titulo:    titulo,
-		canciones: canciones,
+		Titulo: titulo,
+		OST:    canciones,
 	}
 }
 
-func NewSerie(titulo string, temporada, capitulo int, canciones []cancion.Cancion) *Serie {
+func NewSerie(titulo string, temporada, capitulo int, canciones []cancion.Cancion_info) *Serie {
 	return &Serie{
-		titulo:    titulo,
-		temporada: temporada,
-		capitulo:  capitulo,
-		canciones: canciones,
+		Titulo:    titulo,
+		Temporada: temporada,
+		Capitulo:  capitulo,
+		OST:       canciones,
 	}
 }
