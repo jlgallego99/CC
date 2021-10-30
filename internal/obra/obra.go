@@ -27,9 +27,6 @@ type Serie struct {
 	canciones []cancion.Cancion
 }
 
-func newObra(titulo string, canciones []cancion.Cancion) {
-}
-
 func (v *Videojuego) Canciones() []cancion.Cancion {
 	return nil
 }
@@ -64,4 +61,27 @@ func (p *Pelicula) nuevaCancion(c cancion.Cancion) {
 
 func (s *Serie) nuevaCancion(c cancion.Cancion) {
 
+}
+
+func newVideojuego(titulo string, canciones []cancion.Cancion) *Videojuego {
+	return &Videojuego{
+		titulo:    titulo,
+		canciones: canciones,
+	}
+}
+
+func newPelicula(titulo string, canciones []cancion.Cancion) *Pelicula {
+	return &Pelicula{
+		titulo:    titulo,
+		canciones: canciones,
+	}
+}
+
+func newSerie(titulo string, temporada, capitulo int, canciones []cancion.Cancion) *Serie {
+	return &Serie{
+		titulo:    titulo,
+		temporada: temporada,
+		capitulo:  capitulo,
+		canciones: canciones,
+	}
 }
