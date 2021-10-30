@@ -1,13 +1,15 @@
 package obra
 
 import (
+	"errors"
+
 	"github.com/jlgallego99/OSTfind/internal/cancion"
 )
 
 type Obra interface {
 	Canciones() []cancion.Cancion_info
 	Momento() string
-	NuevaCancion(c cancion.Cancion_info)
+	NuevaCancion(c cancion.Cancion_info) error
 }
 
 type Videojuego struct {
@@ -51,16 +53,34 @@ func (s *Serie) Momento() string {
 	return ""
 }
 
-func (v *Videojuego) NuevaCancion(c cancion.Cancion_info) {
+func (v *Videojuego) NuevaCancion(c cancion.Cancion_info) error {
+	if existe, _ := c.ExisteEn(v.OST); existe {
+		return errors.New("La canción ya existe en la OST")
+	}
 
+	v.OST = append(v.OST, c)
+
+	return nil
 }
 
-func (p *Pelicula) NuevaCancion(c cancion.Cancion_info) {
+func (p *Pelicula) NuevaCancion(c cancion.Cancion_info) error {
+	if existe, _ := c.ExisteEn(p.OST); existe {
+		return errors.New("La canción ya existe en la OST")
+	}
 
+	p.OST = append(p.OST, c)
+
+	return nil
 }
 
-func (s *Serie) NuevaCancion(c cancion.Cancion_info) {
+func (s *Serie) NuevaCancion(c cancion.Cancion_info) error {
+	if existe, _ := c.ExisteEn(s.OST); existe {
+		return errors.New("La canción ya existe en la OST")
+	}
 
+	s.OST = append(s.OST, c)
+
+	return nil
 }
 
 func NewVideojuego(titulo string, canciones []cancion.Cancion_info) *Videojuego {

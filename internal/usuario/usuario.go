@@ -2,6 +2,7 @@ package usuario
 
 import (
 	"errors"
+	"fmt"
 
 	"github.com/jlgallego99/OSTfind/internal/cancion"
 	"github.com/jlgallego99/OSTfind/internal/obra"
@@ -64,7 +65,11 @@ func (col *Colaborador) ActualizarOST(o obra.Obra, ost []cancion.Cancion_info) e
 	}
 
 	for _, v := range ost {
-		o.NuevaCancion(v)
+		err := o.NuevaCancion(v)
+
+		if err != nil {
+			return fmt.Errorf("No se ha podido añadir la canción: %x", err)
+		}
 	}
 
 	return nil
