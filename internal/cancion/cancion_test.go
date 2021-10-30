@@ -11,7 +11,7 @@ var _ = Describe("Cancion", func() {
 	sensacionCorrecta := cancion.Tristeza
 
 	sensacionesOrdenadas := []cancion.Sensacion{cancion.Alegria, cancion.Ansiedad, cancion.Ansiedad, cancion.Miedo, cancion.Miedo, cancion.Desafio}
-	//sensacionesDesordenadas := []cancion.Sensacion{cancion.Ansiedad, cancion.Alegria, cancion.Ansiedad, cancion.Ansiedad, cancion.Diversion, cancion.Alegria}
+	sensacionesDesordenadas := []cancion.Sensacion{cancion.Ansiedad, cancion.Miedo, cancion.Ansiedad, cancion.Alegria, cancion.Desafio, cancion.Miedo}
 
 	BeforeEach(func() {
 		cancionCorrecta = cancion.Cancion_info{
@@ -72,6 +72,21 @@ var _ = Describe("Cancion", func() {
 
 			It("El porcentaje de las sensaciones que no aparecen debe ser 0", func() {
 				Expect(porcentajes[4]).To(BeZero())
+			})
+		})
+
+		Context("Las sensaciones están desordenadas", func() {
+			var porcentajes []float64
+			BeforeEach(func() {
+				cancionCorrecta.Sensaciones = sensacionesDesordenadas
+				porcentajes, _ = cancionCorrecta.PorcentajeSensaciones()
+			})
+
+			It("Deben ser correctos todos los porcentajes", func() {
+				Expect(porcentajes[0]).To(Equal(16.67))
+				Expect(porcentajes[2]).To(Equal(33.33))
+				Expect(porcentajes[5]).To(Equal(33.33))
+				Expect(porcentajes[10]).To(Equal(16.67))
 			})
 		})
 	})
