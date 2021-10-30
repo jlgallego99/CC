@@ -16,6 +16,9 @@ Puedes leer sobre la lógica de negocio de este proyecto [aquí](./docs/logica_n
 
 - Los [milestones](./docs/milestones.md) indican los distintos productos mínimos viables que se alcanzarán en cada fase del desarrollo.
 
+### Tareas
+Las [tareas](./docs/tareas.md) de instalación, ejecución de tests, etc se hacen mediante el uso del gestor de tareas Task.
+
 ## Documentación adicional
 Se ha documentado la [configuración inicial de Git](./docs/configuracion_entorno.md).
 
