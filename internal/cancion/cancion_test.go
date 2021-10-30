@@ -71,7 +71,13 @@ var _ = Describe("Cancion", func() {
 			})
 
 			It("El porcentaje de las sensaciones que no aparecen debe ser 0", func() {
+				Expect(porcentajes[1]).To(BeZero())
+				Expect(porcentajes[3]).To(BeZero())
 				Expect(porcentajes[4]).To(BeZero())
+				Expect(porcentajes[6]).To(BeZero())
+				Expect(porcentajes[7]).To(BeZero())
+				Expect(porcentajes[8]).To(BeZero())
+				Expect(porcentajes[9]).To(BeZero())
 			})
 		})
 
@@ -87,6 +93,16 @@ var _ = Describe("Cancion", func() {
 				Expect(porcentajes[2]).To(Equal(33.33))
 				Expect(porcentajes[5]).To(Equal(33.33))
 				Expect(porcentajes[10]).To(Equal(16.67))
+			})
+
+			It("El porcentaje de las sensaciones que no aparecen debe ser 0", func() {
+				Expect(porcentajes[1]).To(BeZero())
+				Expect(porcentajes[3]).To(BeZero())
+				Expect(porcentajes[4]).To(BeZero())
+				Expect(porcentajes[6]).To(BeZero())
+				Expect(porcentajes[7]).To(BeZero())
+				Expect(porcentajes[8]).To(BeZero())
+				Expect(porcentajes[9]).To(BeZero())
 			})
 		})
 	})
