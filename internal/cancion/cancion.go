@@ -83,8 +83,43 @@ func (c *Cancion_info) PorcentajeLikeDislike() (float64, float64) {
 	return 0, 0
 }
 
-func (c *Cancion_info) PorcentajeSensaciones() ([]float64, []Sensacion) {
-	return nil, nil
+func (c *Cancion_info) PorcentajeSensaciones() ([]float64, error) {
+	ocurrencias := make([]int, 11)
+	porcentajes := make([]float64, 0)
+
+	for _, v := range c.Sensaciones {
+		switch v {
+		case Alegria:
+			ocurrencias[0]++
+		case Tristeza:
+			ocurrencias[1]++
+		case Ansiedad:
+			ocurrencias[2]++
+		case Diversion:
+			ocurrencias[3]++
+		case Energizante:
+			ocurrencias[4]++
+		case Miedo:
+			ocurrencias[5]++
+		case Relajacion:
+			ocurrencias[6]++
+		case Triunfo:
+			ocurrencias[7]++
+		case Sueño:
+			ocurrencias[8]++
+		case Epicidad:
+			ocurrencias[9]++
+		case Desafio:
+			ocurrencias[10]++
+		}
+	}
+
+	for _, v := range ocurrencias {
+		p := float64(v) / float64(len(c.Sensaciones))
+		porcentajes = append(porcentajes, p)
+	}
+
+	return porcentajes, nil
 }
 
 func (c *Cancion_info) NuevaSensacion(s Sensacion) error {
