@@ -7,7 +7,7 @@ import (
 type Obra interface {
 	Canciones() []cancion.Cancion
 	Momento() string
-	nuevaCancion(c cancion.Cancion)
+	NuevaCancion(c cancion.Cancion)
 }
 
 type Videojuego struct {
@@ -51,33 +51,33 @@ func (s *Serie) Momento() string {
 	return ""
 }
 
-func (v *Videojuego) nuevaCancion(c cancion.Cancion) {
+func (v *Videojuego) NuevaCancion(c cancion.Cancion) {
 
 }
 
-func (p *Pelicula) nuevaCancion(c cancion.Cancion) {
+func (p *Pelicula) NuevaCancion(c cancion.Cancion) {
 
 }
 
-func (s *Serie) nuevaCancion(c cancion.Cancion) {
+func (s *Serie) NuevaCancion(c cancion.Cancion) {
 
 }
 
-func newVideojuego(titulo string, canciones []cancion.Cancion) *Videojuego {
+func NewVideojuego(titulo string, canciones []cancion.Cancion) *Videojuego {
 	return &Videojuego{
 		titulo:    titulo,
 		canciones: canciones,
 	}
 }
 
-func newPelicula(titulo string, canciones []cancion.Cancion) *Pelicula {
+func NewPelicula(titulo string, canciones []cancion.Cancion) *Pelicula {
 	return &Pelicula{
 		titulo:    titulo,
 		canciones: canciones,
 	}
 }
 
-func newSerie(titulo string, temporada, capitulo int, canciones []cancion.Cancion) *Serie {
+func NewSerie(titulo string, temporada, capitulo int, canciones []cancion.Cancion) *Serie {
 	return &Serie{
 		titulo:    titulo,
 		temporada: temporada,
