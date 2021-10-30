@@ -60,7 +60,7 @@ var _ = Describe("Cancion", func() {
 			var porcentajes []float64
 			BeforeEach(func() {
 				cancionCorrecta.Sensaciones = sensacionesOrdenadas
-				porcentajes, _ = cancionCorrecta.PorcentajeSensaciones()
+				porcentajes = cancionCorrecta.PorcentajeSensaciones()
 			})
 
 			It("Deben ser correctos todos los porcentajes", func() {
@@ -85,7 +85,7 @@ var _ = Describe("Cancion", func() {
 			var porcentajes []float64
 			BeforeEach(func() {
 				cancionCorrecta.Sensaciones = sensacionesDesordenadas
-				porcentajes, _ = cancionCorrecta.PorcentajeSensaciones()
+				porcentajes = cancionCorrecta.PorcentajeSensaciones()
 			})
 
 			It("Deben ser correctos todos los porcentajes", func() {

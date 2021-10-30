@@ -63,7 +63,8 @@ type Cancion_info struct {
 
 func (s *Sensacion) Valid() error {
 	switch *s {
-	case Alegria, Tristeza, Epicidad:
+	case Alegria, Tristeza, Ansiedad, Diversion, Energizante, Miedo, Relajacion,
+		Triunfo, Sueño, Epicidad, Desafio:
 		return nil
 	default:
 		return errors.New("Sensación no válida")
@@ -84,7 +85,7 @@ func (c *Cancion_info) PorcentajeLikeDislike() (float64, float64) {
 	return 0, 0
 }
 
-func (c *Cancion_info) PorcentajeSensaciones() ([]float64, error) {
+func (c *Cancion_info) PorcentajeSensaciones() []float64 {
 	ocurrencias := make([]int, 11)
 	porcentajes := make([]float64, 0)
 
@@ -121,7 +122,7 @@ func (c *Cancion_info) PorcentajeSensaciones() ([]float64, error) {
 		porcentajes = append(porcentajes, p)
 	}
 
-	return porcentajes, nil
+	return porcentajes
 }
 
 func (c *Cancion_info) NuevaSensacion(s Sensacion) error {
