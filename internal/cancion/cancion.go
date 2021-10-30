@@ -87,7 +87,8 @@ func (c *Cancion_info) PorcentajeLikeDislike() (float64, float64) {
 
 func (c *Cancion_info) PorcentajeSensaciones() []float64 {
 	ocurrencias := make([]int, 11)
-	porcentajes := make([]float64, 0)
+	porcentajes := make([]float64, 11)
+	var p float64
 
 	for _, v := range c.Sensaciones {
 		switch v {
@@ -116,10 +117,15 @@ func (c *Cancion_info) PorcentajeSensaciones() []float64 {
 		}
 	}
 
-	for _, v := range ocurrencias {
-		p := float64(v) / float64(len(c.Sensaciones)) * 100
-		p = math.Round(p*100) / 100
-		porcentajes = append(porcentajes, p)
+	for i, v := range ocurrencias {
+		if v == 0 {
+			p = 0
+		} else {
+			p = float64(v) / float64(len(c.Sensaciones)) * 100
+			p = math.Round(p*100) / 100
+		}
+
+		porcentajes[i] = p
 	}
 
 	return porcentajes

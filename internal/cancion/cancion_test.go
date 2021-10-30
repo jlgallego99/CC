@@ -105,5 +105,27 @@ var _ = Describe("Cancion", func() {
 				Expect(porcentajes[cancion.Epicidad]).To(BeZero())
 			})
 		})
+
+		Context("No hay ninguna sensación", func() {
+			var porcentajes []float64
+			BeforeEach(func() {
+				cancionCorrecta.Sensaciones = make([]cancion.Sensacion, 0)
+				porcentajes = cancionCorrecta.PorcentajeSensaciones()
+			})
+
+			It("El porcentaje de todas las sensaciones debe ser 0", func() {
+				Expect(porcentajes[cancion.Alegria]).To(BeZero())
+				Expect(porcentajes[cancion.Ansiedad]).To(BeZero())
+				Expect(porcentajes[cancion.Miedo]).To(BeZero())
+				Expect(porcentajes[cancion.Desafio]).To(BeZero())
+				Expect(porcentajes[cancion.Tristeza]).To(BeZero())
+				Expect(porcentajes[cancion.Diversion]).To(BeZero())
+				Expect(porcentajes[cancion.Energizante]).To(BeZero())
+				Expect(porcentajes[cancion.Relajacion]).To(BeZero())
+				Expect(porcentajes[cancion.Triunfo]).To(BeZero())
+				Expect(porcentajes[cancion.Sueño]).To(BeZero())
+				Expect(porcentajes[cancion.Epicidad]).To(BeZero())
+			})
+		})
 	})
 })
