@@ -19,3 +19,8 @@ tasks:
     desc: Genera el ejecutable de OSTfind
     cmds:
       - go build -v $MAIN
+
+  test:
+    desc: Ejecuta todos los tests definidos para el proyecto
+    cmds:
+      - go test -v ./...
