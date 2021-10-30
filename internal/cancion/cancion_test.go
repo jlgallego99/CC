@@ -8,7 +8,10 @@ import (
 
 var _ = Describe("Cancion", func() {
 	var cancionCorrecta cancion.Cancion_info
-	var sensacionCorrecta cancion.Sensacion
+	sensacionCorrecta := cancion.Tristeza
+
+	sensacionesOrdenadas := []cancion.Sensacion{cancion.Alegria, cancion.Ansiedad, cancion.Ansiedad, cancion.Miedo, cancion.Miedo, cancion.Desafio}
+	//sensacionesDesordenadas := []cancion.Sensacion{cancion.Ansiedad, cancion.Alegria, cancion.Ansiedad, cancion.Ansiedad, cancion.Diversion, cancion.Alegria}
 
 	BeforeEach(func() {
 		cancionCorrecta = cancion.Cancion_info{
@@ -22,7 +25,6 @@ var _ = Describe("Cancion", func() {
 			Momento_exacto:  "",
 			Momento_minutos: "",
 		}
-		sensacionCorrecta = cancion.Tristeza
 	})
 
 	Describe("Añadir nueva sensación", func() {
@@ -30,6 +32,7 @@ var _ = Describe("Cancion", func() {
 			It("Debe existir esa nueva sensación", func() {
 				cancionCorrecta.NuevaSensacion(sensacionCorrecta)
 				s := cancionCorrecta.Sensaciones[len(cancionCorrecta.Sensaciones)-1]
+
 				Expect(s).To(Equal(sensacionCorrecta))
 			})
 
@@ -42,11 +45,33 @@ var _ = Describe("Cancion", func() {
 			It("No debe existir ninguna nueva sensación", func() {
 				cancionCorrecta.NuevaSensacion(100)
 				length := len(cancionCorrecta.Sensaciones)
+
 				Expect(length).To(Equal(0))
 			})
 
 			It("Debe devolver un error", func() {
 				Expect(cancionCorrecta.NuevaSensacion(100)).To(HaveOccurred())
+			})
+		})
+	})
+
+	Describe("Calcular porcentaje de sensaciones", func() {
+		Context("Las sensaciones están ordenadas", func() {
+			var porcentajes []float64
+			BeforeEach(func() {
+				cancionCorrecta.Sensaciones = sensacionesOrdenadas
+				porcentajes, _ = cancionCorrecta.PorcentajeSensaciones()
+			})
+
+			It("Deben ser correctos todos los porcentajes", func() {
+				Expect(porcentajes[0]).To(Equal(16.67))
+				Expect(porcentajes[2]).To(Equal(33.33))
+				Expect(porcentajes[5]).To(Equal(33.33))
+				Expect(porcentajes[10]).To(Equal(16.67))
+			})
+
+			It("El porcentaje de las sensaciones que no aparecen debe ser 0", func() {
+				Expect(porcentajes[4]).To(BeZero())
 			})
 		})
 	})
