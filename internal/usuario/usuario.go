@@ -22,21 +22,9 @@ func (col *Colaborador) Like(c cancion.Cancion) error {
 }
 
 func (col *Colaborador) Dislike(c cancion.Cancion) error {
-	return nil
+	return c.Dislike()
 }
 
 func (col *Colaborador) Recomendaciones() ([]cancion.Cancion, error) {
-	return nil, nil
-}
-
-func (bus *Buscador) Like(c cancion.Cancion) error {
-	return nil
-}
-
-func (bus *Buscador) Dislike(c cancion.Cancion) error {
-	return nil
-}
-
-func (bus *Buscador) Recomendaciones() ([]cancion.Cancion, error) {
 	return nil, nil
 }
