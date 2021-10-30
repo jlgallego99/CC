@@ -131,10 +131,23 @@ var _ = Describe("Cancion", func() {
 
 	Describe("Se añaden likes o dislikes", func() {
 		Context("No hay ningún like", func() {
-			It("Debe registrar un nuevo like", func() {
+			It("Debe registrar un nuevo like y tener uno", func() {
 				cancionCorrecta.Like()
 
 				Expect(cancionCorrecta.Likes).To(Equal(1))
+			})
+
+			It("Debe añadir y quitar el like y quedarse a 0", func() {
+				cancionCorrecta.Like()
+				cancionCorrecta.QuitarLike()
+
+				Expect(cancionCorrecta.Likes).To(Equal(0))
+			})
+
+			It("No se pueden tener likes negativos", func() {
+				cancionCorrecta.QuitarLike()
+
+				Expect(cancionCorrecta.Likes).To(Equal(0))
 			})
 		})
 
@@ -142,7 +155,20 @@ var _ = Describe("Cancion", func() {
 			It("Debe registrar un nuevo dislike", func() {
 				cancionCorrecta.Dislike()
 
-				Expect(cancionCorrecta.Likes).To(Equal(1))
+				Expect(cancionCorrecta.Dislikes).To(Equal(1))
+			})
+
+			It("Debe añadir y quitar el dislike y quedarse a 0", func() {
+				cancionCorrecta.Dislike()
+				cancionCorrecta.QuitarDislike()
+
+				Expect(cancionCorrecta.Dislikes).To(Equal(0))
+			})
+
+			It("No se pueden tener dislikes negativos", func() {
+				cancionCorrecta.QuitarDislike()
+
+				Expect(cancionCorrecta.Dislikes).To(Equal(0))
 			})
 		})
 	})

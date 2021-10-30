@@ -81,6 +81,8 @@ type Cancion interface {
 	CancionesRelacionadas(num int) []Cancion_info
 	Like()
 	Dislike()
+	QuitarLike()
+	QuitarDislike()
 }
 
 func (c *Cancion_info) PorcentajeLikeDislike() (float64, float64) {
@@ -153,4 +155,20 @@ func (c *Cancion_info) Like() {
 
 func (c *Cancion_info) Dislike() {
 	c.Dislikes++
+}
+
+func (c *Cancion_info) QuitarLike() {
+	c.Likes--
+
+	if c.Likes < 0 {
+		c.Likes = 0
+	}
+}
+
+func (c *Cancion_info) QuitarDislike() {
+	c.Dislikes--
+
+	if c.Dislikes < 0 {
+		c.Dislikes = 0
+	}
 }
