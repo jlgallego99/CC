@@ -220,6 +220,24 @@ var _ = Describe("Cancion", func() {
 	})
 
 	Describe("Calcular porcentaje de likes y dislikes", func() {
+		Context("No tiene ni likes ni dislikes", func() {
+			It("Los porcentajes deben ser 0", func() {
+				likes, dislikes := cancionCorrecta.PorcentajeLikeDislike()
 
+				Expect(likes).To(BeZero())
+				Expect(dislikes).To(BeZero())
+			})
+		})
+
+		Context("Tiene un número de likes y dislikes distinto", func() {
+			It("Deben ser correctos los porcentajes", func() {
+				cancionCorrecta.Likes = 5
+				cancionCorrecta.Dislikes = 2
+				likes, dislikes := cancionCorrecta.PorcentajeLikeDislike()
+
+				Expect(likes).To(Equal(71.43))
+				Expect(dislikes).To(Equal(28.57))
+			})
+		})
 	})
 })

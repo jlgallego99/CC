@@ -92,8 +92,15 @@ func (c *Cancion_info) PorcentajeLikeDislike() (float64, float64) {
 	var dislikes float64
 
 	total := c.Likes + c.Dislikes
-	likes = float64(c.Likes) / float64(total) * 100.0
-	likes = float64(c.Dislikes) / float64(total) * 100.0
+	if total == 0 {
+		likes = 0
+		dislikes = 0
+	} else {
+		likes = float64(c.Likes) / float64(total) * 100.0
+		likes = math.Round(likes*100) / 100
+		dislikes = float64(c.Dislikes) / float64(total) * 100.0
+		dislikes = math.Round(dislikes*100) / 100
+	}
 
 	return likes, dislikes
 }
