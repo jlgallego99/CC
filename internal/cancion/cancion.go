@@ -79,6 +79,8 @@ type Cancion interface {
 	PorcentajeSensaciones() ([]float64, []Sensacion)
 	NuevaSensacion(s Sensacion)
 	CancionesRelacionadas(num int) []Cancion_info
+	Like() error
+	Dislike() error
 }
 
 func (c *Cancion_info) PorcentajeLikeDislike() (float64, float64) {
@@ -142,5 +144,13 @@ func (c *Cancion_info) NuevaSensacion(s Sensacion) error {
 }
 
 func (c *Cancion_info) CancionesRelacionadas(num int) []Cancion_info {
+	return nil
+}
+
+func (c *Cancion_info) Like() error {
+	return nil
+}
+
+func (c *Cancion_info) Dislike() error {
 	return nil
 }
