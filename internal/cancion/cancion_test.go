@@ -198,18 +198,28 @@ var _ = Describe("Cancion", func() {
 
 		Context("El slice de canciones está vacío", func() {
 			It("La canción no debe existir en el slice de canciones", func() {
-				Expect(cancionCorrecta.ExisteEn(cancionesVacio)).To(BeFalse())
+				existe, _ := cancionCorrecta.ExisteEn(cancionesVacio)
+
+				Expect(existe).To(BeFalse())
 			})
 		})
 
 		Context("El slice de canciones no está vacío", func() {
 			It("La canción debe existir en el slice de canciones", func() {
-				Expect(cancionCorrecta.ExisteEn(canciones)).To(BeTrue())
+				existe, _ := cancionCorrecta.ExisteEn(canciones)
+
+				Expect(existe).To(BeTrue())
 			})
 
 			It("La canción no debe existir en el slice de canciones", func() {
-				Expect(cancionIncorrecta.ExisteEn(canciones)).NotTo(BeTrue())
+				existe, _ := cancionIncorrecta.ExisteEn(canciones)
+
+				Expect(existe).NotTo(BeTrue())
 			})
 		})
+	})
+
+	Describe("Calcular porcentaje de likes y dislikes", func() {
+
 	})
 })
