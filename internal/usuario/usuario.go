@@ -21,7 +21,7 @@ type Usuario interface {
 	Like(c cancion.Cancion) error
 	Dislike(c cancion.Cancion) error
 	Recomendaciones() ([]cancion.Cancion, error)
-	ActualizarOST(o obra.Obra, ost []cancion.Cancion_info)
+	ActualizarOST(o obra.Obra, ost []cancion.Cancion_info) error
 }
 
 func (col *Colaborador) Like(c cancion.Cancion_info) error {
@@ -58,8 +58,14 @@ func (col *Colaborador) Recomendaciones() ([]cancion.Cancion, error) {
 	return nil, nil
 }
 
-func (col *Colaborador) ActualizarOST(o obra.Obra, ost []cancion.Cancion_info) {
+func (col *Colaborador) ActualizarOST(o obra.Obra, ost []cancion.Cancion_info) error {
+	if o == nil {
+		return errors.New("No existe la obra")
+	}
+
 	for _, v := range ost {
 		o.NuevaCancion(v)
 	}
+
+	return nil
 }
