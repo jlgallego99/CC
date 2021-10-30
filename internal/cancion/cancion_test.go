@@ -22,7 +22,6 @@ var _ = Describe("Cancion", func() {
 			Momento_exacto:  "",
 			Momento_minutos: "",
 		}
-
 		sensacionCorrecta = cancion.Tristeza
 	})
 
@@ -40,6 +39,12 @@ var _ = Describe("Cancion", func() {
 		})
 
 		Context("La sensación no existe", func() {
+			It("No debe existir ninguna nueva sensación", func() {
+				cancionCorrecta.NuevaSensacion(100)
+				length := len(cancionCorrecta.Sensaciones)
+				Expect(length).To(Equal(0))
+			})
+
 			It("Debe devolver un error", func() {
 				Expect(cancionCorrecta.NuevaSensacion(100)).To(HaveOccurred())
 			})
