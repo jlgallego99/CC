@@ -116,7 +116,7 @@ func (c *Cancion_info) PorcentajeSensaciones() ([]float64, error) {
 	}
 
 	for _, v := range ocurrencias {
-		p := float64(v) / float64(len(c.Sensaciones))
+		p := float64(v) / float64(len(c.Sensaciones)) * 100
 		p = math.Round(p*100) / 100
 		porcentajes = append(porcentajes, p)
 	}
