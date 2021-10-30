@@ -23,8 +23,12 @@ type Usuario interface {
 }
 
 func (col *Colaborador) Like(c cancion.Cancion_info) error {
-	if c.ExisteEn(col.CancionesFavoritas) {
+	if existe, _ := c.ExisteEn(col.CancionesFavoritas); existe {
 		return errors.New("El usuario ya le ha dado like a esta canción")
+	}
+
+	if existe, i := c.ExisteEn(col.CancionesOdiadas); existe {
+		col.CancionesOdiadas = append(col.CancionesOdiadas[:i], col.CancionesOdiadas[i+1:]...)
 	}
 
 	col.CancionesFavoritas = append(col.CancionesFavoritas, c)
@@ -34,8 +38,12 @@ func (col *Colaborador) Like(c cancion.Cancion_info) error {
 }
 
 func (col *Colaborador) Dislike(c cancion.Cancion_info) error {
-	if c.ExisteEn(col.CancionesOdiadas) {
+	if existe, _ := c.ExisteEn(col.CancionesOdiadas); existe {
 		return errors.New("El usuario ya le ha dado dislike a esta canción")
+	}
+
+	if existe, i := c.ExisteEn(col.CancionesFavoritas); existe {
+		col.CancionesFavoritas = append(col.CancionesFavoritas[:i], col.CancionesFavoritas[i+1:]...)
 	}
 
 	col.CancionesOdiadas = append(col.CancionesOdiadas, c)

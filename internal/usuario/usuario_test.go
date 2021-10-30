@@ -53,6 +53,11 @@ var _ = Describe("Usuario", func() {
 			It("Debe tener la canción en su lista de canciones favoritas", func() {
 				Expect(colaborador.CancionesFavoritas[0]).To(Equal(cancionCorrecta))
 			})
+
+			It("Si se le da dislike se debe quitar el like", func() {
+				colaborador.Dislike(cancionCorrecta)
+				Expect(colaborador.CancionesFavoritas).To(BeEmpty())
+			})
 		})
 
 		Context("Se le ha dado ya el dislike a la canción", func() {
@@ -67,6 +72,11 @@ var _ = Describe("Usuario", func() {
 
 			It("Debe tener la canción en su lista de canciones favoritas", func() {
 				Expect(colaborador.CancionesOdiadas[0]).To(Equal(cancionCorrecta))
+			})
+
+			It("Si se le da like se debe quitar el dislike", func() {
+				colaborador.Like(cancionCorrecta)
+				Expect(colaborador.CancionesOdiadas).To(BeEmpty())
 			})
 		})
 	})
