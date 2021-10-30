@@ -4,6 +4,7 @@ import (
 	"errors"
 
 	"github.com/jlgallego99/OSTfind/internal/cancion"
+	"github.com/jlgallego99/OSTfind/internal/obra"
 )
 
 type Colaborador struct {
@@ -20,6 +21,7 @@ type Usuario interface {
 	Like(c cancion.Cancion) error
 	Dislike(c cancion.Cancion) error
 	Recomendaciones() ([]cancion.Cancion, error)
+	ActualizarOST(o obra.Obra, ost []cancion.Cancion_info)
 }
 
 func (col *Colaborador) Like(c cancion.Cancion_info) error {
@@ -54,4 +56,10 @@ func (col *Colaborador) Dislike(c cancion.Cancion_info) error {
 
 func (col *Colaborador) Recomendaciones() ([]cancion.Cancion, error) {
 	return nil, nil
+}
+
+func (col *Colaborador) ActualizarOST(o obra.Obra, ost []cancion.Cancion_info) {
+	for _, v := range ost {
+		o.NuevaCancion(v)
+	}
 }
