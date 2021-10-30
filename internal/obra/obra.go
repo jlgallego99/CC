@@ -54,14 +54,14 @@ func (s *Serie) Momento() string {
 	return ""
 }
 
-func (v *Videojuego) nuevaCancion() {
+func (v *Videojuego) nuevaCancion(c cancion.Cancion) {
 
 }
 
-func (p *Pelicula) nuevaCancion() {
+func (p *Pelicula) nuevaCancion(c cancion.Cancion) {
 
 }
 
-func (s *Serie) nuevaCancion() {
+func (s *Serie) nuevaCancion(c cancion.Cancion) {
 
 }
