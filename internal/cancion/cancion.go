@@ -1,6 +1,8 @@
 package cancion
 
-import "errors"
+import (
+	"errors"
+)
 
 type Genero int
 
@@ -78,12 +80,13 @@ func (c *Cancion_info) PorcentajeSensaciones() ([]float64, []Sensacion) {
 }
 
 func (c *Cancion_info) NuevaSensacion(s Sensacion) error {
-	if err := s.Valid(); err != nil {
+	err := s.Valid()
+
+	if err == nil {
 		c.Sensaciones = append(c.Sensaciones, s)
-		return nil
-	} else {
-		return err
 	}
+
+	return err
 }
 
 func (c *Cancion_info) CancionesRelacionadas(num int) []Cancion_info {
