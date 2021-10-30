@@ -23,7 +23,15 @@ type Sensacion int
 const (
 	Alegria Sensacion = iota
 	Tristeza
+	Ansiedad
+	Diversion
+	Energizante
+	Miedo
+	Relajacion
+	Triunfo
+	Sueño
 	Epicidad
+	Desafio
 )
 
 type Momento int
