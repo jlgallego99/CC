@@ -82,6 +82,10 @@ func (col *Colaborador) ActualizarOST(o obra.Obra, ost []cancion.Cancion_info) e
 }
 
 func (col *Colaborador) ActualizarSensaciones(c *cancion.Cancion_info, sensaciones []cancion.Sensacion) error {
+	if c == nil {
+		return errors.New("No existe la canción")
+	}
+
 	if len(sensaciones) == 0 {
 		sensacionesUsuario := make([]cancion.Sensacion, len(c.Sensaciones))
 		for i, v := range col.CancionesColaboradas {

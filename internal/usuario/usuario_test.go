@@ -164,6 +164,16 @@ var _ = Describe("Usuario", func() {
 			err = colaborador.ActualizarSensaciones(&cancionCorrecta, sensaciones)
 		})
 
+		Context("La canción no existe", func() {
+			BeforeEach(func() {
+				err = colaborador.ActualizarSensaciones(nil, sensaciones)
+			})
+
+			It("Debe dar error", func() {
+				Expect(err).To(HaveOccurred())
+			})
+		})
+
 		Context("Se quitan todas las sensaciones aportadas", func() {
 			BeforeEach(func() {
 				err = colaborador.ActualizarSensaciones(&cancionCorrecta, []cancion.Sensacion{})
