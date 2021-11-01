@@ -25,7 +25,6 @@ var _ = Describe("Usuario", func() {
 	var err_ns, err_np, err_nv error
 
 	var sensaciones []cancion.Sensacion
-	//sensacionCorrecta := cancion.Tristeza
 
 	BeforeEach(func() {
 		colaborador = usuario.Colaborador{
@@ -198,6 +197,10 @@ var _ = Describe("Usuario", func() {
 				Expect(cancionCorrecta.Sensaciones[4]).To(Equal(cancion.Miedo))
 				Expect(cancionCorrecta.Sensaciones[5]).To(Equal(cancion.Desafio))
 				Expect(cancionCorrecta.Sensaciones[6]).To(Equal(cancion.Tristeza))
+			})
+
+			It("La canción está en la lista de colaboradas del usuario", func() {
+				Expect(colaborador.CancionesColaboradas[0]).To(Equal(cancionCorrecta))
 			})
 
 			It("No debe dar error", func() {

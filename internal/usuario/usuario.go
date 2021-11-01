@@ -107,7 +107,8 @@ func (col *Colaborador) ActualizarSensaciones(c *cancion.Cancion_info, sensacion
 		return nil
 	}
 
-	if existe, _ := c.ExisteEn(col.CancionesColaboradas); existe {
+	var existe bool
+	if existe, _ = c.ExisteEn(col.CancionesColaboradas); existe {
 		for _, s_nueva := range sensaciones {
 			for _, s := range c.Sensaciones {
 				if reflect.DeepEqual(s, s_nueva) {
@@ -119,8 +120,6 @@ func (col *Colaborador) ActualizarSensaciones(c *cancion.Cancion_info, sensacion
 				}
 			}
 		}
-	} else {
-		col.CancionesColaboradas = append(col.CancionesColaboradas, *c)
 	}
 
 	for _, s := range sensaciones {
@@ -129,6 +128,10 @@ func (col *Colaborador) ActualizarSensaciones(c *cancion.Cancion_info, sensacion
 		if err != nil {
 			return fmt.Errorf("No se ha podido registrar la nueva sensación: %s", err)
 		}
+	}
+
+	if !existe {
+		col.CancionesColaboradas = append(col.CancionesColaboradas, *c)
 	}
 
 	return nil
