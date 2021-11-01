@@ -83,7 +83,16 @@ func (col *Colaborador) ActualizarOST(o obra.Obra, ost []cancion.Cancion_info) e
 
 func (col *Colaborador) ActualizarSensaciones(c cancion.Cancion_info, sensaciones []cancion.Sensacion) error {
 	if len(sensaciones) == 0 {
-		for _, s := range c.Sensaciones {
+		var sensacionesUsuario []cancion.Sensacion
+		var pos int
+		for i, v := range col.CancionesColaboradas {
+			if v.Titulo == c.Titulo {
+				sensacionesUsuario = v.Sensaciones
+				pos = i
+			}
+		}
+
+		for _, s := range sensacionesUsuario {
 			err := c.QuitarSensacion(s)
 
 			if err != nil {
@@ -91,13 +100,9 @@ func (col *Colaborador) ActualizarSensaciones(c cancion.Cancion_info, sensacione
 			}
 		}
 
-		for i, v := range col.CancionesColaboradas {
-			if reflect.DeepEqual(v, c) {
-				col.CancionesColaboradas = append(col.CancionesFavoritas[:i], col.CancionesFavoritas[i+1:]...)
+		col.CancionesColaboradas = append(col.CancionesColaboradas[:pos], col.CancionesColaboradas[pos+1:]...)
 
-				return nil
-			}
-		}
+		return nil
 	}
 
 	if existe, _ := c.ExisteEn(col.CancionesColaboradas); existe {

@@ -20,8 +20,12 @@ var _ = Describe("Usuario", func() {
 	var cancionesVacio []cancion.Cancion_info
 	var canciones []cancion.Cancion_info
 
+	var err error
 	var err_s, err_p, err_v error
 	var err_ns, err_np, err_nv error
+
+	var sensaciones []cancion.Sensacion
+	//sensacionCorrecta := cancion.Tristeza
 
 	BeforeEach(func() {
 		colaborador = usuario.Colaborador{
@@ -48,6 +52,8 @@ var _ = Describe("Usuario", func() {
 		cancionesVacio = make([]cancion.Cancion_info, 5)
 		canciones = make([]cancion.Cancion_info, 0)
 		canciones = append(canciones, cancionCorrecta)
+
+		sensaciones = []cancion.Sensacion{cancion.Alegria, cancion.Ansiedad, cancion.Ansiedad, cancion.Miedo, cancion.Miedo, cancion.Desafio, cancion.Tristeza}
 	})
 
 	Describe("Dar like o dislike a una canción", func() {
@@ -143,6 +149,26 @@ var _ = Describe("Usuario", func() {
 				Expect(err_s).To(HaveOccurred())
 				Expect(err_p).To(HaveOccurred())
 				Expect(err_v).To(HaveOccurred())
+			})
+		})
+	})
+
+	Describe("Actualizar las sensaciones de una obra", func() {
+		BeforeEach(func() {
+			err = colaborador.ActualizarSensaciones(cancionCorrecta, sensaciones)
+		})
+
+		Context("Se quitan todas las sensaciones aportadas", func() {
+			BeforeEach(func() {
+				err = colaborador.ActualizarSensaciones(cancionCorrecta, []cancion.Sensacion{})
+			})
+
+			It("No debe estar la canción en la lista de colaboradas", func() {
+				Expect(len(cancionCorrecta.Sensaciones)).To(Equal(0))
+			})
+
+			It("No debe dar error", func() {
+				Expect(err).NotTo(HaveOccurred())
 			})
 		})
 	})
