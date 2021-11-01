@@ -41,9 +41,9 @@ var _ = Describe("Usuario", func() {
 			Momento_minutos: "",
 		}
 
-		serie = obra.NewSerie("SeriePrueba", 1, 1, make([]cancion.Cancion_info, 0))
-		pelicula = obra.NewPelicula("PeliculaPrueba", make([]cancion.Cancion_info, 0))
-		videojuego = obra.NewVideojuego("VideojuegoPrueba", make([]cancion.Cancion_info, 0))
+		serie, _ = obra.NewSerie("SeriePrueba", 1, 1, make([]cancion.Cancion_info, 0))
+		pelicula, _ = obra.NewPelicula("PeliculaPrueba", make([]cancion.Cancion_info, 0))
+		videojuego, _ = obra.NewVideojuego("VideojuegoPrueba", make([]cancion.Cancion_info, 0))
 		cancionesVacio = make([]cancion.Cancion_info, 5)
 		canciones = make([]cancion.Cancion_info, 0)
 		canciones = append(canciones, cancionCorrecta)

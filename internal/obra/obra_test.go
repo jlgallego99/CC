@@ -13,6 +13,7 @@ var _ = Describe("Obra", func() {
 	var pelicula *obra.Pelicula
 	var videojuego *obra.Videojuego
 	var cancionCorrecta cancion.Cancion_info
+	var err_ns, err_np, err_nv error
 	var err_s, err_p, err_v error
 
 	BeforeEach(func() {
@@ -28,32 +29,50 @@ var _ = Describe("Obra", func() {
 			Momento_minutos: "",
 		}
 
-		serie = obra.NewSerie("SeriePrueba", 1, 1, []cancion.Cancion_info{cancionCorrecta, {}})
-		pelicula = obra.NewPelicula("PeliculaPrueba", []cancion.Cancion_info{cancionCorrecta, {}})
-		videojuego = obra.NewVideojuego("VideojuegoPrueba", []cancion.Cancion_info{cancionCorrecta, {}})
+		serie, err_ns = obra.NewSerie("SeriePrueba", 1, 1, []cancion.Cancion_info{cancionCorrecta, {}})
+		pelicula, err_np = obra.NewPelicula("PeliculaPrueba", []cancion.Cancion_info{cancionCorrecta, {}})
+		videojuego, err_nv = obra.NewVideojuego("VideojuegoPrueba", []cancion.Cancion_info{cancionCorrecta, {}})
 	})
 
 	Describe("Crear nueva obra", func() {
-		Context("Se crea una serie", func() {
+		Context("Se crea una obra con todos sus campos", func() {
+			It("No debe dar error", func() {
+				Expect(err_ns).NotTo(HaveOccurred())
+				Expect(err_np).NotTo(HaveOccurred())
+				Expect(err_nv).NotTo(HaveOccurred())
+			})
+
 			It("Debe tener todos los campos iguales", func() {
 				Expect(serie.Titulo).To(Equal("SeriePrueba"))
 				Expect(serie.Temporada).To(Equal(1))
 				Expect(serie.Capitulo).To(Equal(1))
 				Expect(serie.OST).To(Equal([]cancion.Cancion_info{cancionCorrecta, {}}))
-			})
-		})
 
-		Context("Se crea una película", func() {
-			It("Debe tener todos los campos iguales", func() {
 				Expect(pelicula.Titulo).To(Equal("PeliculaPrueba"))
 				Expect(pelicula.OST).To(Equal([]cancion.Cancion_info{cancionCorrecta, {}}))
+
+				Expect(videojuego.Titulo).To(Equal("VideojuegoPrueba"))
+				Expect(videojuego.OST).To(Equal([]cancion.Cancion_info{cancionCorrecta, {}}))
 			})
 		})
 
-		Context("Se crea una serie", func() {
-			It("Debe tener todos los campos iguales", func() {
-				Expect(videojuego.Titulo).To(Equal("VideojuegoPrueba"))
-				Expect(videojuego.OST).To(Equal([]cancion.Cancion_info{cancionCorrecta, {}}))
+		Context("Se crea una obra con algún campo incorrecto", func() {
+			BeforeEach(func() {
+				serie, err_ns = obra.NewSerie("SeriePrueba", -1, 1, []cancion.Cancion_info{cancionCorrecta, {}})
+				pelicula, err_np = obra.NewPelicula("", []cancion.Cancion_info{cancionCorrecta, {}})
+				videojuego, err_nv = obra.NewVideojuego("", []cancion.Cancion_info{cancionCorrecta, {}})
+			})
+
+			It("Debe dar error", func() {
+				Expect(err_ns).To(HaveOccurred())
+				Expect(err_np).To(HaveOccurred())
+				Expect(err_nv).To(HaveOccurred())
+			})
+
+			It("La obra debe estar vacía", func() {
+				Expect(serie).To(BeNil())
+				Expect(pelicula).To(BeNil())
+				Expect(videojuego).To(BeNil())
 			})
 		})
 	})
