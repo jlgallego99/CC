@@ -83,10 +83,10 @@ func (col *Colaborador) ActualizarOST(o obra.Obra, ost []cancion.Cancion_info) e
 
 func (col *Colaborador) ActualizarSensaciones(c *cancion.Cancion_info, sensaciones []cancion.Sensacion) error {
 	if len(sensaciones) == 0 {
-		var sensacionesUsuario []cancion.Sensacion
+		sensacionesUsuario := make([]cancion.Sensacion, len(c.Sensaciones))
 		for i, v := range col.CancionesColaboradas {
 			if v.Titulo == c.Titulo {
-				sensacionesUsuario = v.Sensaciones
+				copy(sensacionesUsuario, c.Sensaciones)
 
 				col.CancionesColaboradas = append(col.CancionesColaboradas[:i], col.CancionesColaboradas[i+1:]...)
 			}

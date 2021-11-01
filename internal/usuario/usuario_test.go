@@ -169,6 +169,10 @@ var _ = Describe("Usuario", func() {
 				err = colaborador.ActualizarSensaciones(&cancionCorrecta, []cancion.Sensacion{})
 			})
 
+			It("No debe estar la canción en la lista de colaboradas", func() {
+				Expect(len(cancionCorrecta.Sensaciones)).To(Equal(0))
+			})
+
 			It("No debe dar error", func() {
 				Expect(err).NotTo(HaveOccurred())
 			})
