@@ -23,7 +23,7 @@ type Usuario interface {
 	Dislike(c cancion.Cancion) error
 	Recomendaciones() ([]cancion.Cancion, error)
 	ActualizarOST(o obra.Obra, ost []cancion.Cancion_info) error
-	ActualizarSensaciones(o obra.Obra, sensaciones []cancion.Sensacion) error
+	ActualizarSensaciones(c cancion.Cancion_info, sensaciones []cancion.Sensacion) error
 	CrearSerie(titulo string, temporada int, capitulo int, canciones []cancion.Cancion_info) (*obra.Serie, error)
 	CrearPelicula(titulo string, canciones []cancion.Cancion_info) (*obra.Pelicula, error)
 	CrearVideojuego(titulo string, canciones []cancion.Cancion_info) (*obra.Videojuego, error)
@@ -79,7 +79,7 @@ func (col *Colaborador) ActualizarOST(o obra.Obra, ost []cancion.Cancion_info) e
 	return nil
 }
 
-func (col *Colaborador) ActualizarSensaciones(o obra.Obra, sensaciones []cancion.Sensacion) error {
+func (col *Colaborador) ActualizarSensaciones(c cancion.Cancion_info, sensaciones []cancion.Sensacion) error {
 	return nil
 }
 
