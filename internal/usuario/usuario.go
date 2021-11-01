@@ -9,9 +9,10 @@ import (
 )
 
 type Colaborador struct {
-	Nombre             string
-	CancionesFavoritas []cancion.Cancion_info
-	CancionesOdiadas   []cancion.Cancion_info
+	Nombre               string
+	CancionesFavoritas   []cancion.Cancion_info
+	CancionesOdiadas     []cancion.Cancion_info
+	CancionesColaboradas []cancion.Cancion_info
 }
 
 type Buscador struct {
