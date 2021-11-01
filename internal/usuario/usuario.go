@@ -25,7 +25,7 @@ type Usuario interface {
 	Dislike(c cancion.Cancion) error
 	Recomendaciones() ([]cancion.Cancion, error)
 	ActualizarOST(o obra.Obra, ost []cancion.Cancion_info) error
-	ActualizarSensaciones(c cancion.Cancion_info, sensaciones []cancion.Sensacion) error
+	ActualizarSensaciones(c *cancion.Cancion_info, sensaciones []cancion.Sensacion) error
 	CrearSerie(titulo string, temporada int, capitulo int, canciones []cancion.Cancion_info) (obra.Serie, error)
 	CrearPelicula(titulo string, canciones []cancion.Cancion_info) (obra.Pelicula, error)
 	CrearVideojuego(titulo string, canciones []cancion.Cancion_info) (obra.Videojuego, error)
@@ -81,14 +81,14 @@ func (col *Colaborador) ActualizarOST(o obra.Obra, ost []cancion.Cancion_info) e
 	return nil
 }
 
-func (col *Colaborador) ActualizarSensaciones(c cancion.Cancion_info, sensaciones []cancion.Sensacion) error {
+func (col *Colaborador) ActualizarSensaciones(c *cancion.Cancion_info, sensaciones []cancion.Sensacion) error {
 	if len(sensaciones) == 0 {
 		var sensacionesUsuario []cancion.Sensacion
-		var pos int
 		for i, v := range col.CancionesColaboradas {
 			if v.Titulo == c.Titulo {
 				sensacionesUsuario = v.Sensaciones
-				pos = i
+
+				col.CancionesColaboradas = append(col.CancionesColaboradas[:i], col.CancionesColaboradas[i+1:]...)
 			}
 		}
 
@@ -99,8 +99,6 @@ func (col *Colaborador) ActualizarSensaciones(c cancion.Cancion_info, sensacione
 				return fmt.Errorf("No se ha podido eliminar la sensación repetida: %s", err)
 			}
 		}
-
-		col.CancionesColaboradas = append(col.CancionesColaboradas[:pos], col.CancionesColaboradas[pos+1:]...)
 
 		return nil
 	}
@@ -118,7 +116,7 @@ func (col *Colaborador) ActualizarSensaciones(c cancion.Cancion_info, sensacione
 			}
 		}
 	} else {
-		col.CancionesColaboradas = append(col.CancionesColaboradas, c)
+		col.CancionesColaboradas = append(col.CancionesColaboradas, *c)
 	}
 
 	for _, s := range sensaciones {
