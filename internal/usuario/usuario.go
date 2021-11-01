@@ -82,11 +82,21 @@ func (col *Colaborador) ActualizarOST(o obra.Obra, ost []cancion.Cancion_info) e
 }
 
 func (col *Colaborador) ActualizarSensaciones(c cancion.Cancion_info, sensaciones []cancion.Sensacion) error {
+	if len(sensaciones) == 0 {
+		for _, s := range c.Sensaciones {
+			err := c.QuitarSensacion(s)
+
+			if err != nil {
+				return fmt.Errorf("No se ha podido eliminar la sensación repetida: %s", err)
+			}
+		}
+	}
+
 	if existe, _ := c.ExisteEn(col.CancionesColaboradas); existe {
 		for _, s_nueva := range sensaciones {
 			for _, s := range c.Sensaciones {
 				if reflect.DeepEqual(s, s_nueva) {
-					err := c.QuitarSensacion(s_nueva)
+					err := c.QuitarSensacion(s)
 
 					if err != nil {
 						return fmt.Errorf("No se ha podido eliminar la sensación repetida: %s", err)
