@@ -21,6 +21,7 @@ var _ = Describe("Usuario", func() {
 	var canciones []cancion.Cancion_info
 
 	var err_s, err_p, err_v error
+	var err_ns, err_np, err_nv error
 
 	BeforeEach(func() {
 		colaborador = usuario.Colaborador{
@@ -41,9 +42,9 @@ var _ = Describe("Usuario", func() {
 			Momento_minutos: "",
 		}
 
-		serie, _ = obra.NewSerie("SeriePrueba", 1, 1, make([]cancion.Cancion_info, 0))
-		pelicula, _ = obra.NewPelicula("PeliculaPrueba", make([]cancion.Cancion_info, 0))
-		videojuego, _ = obra.NewVideojuego("VideojuegoPrueba", make([]cancion.Cancion_info, 0))
+		serie, err_ns = colaborador.CrearSerie("SeriePrueba", 1, 1, make([]cancion.Cancion_info, 0))
+		pelicula, err_np = colaborador.CrearPelicula("PeliculaPrueba", make([]cancion.Cancion_info, 0))
+		videojuego, err_nv = colaborador.CrearVideojuego("VideojuegoPrueba", make([]cancion.Cancion_info, 0))
 		cancionesVacio = make([]cancion.Cancion_info, 5)
 		canciones = make([]cancion.Cancion_info, 0)
 		canciones = append(canciones, cancionCorrecta)
@@ -142,6 +143,49 @@ var _ = Describe("Usuario", func() {
 				Expect(err_s).To(HaveOccurred())
 				Expect(err_p).To(HaveOccurred())
 				Expect(err_v).To(HaveOccurred())
+			})
+		})
+	})
+
+	Describe("Crear una nueva obra", func() {
+		Context("Se crea una obra con todos sus campos", func() {
+			It("No debe dar error", func() {
+				Expect(err_ns).NotTo(HaveOccurred())
+				Expect(err_np).NotTo(HaveOccurred())
+				Expect(err_nv).NotTo(HaveOccurred())
+			})
+
+			It("Debe tener todos los campos iguales", func() {
+				Expect(serie.Titulo).To(Equal("SeriePrueba"))
+				Expect(serie.Temporada).To(Equal(1))
+				Expect(serie.Capitulo).To(Equal(1))
+				Expect(serie.OST).To(Equal([]cancion.Cancion_info{}))
+
+				Expect(pelicula.Titulo).To(Equal("PeliculaPrueba"))
+				Expect(pelicula.OST).To(Equal([]cancion.Cancion_info{}))
+
+				Expect(videojuego.Titulo).To(Equal("VideojuegoPrueba"))
+				Expect(videojuego.OST).To(Equal([]cancion.Cancion_info{}))
+			})
+		})
+
+		Context("Se crea una obra con algún campo incorrecto", func() {
+			BeforeEach(func() {
+				serie, err_ns = colaborador.CrearSerie("SeriePrueba", -1, 1, []cancion.Cancion_info{})
+				pelicula, err_np = colaborador.CrearPelicula("", []cancion.Cancion_info{})
+				videojuego, err_nv = colaborador.CrearVideojuego("", []cancion.Cancion_info{})
+			})
+
+			It("Debe dar error", func() {
+				Expect(err_ns).To(HaveOccurred())
+				Expect(err_np).To(HaveOccurred())
+				Expect(err_nv).To(HaveOccurred())
+			})
+
+			It("La obra debe estar vacía", func() {
+				Expect(serie).To(BeNil())
+				Expect(pelicula).To(BeNil())
+				Expect(videojuego).To(BeNil())
 			})
 		})
 	})
