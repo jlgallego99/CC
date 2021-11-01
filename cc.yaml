@@ -1,3 +1,18 @@
+lenguaje:
+  - go
+
 entidad:
   - internal/cancion/cancion.go
   - internal/obra/obra.go
+  - internal/usuario/usuario.go
+
+test: 
+  - internal/cancion/cancion_test.go
+  - internal/cancion/cancion_suite_test.go
+  - internal/obra/obra_suite_test.go
+  - internal/obra/obra_test.go
+  - internal/usuario/usuario_suite_test.go
+  - internal/usuario/usuario_test.go
+
+fichero_tareas:
+  - Taskfile.yml
