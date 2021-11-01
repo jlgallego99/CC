@@ -83,6 +83,18 @@ var _ = Describe("Obra", func() {
 			})
 		})
 
+		Context("Se añade una canción vacía", func() {
+			It("Debe dar error", func() {
+				err_s = serie.NuevaCancion(cancion.Cancion_info{})
+				err_p = pelicula.NuevaCancion(cancion.Cancion_info{})
+				err_v = videojuego.NuevaCancion(cancion.Cancion_info{})
+
+				Expect(err_s).To(HaveOccurred())
+				Expect(err_p).To(HaveOccurred())
+				Expect(err_v).To(HaveOccurred())
+			})
+		})
+
 		Context("Se añade una canción que ya existe en la OST", func() {
 			BeforeEach(func() {
 				err_s = serie.NuevaCancion(cancionCorrecta)

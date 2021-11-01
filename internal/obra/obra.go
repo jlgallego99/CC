@@ -2,6 +2,7 @@ package obra
 
 import (
 	"errors"
+	"reflect"
 
 	"github.com/jlgallego99/OSTfind/internal/cancion"
 )
@@ -58,6 +59,10 @@ func (v *Videojuego) NuevaCancion(c cancion.Cancion_info) error {
 		return errors.New("La canción ya existe en la OST")
 	}
 
+	if reflect.DeepEqual(cancion.Cancion_info{}, c) {
+		return errors.New("La canción está vacía")
+	}
+
 	v.OST = append(v.OST, c)
 
 	return nil
@@ -68,6 +73,10 @@ func (p *Pelicula) NuevaCancion(c cancion.Cancion_info) error {
 		return errors.New("La canción ya existe en la OST")
 	}
 
+	if reflect.DeepEqual(cancion.Cancion_info{}, c) {
+		return errors.New("La canción está vacía")
+	}
+
 	p.OST = append(p.OST, c)
 
 	return nil
@@ -76,6 +85,10 @@ func (p *Pelicula) NuevaCancion(c cancion.Cancion_info) error {
 func (s *Serie) NuevaCancion(c cancion.Cancion_info) error {
 	if existe, _ := c.ExisteEn(s.OST); existe {
 		return errors.New("La canción ya existe en la OST")
+	}
+
+	if reflect.DeepEqual(cancion.Cancion_info{}, c) {
+		return errors.New("La canción está vacía")
 	}
 
 	s.OST = append(s.OST, c)
