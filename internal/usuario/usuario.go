@@ -68,7 +68,7 @@ func (col *Colaborador) ActualizarOST(o obra.Obra, ost []cancion.Cancion_info) e
 		err := o.NuevaCancion(v)
 
 		if err != nil {
-			return fmt.Errorf("No se ha podido añadir la canción: %x", err)
+			return fmt.Errorf("No se ha podido añadir la canción: %s", err)
 		}
 	}
 
