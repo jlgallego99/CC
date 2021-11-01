@@ -13,18 +13,18 @@ var _ = Describe("Usuario", func() {
 	var colaborador usuario.Colaborador
 	var cancionCorrecta cancion.Cancion_info
 
-	var serie *obra.Serie
-	var pelicula *obra.Pelicula
-	var videojuego *obra.Videojuego
+	var serie obra.Serie
+	var pelicula obra.Pelicula
+	var videojuego obra.Videojuego
 
 	var cancionesVacio []cancion.Cancion_info
 	var canciones []cancion.Cancion_info
 
-	var err error
+	//var err error
 	var err_s, err_p, err_v error
 	var err_ns, err_np, err_nv error
 
-	var sensaciones []cancion.Sensacion
+	//var sensaciones []cancion.Sensacion
 	//sensacionCorrecta := cancion.Tristeza
 
 	BeforeEach(func() {
@@ -53,7 +53,7 @@ var _ = Describe("Usuario", func() {
 		canciones = make([]cancion.Cancion_info, 0)
 		canciones = append(canciones, cancionCorrecta)
 
-		sensaciones = []cancion.Sensacion{cancion.Alegria, cancion.Ansiedad, cancion.Ansiedad, cancion.Miedo, cancion.Miedo, cancion.Desafio, cancion.Tristeza}
+		//sensaciones = []cancion.Sensacion{cancion.Alegria, cancion.Ansiedad, cancion.Ansiedad, cancion.Miedo, cancion.Miedo, cancion.Desafio, cancion.Tristeza}
 	})
 
 	Describe("Dar like o dislike a una canción", func() {
@@ -107,9 +107,9 @@ var _ = Describe("Usuario", func() {
 
 	Describe("Actualizar la OST de una obra", func() {
 		BeforeEach(func() {
-			err_s = colaborador.ActualizarOST(serie, canciones)
-			err_p = colaborador.ActualizarOST(pelicula, canciones)
-			err_v = colaborador.ActualizarOST(videojuego, canciones)
+			err_s = colaborador.ActualizarOST(&serie, canciones)
+			err_p = colaborador.ActualizarOST(&pelicula, canciones)
+			err_v = colaborador.ActualizarOST(&videojuego, canciones)
 		})
 
 		Context("La obra no existe", func() {
@@ -121,6 +121,12 @@ var _ = Describe("Usuario", func() {
 		})
 
 		Context("La obra existe", func() {
+			It("Las canciones se deben haber añadido", func() {
+				Expect(serie.OST).To(Equal(canciones))
+				Expect(pelicula.OST).To(Equal(canciones))
+				Expect(videojuego.OST).To(Equal(canciones))
+			})
+
 			It("No debe dar error", func() {
 				Expect(err_s).NotTo(HaveOccurred())
 				Expect(err_p).NotTo(HaveOccurred())
@@ -130,9 +136,9 @@ var _ = Describe("Usuario", func() {
 
 		Context("La nueva OST está vacía", func() {
 			It("Debe dar error", func() {
-				err_s = colaborador.ActualizarOST(serie, cancionesVacio)
-				err_p = colaborador.ActualizarOST(pelicula, cancionesVacio)
-				err_v = colaborador.ActualizarOST(videojuego, cancionesVacio)
+				err_s = colaborador.ActualizarOST(&serie, cancionesVacio)
+				err_p = colaborador.ActualizarOST(&pelicula, cancionesVacio)
+				err_v = colaborador.ActualizarOST(&videojuego, cancionesVacio)
 
 				Expect(err_s).To(HaveOccurred())
 				Expect(err_p).To(HaveOccurred())
@@ -142,9 +148,9 @@ var _ = Describe("Usuario", func() {
 
 		Context("Se añaden canciones que ya existen en la OST", func() {
 			It("Debe dar error", func() {
-				err_s = colaborador.ActualizarOST(serie, canciones)
-				err_p = colaborador.ActualizarOST(pelicula, canciones)
-				err_v = colaborador.ActualizarOST(videojuego, canciones)
+				err_s = colaborador.ActualizarOST(&serie, canciones)
+				err_p = colaborador.ActualizarOST(&pelicula, canciones)
+				err_v = colaborador.ActualizarOST(&videojuego, canciones)
 
 				Expect(err_s).To(HaveOccurred())
 				Expect(err_p).To(HaveOccurred())
@@ -153,7 +159,7 @@ var _ = Describe("Usuario", func() {
 		})
 	})
 
-	Describe("Actualizar las sensaciones de una obra", func() {
+	/*Describe("Actualizar las sensaciones de una obra", func() {
 		BeforeEach(func() {
 			err = colaborador.ActualizarSensaciones(cancionCorrecta, sensaciones)
 		})
@@ -171,7 +177,24 @@ var _ = Describe("Usuario", func() {
 				Expect(err).NotTo(HaveOccurred())
 			})
 		})
-	})
+
+		Context("No se había aportado anteriormente a la canción", func() {
+			It("Deben haberse añadido todas las sensaciones", func() {
+				Expect(len(cancionCorrecta.Sensaciones)).To(Equal(7))
+				Expect(cancionCorrecta.Sensaciones[0]).To(Equal(cancion.Alegria))
+				Expect(cancionCorrecta.Sensaciones[1]).To(Equal(cancion.Ansiedad))
+				Expect(cancionCorrecta.Sensaciones[2]).To(Equal(cancion.Ansiedad))
+				Expect(cancionCorrecta.Sensaciones[3]).To(Equal(cancion.Miedo))
+				Expect(cancionCorrecta.Sensaciones[4]).To(Equal(cancion.Miedo))
+				Expect(cancionCorrecta.Sensaciones[5]).To(Equal(cancion.Desafio))
+				Expect(cancionCorrecta.Sensaciones[6]).To(Equal(cancion.Tristeza))
+			})
+
+			It("No debe dar error", func() {
+				Expect(err).NotTo(HaveOccurred())
+			})
+		})
+	})*/
 
 	Describe("Crear una nueva obra", func() {
 		Context("Se crea una obra con todos sus campos", func() {
@@ -209,9 +232,9 @@ var _ = Describe("Usuario", func() {
 			})
 
 			It("La obra debe estar vacía", func() {
-				Expect(serie).To(BeNil())
-				Expect(pelicula).To(BeNil())
-				Expect(videojuego).To(BeNil())
+				Expect(serie).To(Equal(obra.Serie{}))
+				Expect(pelicula).To(Equal(obra.Pelicula{}))
+				Expect(videojuego).To(Equal(obra.Videojuego{}))
 			})
 		})
 	})

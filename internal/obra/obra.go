@@ -96,38 +96,38 @@ func (s *Serie) NuevaCancion(c cancion.Cancion_info) error {
 	return nil
 }
 
-func NewVideojuego(titulo string, canciones []cancion.Cancion_info) (*Videojuego, error) {
+func NewVideojuego(titulo string, canciones []cancion.Cancion_info) (Videojuego, error) {
 	if titulo == "" {
-		return nil, errors.New("El videojuego no tiene título")
+		return Videojuego{}, errors.New("El videojuego no tiene título")
 	}
 
-	return &Videojuego{
+	return Videojuego{
 		Titulo: titulo,
 		OST:    canciones,
 	}, nil
 }
 
-func NewPelicula(titulo string, canciones []cancion.Cancion_info) (*Pelicula, error) {
+func NewPelicula(titulo string, canciones []cancion.Cancion_info) (Pelicula, error) {
 	if titulo == "" {
-		return nil, errors.New("La película no tiene título")
+		return Pelicula{}, errors.New("La película no tiene título")
 	}
 
-	return &Pelicula{
+	return Pelicula{
 		Titulo: titulo,
 		OST:    canciones,
 	}, nil
 }
 
-func NewSerie(titulo string, temporada, capitulo int, canciones []cancion.Cancion_info) (*Serie, error) {
+func NewSerie(titulo string, temporada, capitulo int, canciones []cancion.Cancion_info) (Serie, error) {
 	if titulo == "" {
-		return nil, errors.New("La serie no tiene título")
+		return Serie{}, errors.New("La serie no tiene título")
 	}
 
 	if capitulo <= 0 || temporada <= 0 {
-		return nil, errors.New("El capítulo y temporada de la serie no es correcta")
+		return Serie{}, errors.New("El capítulo y temporada de la serie no es correcta")
 	}
 
-	return &Serie{
+	return Serie{
 		Titulo:    titulo,
 		Temporada: temporada,
 		Capitulo:  capitulo,

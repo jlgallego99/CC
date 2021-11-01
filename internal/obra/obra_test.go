@@ -9,9 +9,9 @@ import (
 )
 
 var _ = Describe("Obra", func() {
-	var serie *obra.Serie
-	var pelicula *obra.Pelicula
-	var videojuego *obra.Videojuego
+	var serie obra.Serie
+	var pelicula obra.Pelicula
+	var videojuego obra.Videojuego
 	var cancionCorrecta cancion.Cancion_info
 	var err_ns, err_np, err_nv error
 	var err_s, err_p, err_v error
@@ -70,9 +70,9 @@ var _ = Describe("Obra", func() {
 			})
 
 			It("La obra debe estar vacía", func() {
-				Expect(serie).To(BeNil())
-				Expect(pelicula).To(BeNil())
-				Expect(videojuego).To(BeNil())
+				Expect(serie).To(Equal(obra.Serie{}))
+				Expect(pelicula).To(Equal(obra.Pelicula{}))
+				Expect(videojuego).To(Equal(obra.Videojuego{}))
 			})
 		})
 	})

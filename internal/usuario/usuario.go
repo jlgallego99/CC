@@ -26,9 +26,9 @@ type Usuario interface {
 	Recomendaciones() ([]cancion.Cancion, error)
 	ActualizarOST(o obra.Obra, ost []cancion.Cancion_info) error
 	ActualizarSensaciones(c cancion.Cancion_info, sensaciones []cancion.Sensacion) error
-	CrearSerie(titulo string, temporada int, capitulo int, canciones []cancion.Cancion_info) (*obra.Serie, error)
-	CrearPelicula(titulo string, canciones []cancion.Cancion_info) (*obra.Pelicula, error)
-	CrearVideojuego(titulo string, canciones []cancion.Cancion_info) (*obra.Videojuego, error)
+	CrearSerie(titulo string, temporada int, capitulo int, canciones []cancion.Cancion_info) (obra.Serie, error)
+	CrearPelicula(titulo string, canciones []cancion.Cancion_info) (obra.Pelicula, error)
+	CrearVideojuego(titulo string, canciones []cancion.Cancion_info) (obra.Videojuego, error)
 }
 
 func (col *Colaborador) Like(c cancion.Cancion_info) error {
@@ -132,14 +132,14 @@ func (col *Colaborador) ActualizarSensaciones(c cancion.Cancion_info, sensacione
 	return nil
 }
 
-func (col *Colaborador) CrearSerie(titulo string, temporada int, capitulo int, canciones []cancion.Cancion_info) (*obra.Serie, error) {
+func (col *Colaborador) CrearSerie(titulo string, temporada int, capitulo int, canciones []cancion.Cancion_info) (obra.Serie, error) {
 	return obra.NewSerie(titulo, temporada, capitulo, canciones)
 }
 
-func (col *Colaborador) CrearPelicula(titulo string, canciones []cancion.Cancion_info) (*obra.Pelicula, error) {
+func (col *Colaborador) CrearPelicula(titulo string, canciones []cancion.Cancion_info) (obra.Pelicula, error) {
 	return obra.NewPelicula(titulo, canciones)
 }
 
-func (col *Colaborador) CrearVideojuego(titulo string, canciones []cancion.Cancion_info) (*obra.Videojuego, error) {
+func (col *Colaborador) CrearVideojuego(titulo string, canciones []cancion.Cancion_info) (obra.Videojuego, error) {
 	return obra.NewVideojuego(titulo, canciones)
 }
