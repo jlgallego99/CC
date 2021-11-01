@@ -3,6 +3,7 @@ package usuario
 import (
 	"errors"
 	"fmt"
+	"reflect"
 
 	"github.com/jlgallego99/OSTfind/internal/cancion"
 	"github.com/jlgallego99/OSTfind/internal/obra"
@@ -81,6 +82,28 @@ func (col *Colaborador) ActualizarOST(o obra.Obra, ost []cancion.Cancion_info) e
 }
 
 func (col *Colaborador) ActualizarSensaciones(c cancion.Cancion_info, sensaciones []cancion.Sensacion) error {
+	if existe, _ := c.ExisteEn(col.CancionesColaboradas); existe {
+		for _, s_nueva := range sensaciones {
+			for _, s := range c.Sensaciones {
+				if reflect.DeepEqual(s, s_nueva) {
+					err := c.QuitarSensacion(s_nueva)
+
+					if err != nil {
+						return fmt.Errorf("No se ha podido eliminar la sensación repetida: %s", err)
+					}
+				}
+			}
+		}
+	}
+
+	for _, s := range sensaciones {
+		err := c.NuevaSensacion(s)
+
+		if err != nil {
+			return fmt.Errorf("No se ha podido registrar la nueva sensación: %s", err)
+		}
+	}
+
 	return nil
 }
 
