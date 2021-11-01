@@ -90,6 +90,14 @@ func (col *Colaborador) ActualizarSensaciones(c cancion.Cancion_info, sensacione
 				return fmt.Errorf("No se ha podido eliminar la sensación repetida: %s", err)
 			}
 		}
+
+		for i, v := range col.CancionesColaboradas {
+			if reflect.DeepEqual(v, c) {
+				col.CancionesColaboradas = append(col.CancionesFavoritas[:i], col.CancionesFavoritas[i+1:]...)
+
+				return nil
+			}
+		}
 	}
 
 	if existe, _ := c.ExisteEn(col.CancionesColaboradas); existe {
@@ -104,6 +112,8 @@ func (col *Colaborador) ActualizarSensaciones(c cancion.Cancion_info, sensacione
 				}
 			}
 		}
+	} else {
+		col.CancionesColaboradas = append(col.CancionesColaboradas, c)
 	}
 
 	for _, s := range sensaciones {
