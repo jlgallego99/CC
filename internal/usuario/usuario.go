@@ -9,9 +9,10 @@ import (
 )
 
 type Colaborador struct {
-	Nombre             string
-	CancionesFavoritas []cancion.Cancion_info
-	CancionesOdiadas   []cancion.Cancion_info
+	Nombre               string
+	CancionesFavoritas   []cancion.Cancion_info
+	CancionesOdiadas     []cancion.Cancion_info
+	CancionesColaboradas []cancion.Cancion_info
 }
 
 type Buscador struct {
@@ -23,9 +24,10 @@ type Usuario interface {
 	Dislike(c cancion.Cancion) error
 	Recomendaciones() ([]cancion.Cancion, error)
 	ActualizarOST(o obra.Obra, ost []cancion.Cancion_info) error
-	CrearSerie(titulo string, temporada int, capitulo int, canciones []cancion.Cancion_info) (*obra.Serie, error)
-	CrearPelicula(titulo string, canciones []cancion.Cancion_info) (*obra.Pelicula, error)
-	CrearVideojuego(titulo string, canciones []cancion.Cancion_info) (*obra.Videojuego, error)
+	ActualizarSensaciones(c *cancion.Cancion_info, sensaciones []cancion.Sensacion) error
+	CrearSerie(titulo string, temporada int, capitulo int, canciones []cancion.Cancion_info) (obra.Serie, error)
+	CrearPelicula(titulo string, canciones []cancion.Cancion_info) (obra.Pelicula, error)
+	CrearVideojuego(titulo string, canciones []cancion.Cancion_info) (obra.Videojuego, error)
 }
 
 func (col *Colaborador) Like(c cancion.Cancion_info) error {
@@ -78,14 +80,80 @@ func (col *Colaborador) ActualizarOST(o obra.Obra, ost []cancion.Cancion_info) e
 	return nil
 }
 
-func (col *Colaborador) CrearSerie(titulo string, temporada int, capitulo int, canciones []cancion.Cancion_info) (*obra.Serie, error) {
+func (col *Colaborador) ActualizarSensaciones(c *cancion.Cancion_info, sensaciones []cancion.Sensacion) error {
+	if c == nil {
+		return errors.New("No existe la canción")
+	}
+
+	var sensacionesUsuario []cancion.Sensacion
+	sensacionesUsuario = make([]cancion.Sensacion, len(c.Sensaciones))
+	copy(sensacionesUsuario, c.Sensaciones)
+
+	// Buscar la canción colaborada
+	var pos int
+	for i, v := range col.CancionesColaboradas {
+		if v.Titulo == c.Titulo {
+			pos = i
+		}
+	}
+
+	// Quitar solo las sensaciones que ha aportado el usuario
+	if len(sensaciones) == 0 {
+		col.CancionesColaboradas = append(col.CancionesColaboradas[:pos], col.CancionesColaboradas[pos+1:]...)
+
+		for _, s := range sensacionesUsuario {
+			err := c.QuitarSensacion(s)
+
+			if err != nil {
+				return fmt.Errorf("No se ha podido eliminar la sensación repetida: %s", err)
+			}
+		}
+
+		return nil
+	}
+
+	// El usuario ya ha aportado sensaciones antes, se actualizan con las nuevas
+	var existe bool
+	if existe, _ = c.ExisteEn(col.CancionesColaboradas); existe {
+		col.CancionesColaboradas[pos].Sensaciones = sensaciones
+
+		for _, s_us := range sensacionesUsuario {
+			for _, s := range c.Sensaciones {
+				if s == s_us {
+					err := c.QuitarSensacion(s)
+
+					if err != nil {
+						return fmt.Errorf("No se ha podido eliminar la sensación repetida: %s", err)
+					}
+				}
+			}
+		}
+	}
+
+	// Añadir las nuevas sensaciones a la canción
+	for _, s := range sensaciones {
+		err := c.NuevaSensacion(s)
+
+		if err != nil {
+			return fmt.Errorf("No se ha podido registrar la nueva sensación: %s", err)
+		}
+	}
+
+	if !existe {
+		col.CancionesColaboradas = append(col.CancionesColaboradas, *c)
+	}
+
+	return nil
+}
+
+func (col *Colaborador) CrearSerie(titulo string, temporada int, capitulo int, canciones []cancion.Cancion_info) (obra.Serie, error) {
 	return obra.NewSerie(titulo, temporada, capitulo, canciones)
 }
 
-func (col *Colaborador) CrearPelicula(titulo string, canciones []cancion.Cancion_info) (*obra.Pelicula, error) {
+func (col *Colaborador) CrearPelicula(titulo string, canciones []cancion.Cancion_info) (obra.Pelicula, error) {
 	return obra.NewPelicula(titulo, canciones)
 }
 
-func (col *Colaborador) CrearVideojuego(titulo string, canciones []cancion.Cancion_info) (*obra.Videojuego, error) {
+func (col *Colaborador) CrearVideojuego(titulo string, canciones []cancion.Cancion_info) (obra.Videojuego, error) {
 	return obra.NewVideojuego(titulo, canciones)
 }

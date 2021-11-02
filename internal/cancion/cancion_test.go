@@ -16,6 +16,8 @@ var _ = Describe("Cancion", func() {
 
 	var porcentajes []float64
 
+	var err error
+
 	sensacionesOrdenadas := []cancion.Sensacion{cancion.Alegria, cancion.Ansiedad, cancion.Ansiedad, cancion.Miedo, cancion.Miedo, cancion.Desafio}
 	sensacionesDesordenadas := []cancion.Sensacion{cancion.Ansiedad, cancion.Miedo, cancion.Ansiedad, cancion.Alegria, cancion.Desafio, cancion.Miedo}
 
@@ -42,7 +44,7 @@ var _ = Describe("Cancion", func() {
 				Expect(s).To(Equal(sensacionCorrecta))
 			})
 
-			It("Debe devolver un error", func() {
+			It("No debe devolver un error", func() {
 				Expect(cancionCorrecta.NuevaSensacion(sensacionCorrecta)).NotTo(HaveOccurred())
 			})
 		})
@@ -57,6 +59,43 @@ var _ = Describe("Cancion", func() {
 
 			It("Debe devolver un error", func() {
 				Expect(cancionCorrecta.NuevaSensacion(100)).To(HaveOccurred())
+			})
+		})
+	})
+
+	Describe("Eliminar una sensación", func() {
+		BeforeEach(func() {
+			cancionCorrecta.NuevaSensacion(sensacionCorrecta)
+			cancionCorrecta.NuevaSensacion(cancion.Tristeza)
+			cancionCorrecta.NuevaSensacion(cancion.Ansiedad)
+			cancionCorrecta.NuevaSensacion(cancion.Diversion)
+		})
+
+		Context("La sensación es correcta y existe", func() {
+			BeforeEach(func() {
+				err = cancionCorrecta.QuitarSensacion(sensacionCorrecta)
+			})
+
+			It("Debe haber quitado solamente una sensación", func() {
+				Expect(len(cancionCorrecta.Sensaciones)).To(Equal(3))
+			})
+
+			It("No debe devolver un error", func() {
+				Expect(err).NotTo(HaveOccurred())
+			})
+		})
+
+		Context("La sensación no existe", func() {
+			BeforeEach(func() {
+				err = cancionCorrecta.QuitarSensacion(100)
+			})
+
+			It("Deben estar el mismo número de sensaciones", func() {
+				Expect(len(cancionCorrecta.Sensaciones)).To(Equal(4))
+			})
+
+			It("Debe devolver un error", func() {
+				Expect(err).To(HaveOccurred())
 			})
 		})
 	})

@@ -161,6 +161,22 @@ func (c *Cancion_info) NuevaSensacion(s Sensacion) error {
 	return err
 }
 
+func (c *Cancion_info) QuitarSensacion(s Sensacion) error {
+	err := s.Valid()
+
+	if err == nil {
+		for i, v := range c.Sensaciones {
+			if reflect.DeepEqual(s, v) {
+				c.Sensaciones = append(c.Sensaciones[:i], c.Sensaciones[i+1:]...)
+
+				return nil
+			}
+		}
+	}
+
+	return err
+}
+
 func (c *Cancion_info) CancionesRelacionadas(num int) []Cancion_info {
 	return nil
 }
