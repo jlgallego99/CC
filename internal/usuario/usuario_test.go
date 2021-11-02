@@ -25,6 +25,7 @@ var _ = Describe("Usuario", func() {
 	var err_ns, err_np, err_nv error
 
 	var sensaciones []cancion.Sensacion
+	var sensacionesNuevas []cancion.Sensacion
 
 	BeforeEach(func() {
 		colaborador = usuario.Colaborador{
@@ -53,6 +54,7 @@ var _ = Describe("Usuario", func() {
 		canciones = append(canciones, cancionCorrecta)
 
 		sensaciones = []cancion.Sensacion{cancion.Alegria, cancion.Ansiedad, cancion.Ansiedad, cancion.Miedo, cancion.Miedo, cancion.Desafio, cancion.Tristeza}
+		sensacionesNuevas = []cancion.Sensacion{cancion.Alegria, cancion.Ansiedad, cancion.Desafio, cancion.Sueño}
 	})
 
 	Describe("Dar like o dislike a una canción", func() {
@@ -201,6 +203,24 @@ var _ = Describe("Usuario", func() {
 
 			It("La canción está en la lista de colaboradas del usuario", func() {
 				Expect(colaborador.CancionesColaboradas[0]).To(Equal(cancionCorrecta))
+			})
+
+			It("No debe dar error", func() {
+				Expect(err).NotTo(HaveOccurred())
+			})
+		})
+
+		Context("Se había aportado anteriormente a la canción", func() {
+			BeforeEach(func() {
+				err = colaborador.ActualizarSensaciones(&cancionCorrecta, sensacionesNuevas)
+			})
+
+			It("Deben haberse añadido todas las sensaciones", func() {
+				Expect(len(cancionCorrecta.Sensaciones)).To(Equal(4))
+				Expect(cancionCorrecta.Sensaciones[0]).To(Equal(cancion.Alegria))
+				Expect(cancionCorrecta.Sensaciones[1]).To(Equal(cancion.Ansiedad))
+				Expect(cancionCorrecta.Sensaciones[2]).To(Equal(cancion.Desafio))
+				Expect(cancionCorrecta.Sensaciones[3]).To(Equal(cancion.Sueño))
 			})
 
 			It("No debe dar error", func() {

@@ -3,7 +3,6 @@ package usuario
 import (
 	"errors"
 	"fmt"
-	"reflect"
 
 	"github.com/jlgallego99/OSTfind/internal/cancion"
 	"github.com/jlgallego99/OSTfind/internal/obra"
@@ -86,12 +85,13 @@ func (col *Colaborador) ActualizarSensaciones(c *cancion.Cancion_info, sensacion
 		return errors.New("No existe la canción")
 	}
 
+	var sensacionesUsuario []cancion.Sensacion
+	sensacionesUsuario = make([]cancion.Sensacion, len(c.Sensaciones))
+	copy(sensacionesUsuario, c.Sensaciones)
+
 	if len(sensaciones) == 0 {
-		sensacionesUsuario := make([]cancion.Sensacion, len(c.Sensaciones))
 		for i, v := range col.CancionesColaboradas {
 			if v.Titulo == c.Titulo {
-				copy(sensacionesUsuario, c.Sensaciones)
-
 				col.CancionesColaboradas = append(col.CancionesColaboradas[:i], col.CancionesColaboradas[i+1:]...)
 			}
 		}
@@ -109,9 +109,9 @@ func (col *Colaborador) ActualizarSensaciones(c *cancion.Cancion_info, sensacion
 
 	var existe bool
 	if existe, _ = c.ExisteEn(col.CancionesColaboradas); existe {
-		for _, s_nueva := range sensaciones {
+		for _, s_us := range sensacionesUsuario {
 			for _, s := range c.Sensaciones {
-				if reflect.DeepEqual(s, s_nueva) {
+				if s == s_us {
 					err := c.QuitarSensacion(s)
 
 					if err != nil {
