@@ -223,6 +223,10 @@ var _ = Describe("Usuario", func() {
 				Expect(cancionCorrecta.Sensaciones[3]).To(Equal(cancion.Sueño))
 			})
 
+			It("La canción debe seguir en la lista de colaboradas del usuario", func() {
+				Expect(colaborador.CancionesColaboradas[0]).To(Equal(cancionCorrecta))
+			})
+
 			It("No debe dar error", func() {
 				Expect(err).NotTo(HaveOccurred())
 			})

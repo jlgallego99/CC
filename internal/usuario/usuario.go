@@ -89,12 +89,17 @@ func (col *Colaborador) ActualizarSensaciones(c *cancion.Cancion_info, sensacion
 	sensacionesUsuario = make([]cancion.Sensacion, len(c.Sensaciones))
 	copy(sensacionesUsuario, c.Sensaciones)
 
-	if len(sensaciones) == 0 {
-		for i, v := range col.CancionesColaboradas {
-			if v.Titulo == c.Titulo {
-				col.CancionesColaboradas = append(col.CancionesColaboradas[:i], col.CancionesColaboradas[i+1:]...)
-			}
+	// Buscar la canción colaborada
+	var pos int
+	for i, v := range col.CancionesColaboradas {
+		if v.Titulo == c.Titulo {
+			pos = i
 		}
+	}
+
+	// Quitar solo las sensaciones que ha aportado el usuario
+	if len(sensaciones) == 0 {
+		col.CancionesColaboradas = append(col.CancionesColaboradas[:pos], col.CancionesColaboradas[pos+1:]...)
 
 		for _, s := range sensacionesUsuario {
 			err := c.QuitarSensacion(s)
@@ -107,8 +112,11 @@ func (col *Colaborador) ActualizarSensaciones(c *cancion.Cancion_info, sensacion
 		return nil
 	}
 
+	// El usuario ya ha aportado sensaciones antes, se actualizan con las nuevas
 	var existe bool
 	if existe, _ = c.ExisteEn(col.CancionesColaboradas); existe {
+		col.CancionesColaboradas[pos].Sensaciones = sensaciones
+
 		for _, s_us := range sensacionesUsuario {
 			for _, s := range c.Sensaciones {
 				if s == s_us {
@@ -122,6 +130,7 @@ func (col *Colaborador) ActualizarSensaciones(c *cancion.Cancion_info, sensacion
 		}
 	}
 
+	// Añadir las nuevas sensaciones a la canción
 	for _, s := range sensaciones {
 		err := c.NuevaSensacion(s)
 
