@@ -2,6 +2,7 @@ package cancion
 
 import (
 	"errors"
+	"fmt"
 	"math"
 	"reflect"
 
@@ -74,6 +75,15 @@ func (s *Sensacion) Valid() error {
 	}
 }
 
+func (g *Genero) Valid() error {
+	switch *g {
+	case Genero_Desconocido, Rock, Pop, Ambiental, Electronica, Funk, Jazz, Orquesta, Vocal:
+		return nil
+	default:
+		return errors.New("Género no válido")
+	}
+}
+
 func NewCancion(titulo string, compositor string, genero Genero) (*Cancion_info, error) {
 	if titulo == "" {
 		return &Cancion_info{}, errors.New("Título de la canción vacío")
@@ -81,6 +91,12 @@ func NewCancion(titulo string, compositor string, genero Genero) (*Cancion_info,
 
 	if compositor == "" {
 		return &Cancion_info{}, errors.New("Compositor vacío")
+	}
+
+	err := genero.Valid()
+
+	if err != nil {
+		return &Cancion_info{}, fmt.Errorf("Error al añadir el género: %s", err)
 	}
 
 	return &Cancion_info{
