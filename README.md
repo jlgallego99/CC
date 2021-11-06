@@ -20,6 +20,8 @@ Puedes leer sobre la lógica de negocio de este proyecto [aquí](./docs/logica_n
 Las [tareas](./docs/tareas.md) de instalación, ejecución de tests, etc se hacen mediante el uso del gestor de tareas Task.
 
 ## Documentación adicional
+Se ha seguido una [guía de buenas prácticas para estructurar proyectos en Go](https://github.com/golang-standards/project-layout). Con esto se ha decidido integrar todo el código del dominio del proyecto en el directorio *internal* debido a que es un directorio típicamente utilizado para el código de biblioteca privado de un proyecto, y en el que en general se engloba todo lo relacionado con la lógica de negocio. Dentro, como exige Go, se tienen distintos subdirectorios para cada distinto paquete.
+
 Se ha documentado la [configuración inicial de Git](./docs/configuracion_entorno.md).
 
 Estudio y elección de [framework y bibliotecas de testing en Go](./docs/test_frameworks.md).
