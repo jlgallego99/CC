@@ -51,6 +51,7 @@ const (
 )
 
 type Cancion_info struct {
+	Id              int
 	Titulo          string
 	Compositor      string
 	Genero          Genero
