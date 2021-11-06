@@ -21,7 +21,7 @@ type Buscador struct {
 
 func NewColaborador(nombre string) (*Colaborador, error) {
 	if nombre == "" {
-		return &Colaborador{}, errors.New("Título de la canción vacío")
+		return &Colaborador{}, errors.New("Nombre del usuario colaborador vacío")
 	}
 
 	return &Colaborador{
@@ -29,6 +29,16 @@ func NewColaborador(nombre string) (*Colaborador, error) {
 		CancionesFavoritas:   make([]cancion.Cancion_info, 0),
 		CancionesOdiadas:     make([]cancion.Cancion_info, 0),
 		CancionesColaboradas: make([]cancion.Cancion_info, 0),
+	}, nil
+}
+
+func NewBuscador(nombre string) (*Buscador, error) {
+	if nombre == "" {
+		return &Buscador{}, errors.New("Nombre del usuario buscador vacío")
+	}
+
+	return &Buscador{
+		Nombre: nombre,
 	}, nil
 }
 
