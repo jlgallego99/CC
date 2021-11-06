@@ -4,6 +4,8 @@ import (
 	"errors"
 	"math"
 	"reflect"
+
+	"github.com/google/uuid"
 )
 
 type Genero int
@@ -51,7 +53,7 @@ const (
 )
 
 type Cancion_info struct {
-	Id              int
+	Id              uuid.UUID
 	Titulo          string
 	Compositor      string
 	Genero          Genero
@@ -74,7 +76,9 @@ func (s *Sensacion) Valid() error {
 }
 
 func NewCancion(titulo string, compositor string, genero Genero, momento Momento, momento_minutos string) *Cancion_info {
-	return nil
+	return &Cancion_info{
+		Id: uuid.New(),
+	}
 }
 
 type Cancion interface {
