@@ -19,6 +19,19 @@ type Buscador struct {
 	Nombre string
 }
 
+func NewColaborador(nombre string) (*Colaborador, error) {
+	if nombre == "" {
+		return &Colaborador{}, errors.New("Título de la canción vacío")
+	}
+
+	return &Colaborador{
+		Nombre:               nombre,
+		CancionesFavoritas:   make([]cancion.Cancion_info, 0),
+		CancionesOdiadas:     make([]cancion.Cancion_info, 0),
+		CancionesColaboradas: make([]cancion.Cancion_info, 0),
+	}, nil
+}
+
 type Usuario interface {
 	Like(c cancion.Cancion) error
 	Dislike(c cancion.Cancion) error
