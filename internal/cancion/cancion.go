@@ -74,7 +74,15 @@ func (s *Sensacion) Valid() error {
 	}
 }
 
-func NewCancion(titulo string, compositor string, genero Genero) *Cancion_info {
+func NewCancion(titulo string, compositor string, genero Genero) (*Cancion_info, error) {
+	if titulo == "" {
+		return &Cancion_info{}, errors.New("Título de la canción vacío")
+	}
+
+	if compositor == "" {
+		return &Cancion_info{}, errors.New("Compositor vacío")
+	}
+
 	return &Cancion_info{
 		Id:             uuid.New(),
 		Titulo:         titulo,
@@ -85,7 +93,7 @@ func NewCancion(titulo string, compositor string, genero Genero) *Cancion_info {
 		Sensaciones:    make([]Sensacion, 0),
 		Momento:        Momento_Desconocido,
 		Momento_exacto: "",
-	}
+	}, nil
 }
 
 type Cancion interface {
