@@ -10,11 +10,6 @@ tasks:
       - go build -v ./internal/cancion
       - go build -v ./internal/obra
 
-  run:
-    desc: Ejecuta OSTfind directamente
-    cmds:
-      - go run $MAIN
-
   install:
     desc: Genera el ejecutable de OSTfind
     cmds:
