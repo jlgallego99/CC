@@ -1,31 +1,14 @@
 Según el domain driven design se desarrollarán varios módulos y clases en base a las siguientes entidades, objetos valor y agregados que representan el dominio del problema con el que trabaja el proyecto.
 
 # Entidades
-- **Canción**
-- **Obra**:
+- **Canción**: Cada canción tiene identidad propia, es única por su identificador, y además es mutable puesto que tiene parámetros que van variando en el tiempo como las sensaciones y los likes/dislikes, que se van modificando.
+- **Usuario**: Cada usuario tiene identidad propia y es único por su nombre de usuario. Es mutable puesto que tiene parámetros que van variando en el tiempo, como las canciones que le gustan, las que no le gustan o las canciones en las que ha colaborado de alguna manera (añadiéndolas o aportando sensaciones).
+
+# Objetos valor
+- **Obra**: Estos tres objetos valor representan los tipos de obras que existen en el proyecto. Son inmutables, simplemente definen métodos para acceder a sus atributos y realizan validaciones para que sean objetos correctos.
     - **Película**
     - **Videojuego**
     - **Serie**
-- **Usuario**
-
-# Objetos valor
-- **Like/Dislike**
-- **Sensación (mood)**
-- **Título**
-- **Compositor o artista**
-- **Género**
-- **Momento**
-- **Momento en minutos**
 
 # Agregados
-- **Todas las canciones de una obra**: Cada obra tiene un número de canciones que componen su banda sonora.
-- **Título de una canción**
-- **Género de una canción**
-- **Compositor o artista de una canción**
-- **Porcentaje like/dislike de una cancion**: Cada canción puede tener un porcentaje que indique cuanto ha gustado o no a los usuarios.
-- **Porcentaje de sensaciones que transmite una cancion**: Cada canción puede tener varias sensaciones aportadas por los usuarios, agrupadas en porcentajes.
-- **Momento en minutos en el que suena una canción de una serie o película**
-- **Momento en el que suena una canción de un videojuego**: Esto puede ser una zona, ciudad, batalla, etc.
-- **Canciones que le gustan a un usuario**: Cada usuario tiene unas canciones que le gustan.
-- **Canciones recomendadas a un usuario**: Cada usuario tiene una serie de recomendaciones en base a las canciones que le gustan.
-- **Canciones relacionadas**: Cada canción tiene una serie de canciones que son parecidas a ella, a modo de recomendación según género, compositor y sensaciones.
+- **OST**: Todas las canciones de una obra (película, videojuego o serie) componen su banda sonora (OST).
