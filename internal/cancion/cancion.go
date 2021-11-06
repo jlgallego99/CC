@@ -84,6 +84,7 @@ func NewCancion(titulo string, compositor string, genero Genero, momento Momento
 		Likes:       0,
 		Dislikes:    0,
 		Sensaciones: make([]Sensacion, 0),
+		Momento:     Momento_Desconocido,
 	}
 }
 
