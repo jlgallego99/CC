@@ -46,7 +46,6 @@ type Usuario interface {
 	Like(c cancion.Cancion) error
 	Dislike(c cancion.Cancion) error
 	Recomendaciones() ([]cancion.Cancion, error)
-	ActualizarOST(o obra.Obra, ost []cancion.Cancion_info) error
 	ActualizarSensaciones(c *cancion.Cancion_info, sensaciones []cancion.Sensacion) error
 	CrearSerie(titulo string, temporada int, capitulo int, canciones []cancion.Cancion_info) (obra.Serie, error)
 	CrearPelicula(titulo string, canciones []cancion.Cancion_info) (obra.Pelicula, error)
@@ -85,22 +84,6 @@ func (col *Colaborador) Dislike(c cancion.Cancion_info) error {
 
 func (col *Colaborador) Recomendaciones() ([]cancion.Cancion, error) {
 	return nil, nil
-}
-
-func (col *Colaborador) ActualizarOST(o obra.Obra, ost []cancion.Cancion_info) error {
-	if o == nil {
-		return errors.New("No existe la obra")
-	}
-
-	for _, v := range ost {
-		err := o.NuevaCancion(v)
-
-		if err != nil {
-			return fmt.Errorf("No se ha podido añadir la canción: %s", err)
-		}
-	}
-
-	return nil
 }
 
 func (col *Colaborador) ActualizarSensaciones(c *cancion.Cancion_info, sensaciones []cancion.Sensacion) error {
@@ -170,13 +153,13 @@ func (col *Colaborador) ActualizarSensaciones(c *cancion.Cancion_info, sensacion
 }
 
 func (col *Colaborador) CrearSerie(titulo string, temporada int, capitulo int, canciones []cancion.Cancion_info) (obra.Serie, error) {
-	return obra.NewSerie(titulo, temporada, capitulo, canciones)
+	return obra.NewSerie(titulo, temporada, capitulo)
 }
 
 func (col *Colaborador) CrearPelicula(titulo string, canciones []cancion.Cancion_info) (obra.Pelicula, error) {
-	return obra.NewPelicula(titulo, canciones)
+	return obra.NewPelicula(titulo)
 }
 
 func (col *Colaborador) CrearVideojuego(titulo string, canciones []cancion.Cancion_info) (obra.Videojuego, error) {
-	return obra.NewVideojuego(titulo, canciones)
+	return obra.NewVideojuego(titulo)
 }
