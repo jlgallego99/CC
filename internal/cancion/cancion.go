@@ -53,16 +53,15 @@ const (
 )
 
 type Cancion_info struct {
-	Id              uuid.UUID
-	Titulo          string
-	Compositor      string
-	Genero          Genero
-	Likes           int
-	Dislikes        int
-	Sensaciones     []Sensacion
-	Momento         Momento
-	Momento_exacto  string
-	Momento_minutos string
+	Id             uuid.UUID
+	Titulo         string
+	Compositor     string
+	Genero         Genero
+	Likes          int
+	Dislikes       int
+	Sensaciones    []Sensacion
+	Momento        Momento
+	Momento_exacto string
 }
 
 func (s *Sensacion) Valid() error {
@@ -75,16 +74,17 @@ func (s *Sensacion) Valid() error {
 	}
 }
 
-func NewCancion(titulo string, compositor string, genero Genero, momento Momento, momento_minutos string) *Cancion_info {
+func NewCancion(titulo string, compositor string, genero Genero) *Cancion_info {
 	return &Cancion_info{
-		Id:          uuid.New(),
-		Titulo:      titulo,
-		Compositor:  compositor,
-		Genero:      genero,
-		Likes:       0,
-		Dislikes:    0,
-		Sensaciones: make([]Sensacion, 0),
-		Momento:     Momento_Desconocido,
+		Id:             uuid.New(),
+		Titulo:         titulo,
+		Compositor:     compositor,
+		Genero:         genero,
+		Likes:          0,
+		Dislikes:       0,
+		Sensaciones:    make([]Sensacion, 0),
+		Momento:        Momento_Desconocido,
+		Momento_exacto: "",
 	}
 }
 
