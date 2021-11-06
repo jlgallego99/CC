@@ -77,7 +77,13 @@ func (s *Sensacion) Valid() error {
 
 func NewCancion(titulo string, compositor string, genero Genero, momento Momento, momento_minutos string) *Cancion_info {
 	return &Cancion_info{
-		Id: uuid.New(),
+		Id:          uuid.New(),
+		Titulo:      titulo,
+		Compositor:  compositor,
+		Genero:      genero,
+		Likes:       0,
+		Dislikes:    0,
+		Sensaciones: make([]Sensacion, 0),
 	}
 }
 
