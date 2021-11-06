@@ -73,7 +73,8 @@ func (s *Sensacion) Valid() error {
 	}
 }
 
-func NewCancionInfo(titulo string, compositor string, genero Genero, momento Momento, momento_minutos string) {
+func NewCancion(titulo string, compositor string, genero Genero, momento Momento, momento_minutos string) *Cancion_info {
+	return nil
 }
 
 type Cancion interface {
