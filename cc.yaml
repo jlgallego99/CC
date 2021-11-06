@@ -3,7 +3,6 @@ lenguaje:
 
 entidad:
   - internal/cancion/cancion.go
-  - internal/obra/obra.go
   - internal/usuario/usuario.go
 
 test: 
