@@ -23,15 +23,14 @@ var _ = Describe("Cancion", func() {
 
 	BeforeEach(func() {
 		cancionCorrecta = cancion.Cancion_info{
-			Titulo:          "a",
-			Compositor:      "b",
-			Genero:          cancion.Ambiental,
-			Likes:           0,
-			Dislikes:        0,
-			Sensaciones:     make([]cancion.Sensacion, 0),
-			Momento:         cancion.Ciudad,
-			Momento_exacto:  "",
-			Momento_minutos: "",
+			Titulo:         "a",
+			Compositor:     "b",
+			Genero:         cancion.Ambiental,
+			Likes:          0,
+			Dislikes:       0,
+			Sensaciones:    make([]cancion.Sensacion, 0),
+			Momento:        cancion.Ciudad,
+			Momento_exacto: "",
 		}
 	})
 
@@ -219,15 +218,14 @@ var _ = Describe("Cancion", func() {
 	Describe("Existe en un slice de canciones", func() {
 		BeforeEach(func() {
 			cancionIncorrecta = cancion.Cancion_info{
-				Titulo:          "z",
-				Compositor:      "x",
-				Genero:          cancion.Jazz,
-				Likes:           0,
-				Dislikes:        0,
-				Sensaciones:     make([]cancion.Sensacion, 0),
-				Momento:         cancion.Batalla,
-				Momento_exacto:  "",
-				Momento_minutos: "",
+				Titulo:         "z",
+				Compositor:     "x",
+				Genero:         cancion.Jazz,
+				Likes:          0,
+				Dislikes:       0,
+				Sensaciones:    make([]cancion.Sensacion, 0),
+				Momento:        cancion.Batalla,
+				Momento_exacto: "",
 			}
 
 			cancionesVacio = make([]cancion.Cancion_info, 0)
