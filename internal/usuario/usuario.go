@@ -43,8 +43,8 @@ func NewBuscador(nombre string) (*Buscador, error) {
 }
 
 type Usuario interface {
-	Like(c cancion.Cancion) error
-	Dislike(c cancion.Cancion) error
+	Like(c *cancion.Cancion) error
+	Dislike(c *cancion.Cancion) error
 	Recomendaciones() ([]cancion.Cancion, error)
 	ActualizarSensaciones(c *cancion.Cancion_info, sensaciones []cancion.Sensacion) error
 	CrearSerie(titulo string, temporada int, capitulo int, canciones []cancion.Cancion_info) (obra.Serie, error)
@@ -52,7 +52,7 @@ type Usuario interface {
 	CrearVideojuego(titulo string, canciones []cancion.Cancion_info) (obra.Videojuego, error)
 }
 
-func (col *Colaborador) Like(c cancion.Cancion_info) error {
+func (col *Colaborador) Like(c *cancion.Cancion_info) error {
 	if existe, _ := c.ExisteEn(col.CancionesFavoritas); existe {
 		return errors.New("El usuario ya le ha dado like a esta canción")
 	}
@@ -61,13 +61,13 @@ func (col *Colaborador) Like(c cancion.Cancion_info) error {
 		col.CancionesOdiadas = append(col.CancionesOdiadas[:i], col.CancionesOdiadas[i+1:]...)
 	}
 
-	col.CancionesFavoritas = append(col.CancionesFavoritas, c)
 	c.Like()
+	col.CancionesFavoritas = append(col.CancionesFavoritas, *c)
 
 	return nil
 }
 
-func (col *Colaborador) Dislike(c cancion.Cancion_info) error {
+func (col *Colaborador) Dislike(c *cancion.Cancion_info) error {
 	if existe, _ := c.ExisteEn(col.CancionesOdiadas); existe {
 		return errors.New("El usuario ya le ha dado dislike a esta canción")
 	}
@@ -76,8 +76,8 @@ func (col *Colaborador) Dislike(c cancion.Cancion_info) error {
 		col.CancionesFavoritas = append(col.CancionesFavoritas[:i], col.CancionesFavoritas[i+1:]...)
 	}
 
-	col.CancionesOdiadas = append(col.CancionesOdiadas, c)
 	c.Dislike()
+	col.CancionesOdiadas = append(col.CancionesOdiadas, *c)
 
 	return nil
 }
