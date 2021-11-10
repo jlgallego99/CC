@@ -21,7 +21,7 @@ type Buscador struct {
 
 func NewColaborador(nombre string) (*Colaborador, error) {
 	if nombre == "" {
-		return &Colaborador{}, errors.New("Nombre del usuario colaborador vacío")
+		return &Colaborador{}, errors.New("nombre del usuario colaborador vacío")
 	}
 
 	return &Colaborador{
@@ -34,7 +34,7 @@ func NewColaborador(nombre string) (*Colaborador, error) {
 
 func NewBuscador(nombre string) (*Buscador, error) {
 	if nombre == "" {
-		return &Buscador{}, errors.New("Nombre del usuario buscador vacío")
+		return &Buscador{}, errors.New("nombre del usuario buscador vacío")
 	}
 
 	return &Buscador{
@@ -54,7 +54,7 @@ type Usuario interface {
 
 func (col *Colaborador) Like(c *cancion.Cancion_info) error {
 	if existe, _ := c.ExisteEn(col.CancionesFavoritas); existe {
-		return errors.New("El usuario ya le ha dado like a esta canción")
+		return errors.New("el usuario ya le ha dado like a esta canción")
 	}
 
 	if existe, i := c.ExisteEn(col.CancionesOdiadas); existe {
@@ -69,7 +69,7 @@ func (col *Colaborador) Like(c *cancion.Cancion_info) error {
 
 func (col *Colaborador) Dislike(c *cancion.Cancion_info) error {
 	if existe, _ := c.ExisteEn(col.CancionesOdiadas); existe {
-		return errors.New("El usuario ya le ha dado dislike a esta canción")
+		return errors.New("el usuario ya le ha dado dislike a esta canción")
 	}
 
 	if existe, i := c.ExisteEn(col.CancionesFavoritas); existe {
@@ -88,11 +88,10 @@ func (col *Colaborador) Recomendaciones() ([]cancion.Cancion, error) {
 
 func (col *Colaborador) ActualizarSensaciones(c *cancion.Cancion_info, sensaciones []cancion.Sensacion) error {
 	if c == nil {
-		return errors.New("No existe la canción")
+		return errors.New("no existe la canción")
 	}
 
-	var sensacionesUsuario []cancion.Sensacion
-	sensacionesUsuario = make([]cancion.Sensacion, len(c.Sensaciones))
+	sensacionesUsuario := make([]cancion.Sensacion, len(c.Sensaciones))
 	copy(sensacionesUsuario, c.Sensaciones)
 
 	// Buscar la canción colaborada
@@ -111,7 +110,7 @@ func (col *Colaborador) ActualizarSensaciones(c *cancion.Cancion_info, sensacion
 			err := c.QuitarSensacion(s)
 
 			if err != nil {
-				return fmt.Errorf("No se ha podido eliminar la sensación repetida: %s", err)
+				return fmt.Errorf("no se ha podido eliminar la sensación repetida: %s", err)
 			}
 		}
 
@@ -129,7 +128,7 @@ func (col *Colaborador) ActualizarSensaciones(c *cancion.Cancion_info, sensacion
 					err := c.QuitarSensacion(s)
 
 					if err != nil {
-						return fmt.Errorf("No se ha podido eliminar la sensación repetida: %s", err)
+						return fmt.Errorf("no se ha podido eliminar la sensación repetida: %s", err)
 					}
 				}
 			}
@@ -141,7 +140,7 @@ func (col *Colaborador) ActualizarSensaciones(c *cancion.Cancion_info, sensacion
 		err := c.NuevaSensacion(s)
 
 		if err != nil {
-			return fmt.Errorf("No se ha podido registrar la nueva sensación: %s", err)
+			return fmt.Errorf("no se ha podido registrar la nueva sensación: %s", err)
 		}
 	}
 

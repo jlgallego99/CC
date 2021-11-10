@@ -71,7 +71,7 @@ func (s *Sensacion) Valid() error {
 		Triunfo, Sueño, Epicidad, Desafio:
 		return nil
 	default:
-		return errors.New("Sensación no válida")
+		return errors.New("sensación no válida")
 	}
 }
 
@@ -80,23 +80,23 @@ func (g *Genero) Valid() error {
 	case Genero_Desconocido, Rock, Pop, Ambiental, Electronica, Funk, Jazz, Orquesta, Vocal:
 		return nil
 	default:
-		return errors.New("Género no válido")
+		return errors.New("género no válido")
 	}
 }
 
 func NewCancion(titulo string, compositor string, genero Genero) (*Cancion_info, error) {
 	if titulo == "" {
-		return &Cancion_info{}, errors.New("Título de la canción vacío")
+		return &Cancion_info{}, errors.New("título de la canción vacío")
 	}
 
 	if compositor == "" {
-		return &Cancion_info{}, errors.New("Compositor vacío")
+		return &Cancion_info{}, errors.New("compositor vacío")
 	}
 
 	err := genero.Valid()
 
 	if err != nil {
-		return &Cancion_info{}, fmt.Errorf("Error al añadir el género: %s", err)
+		return &Cancion_info{}, fmt.Errorf("error al añadir el género: %s", err)
 	}
 
 	return &Cancion_info{
