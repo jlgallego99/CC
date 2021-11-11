@@ -121,7 +121,7 @@ type Cancion interface {
 	Dislike()
 	QuitarLike()
 	QuitarDislike()
-	ExisteEn(canciones []Cancion_info) bool
+	ExisteEn(canciones []*Cancion_info) bool
 }
 
 func (c *Cancion_info) PorcentajeLikeDislike() (float64, float64) {
@@ -242,9 +242,9 @@ func (c *Cancion_info) QuitarDislike() {
 	}
 }
 
-func (c *Cancion_info) ExisteEn(canciones []Cancion_info) (bool, int) {
+func (c *Cancion_info) ExisteEn(canciones []*Cancion_info) (bool, int) {
 	for i, v := range canciones {
-		if reflect.DeepEqual(*c, v) {
+		if reflect.DeepEqual(*c, *v) {
 			return true, i
 		}
 	}
