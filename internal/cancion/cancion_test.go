@@ -7,10 +7,10 @@ import (
 )
 
 var _ = Describe("Cancion", func() {
-	var cancionCorrecta cancion.Cancion_info
-	var cancionIncorrecta cancion.Cancion_info
-	var cancionesVacio []cancion.Cancion_info
-	var canciones []cancion.Cancion_info
+	var cancionCorrecta *cancion.Cancion_info
+	var cancionIncorrecta *cancion.Cancion_info
+	var cancionesVacio []*cancion.Cancion_info
+	var canciones []*cancion.Cancion_info
 
 	sensacionCorrecta := cancion.Tristeza
 
@@ -22,7 +22,7 @@ var _ = Describe("Cancion", func() {
 	sensacionesDesordenadas := []cancion.Sensacion{cancion.Ansiedad, cancion.Miedo, cancion.Ansiedad, cancion.Alegria, cancion.Desafio, cancion.Miedo}
 
 	BeforeEach(func() {
-		cancionCorrecta = cancion.Cancion_info{
+		cancionCorrecta = &cancion.Cancion_info{
 			Titulo:         "a",
 			Compositor:     "b",
 			Genero:         cancion.Ambiental,
@@ -217,7 +217,7 @@ var _ = Describe("Cancion", func() {
 
 	Describe("Existe en un slice de canciones", func() {
 		BeforeEach(func() {
-			cancionIncorrecta = cancion.Cancion_info{
+			cancionIncorrecta = &cancion.Cancion_info{
 				Titulo:         "z",
 				Compositor:     "x",
 				Genero:         cancion.Jazz,
@@ -228,8 +228,8 @@ var _ = Describe("Cancion", func() {
 				Momento_exacto: "",
 			}
 
-			cancionesVacio = make([]cancion.Cancion_info, 0)
-			canciones = make([]cancion.Cancion_info, 5)
+			cancionesVacio = make([]*cancion.Cancion_info, 0)
+			canciones = make([]*cancion.Cancion_info, 5)
 			canciones = append(canciones, cancionCorrecta)
 		})
 

@@ -26,8 +26,8 @@ var _ = Describe("Usuario", func() {
 	BeforeEach(func() {
 		colaborador = usuario.Colaborador{
 			Nombre:             "PepeColabora",
-			CancionesFavoritas: make([]cancion.Cancion_info, 0),
-			CancionesOdiadas:   make([]cancion.Cancion_info, 0),
+			CancionesFavoritas: make([]*cancion.Cancion_info, 0),
+			CancionesOdiadas:   make([]*cancion.Cancion_info, 0),
 		}
 
 		cancionCorrecta = cancion.Cancion_info{
@@ -89,7 +89,7 @@ var _ = Describe("Usuario", func() {
 			})
 
 			It("Debe tener la canción en su lista de canciones favoritas", func() {
-				Expect(colaborador.CancionesFavoritas[0]).To(Equal(cancionCorrecta))
+				Expect(colaborador.CancionesFavoritas[0]).To(Equal(&cancionCorrecta))
 			})
 
 			It("Si se le da dislike se debe quitar el like", func() {
@@ -109,7 +109,7 @@ var _ = Describe("Usuario", func() {
 			})
 
 			It("Debe tener la canción en su lista de canciones favoritas", func() {
-				Expect(colaborador.CancionesOdiadas[0]).To(Equal(cancionCorrecta))
+				Expect(colaborador.CancionesOdiadas[0]).To(Equal(&cancionCorrecta))
 			})
 
 			It("Si se le da like se debe quitar el dislike", func() {
@@ -161,7 +161,7 @@ var _ = Describe("Usuario", func() {
 			})
 
 			It("La canción está en la lista de colaboradas del usuario", func() {
-				Expect(colaborador.CancionesColaboradas[0]).To(Equal(cancionCorrecta))
+				Expect(colaborador.CancionesColaboradas[0]).To(Equal(&cancionCorrecta))
 			})
 
 			It("No debe dar error", func() {
@@ -183,7 +183,7 @@ var _ = Describe("Usuario", func() {
 			})
 
 			It("La canción debe seguir en la lista de colaboradas del usuario", func() {
-				Expect(colaborador.CancionesColaboradas[0]).To(Equal(cancionCorrecta))
+				Expect(colaborador.CancionesColaboradas[0]).To(Equal(&cancionCorrecta))
 			})
 
 			It("No debe dar error", func() {
