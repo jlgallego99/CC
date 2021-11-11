@@ -20,15 +20,54 @@ type OST interface {
 }
 
 func NewVideojuegoOST(titulo string, canciones []*Cancion_info) (*BandaSonora, error) {
-	return &BandaSonora{}, nil
+	if canciones == nil {
+		return &BandaSonora{}, errors.New("la lista de canciones es nula")
+	}
+
+	v, err := obra.NewVideojuego(titulo)
+
+	if err != nil {
+		return &BandaSonora{}, fmt.Errorf("no se ha podido crear la ost de videojuego: %s", err)
+	}
+
+	return &BandaSonora{
+		obra:      v,
+		canciones: canciones,
+	}, nil
 }
 
 func NewPeliculaOST(titulo string, canciones []*Cancion_info) (*BandaSonora, error) {
-	return &BandaSonora{}, nil
+	if canciones == nil {
+		return &BandaSonora{}, errors.New("la lista de canciones es nula")
+	}
+
+	p, err := obra.NewPelicula(titulo)
+
+	if err != nil {
+		return &BandaSonora{}, fmt.Errorf("no se ha podido crear la ost de película: %s", err)
+	}
+
+	return &BandaSonora{
+		obra:      p,
+		canciones: canciones,
+	}, nil
 }
 
 func NewSerieOST(titulo string, temporada, capitulo int, canciones []*Cancion_info) (*BandaSonora, error) {
-	return &BandaSonora{}, nil
+	if canciones == nil {
+		return &BandaSonora{}, errors.New("la lista de canciones es nula")
+	}
+
+	p, err := obra.NewSerie(titulo, temporada, capitulo)
+
+	if err != nil {
+		return &BandaSonora{}, fmt.Errorf("no se ha podido crear la ost de serie: %s", err)
+	}
+
+	return &BandaSonora{
+		obra:      p,
+		canciones: canciones,
+	}, nil
 }
 
 func (b *BandaSonora) ActualizarOST(ost []Cancion_info) error {
