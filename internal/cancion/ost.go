@@ -19,6 +19,10 @@ type OST interface {
 	Cancion(titulo string) (*Cancion_info, error)
 }
 
+func NewOST() (*BandaSonora, error) {
+
+}
+
 func (b *BandaSonora) ActualizarOST(ost []Cancion_info) error {
 	b.canciones = make([]*Cancion_info, 0)
 
