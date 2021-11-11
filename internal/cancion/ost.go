@@ -11,4 +11,6 @@ type BandaSonora struct {
 
 type OST interface {
 	ActualizarOST(ost []Cancion_info) error
+	NuevaCancion(c Cancion_info) error
+	Cancion(titulo string) error
 }
