@@ -201,9 +201,7 @@ var _ = Describe("Usuario", func() {
 			})
 
 			It("Debe tener todos los campos iguales", func() {
-				Expect(serie.Titulo()).To(Equal("SeriePrueba"))
-				Expect(serie.Temporada()).To(Equal(1))
-				Expect(serie.Capitulo()).To(Equal(1))
+				Expect(serie.Titulo()).To(Equal("SeriePrueba-1-1"))
 
 				Expect(pelicula.Titulo()).To(Equal("PeliculaPrueba"))
 

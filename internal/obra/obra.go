@@ -2,42 +2,37 @@ package obra
 
 import (
 	"errors"
+	"strconv"
 )
 
-type ObraBase struct {
+type Videojuego struct {
 	titulo string
 }
 
-type Videojuego struct {
-	ObraBase
-}
-
 type Pelicula struct {
-	ObraBase
+	titulo string
 }
 
 type Serie struct {
-	ObraBase
+	titulo    string
 	temporada int
 	capitulo  int
 }
 
 type Obra interface {
 	Titulo() string
-	Temporada() int
-	Capitulo() int
 }
 
-func (o ObraBase) Titulo() string {
-	return o.titulo
+func (v Videojuego) Titulo() string {
+	return v.titulo
 }
 
-func (s Serie) Temporada() int {
-	return s.temporada
+func (p Pelicula) Titulo() string {
+	return p.titulo
 }
 
-func (s Serie) Capitulo() int {
-	return s.capitulo
+func (s Serie) Titulo() string {
+	return s.titulo + "-" + strconv.Itoa(s.temporada) + "-" + strconv.Itoa(s.capitulo)
 }
 
 func NewVideojuego(titulo string) (Videojuego, error) {
@@ -46,7 +41,7 @@ func NewVideojuego(titulo string) (Videojuego, error) {
 	}
 
 	return Videojuego{
-		ObraBase: ObraBase{titulo: titulo},
+		titulo: titulo,
 	}, nil
 }
 
@@ -56,7 +51,7 @@ func NewPelicula(titulo string) (Pelicula, error) {
 	}
 
 	return Pelicula{
-		ObraBase: ObraBase{titulo: titulo},
+		titulo: titulo,
 	}, nil
 }
 
@@ -70,7 +65,7 @@ func NewSerie(titulo string, temporada, capitulo int) (Serie, error) {
 	}
 
 	return Serie{
-		ObraBase:  ObraBase{titulo: titulo},
+		titulo:    titulo,
 		temporada: temporada,
 		capitulo:  capitulo,
 	}, nil
