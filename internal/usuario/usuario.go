@@ -120,8 +120,6 @@ func (col *Colaborador) ActualizarSensaciones(c *cancion.Cancion_info, sensacion
 	// El usuario ya ha aportado sensaciones antes, se actualizan con las nuevas
 	var existe bool
 	if existe, _ = c.ExisteEn(col.CancionesColaboradas); existe {
-		col.CancionesColaboradas[pos].Sensaciones = sensaciones
-
 		for _, s_us := range sensacionesUsuario {
 			for _, s := range c.Sensaciones {
 				if s == s_us {
