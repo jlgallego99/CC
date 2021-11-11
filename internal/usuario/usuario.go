@@ -10,9 +10,9 @@ import (
 
 type Colaborador struct {
 	Nombre               string
-	CancionesFavoritas   []cancion.Cancion_info
-	CancionesOdiadas     []cancion.Cancion_info
-	CancionesColaboradas []cancion.Cancion_info
+	CancionesFavoritas   []*cancion.Cancion_info
+	CancionesOdiadas     []*cancion.Cancion_info
+	CancionesColaboradas []*cancion.Cancion_info
 }
 
 type Buscador struct {
@@ -26,9 +26,9 @@ func NewColaborador(nombre string) (*Colaborador, error) {
 
 	return &Colaborador{
 		Nombre:               nombre,
-		CancionesFavoritas:   make([]cancion.Cancion_info, 0),
-		CancionesOdiadas:     make([]cancion.Cancion_info, 0),
-		CancionesColaboradas: make([]cancion.Cancion_info, 0),
+		CancionesFavoritas:   make([]*cancion.Cancion_info, 0),
+		CancionesOdiadas:     make([]*cancion.Cancion_info, 0),
+		CancionesColaboradas: make([]*cancion.Cancion_info, 0),
 	}, nil
 }
 
@@ -62,7 +62,7 @@ func (col *Colaborador) Like(c *cancion.Cancion_info) error {
 	}
 
 	c.Like()
-	col.CancionesFavoritas = append(col.CancionesFavoritas, *c)
+	col.CancionesFavoritas = append(col.CancionesFavoritas, c)
 
 	return nil
 }
@@ -77,7 +77,7 @@ func (col *Colaborador) Dislike(c *cancion.Cancion_info) error {
 	}
 
 	c.Dislike()
-	col.CancionesOdiadas = append(col.CancionesOdiadas, *c)
+	col.CancionesOdiadas = append(col.CancionesOdiadas, c)
 
 	return nil
 }
@@ -145,7 +145,7 @@ func (col *Colaborador) ActualizarSensaciones(c *cancion.Cancion_info, sensacion
 	}
 
 	if !existe {
-		col.CancionesColaboradas = append(col.CancionesColaboradas, *c)
+		col.CancionesColaboradas = append(col.CancionesColaboradas, c)
 	}
 
 	return nil
