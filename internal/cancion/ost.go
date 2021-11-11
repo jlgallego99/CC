@@ -16,7 +16,7 @@ type BandaSonora struct {
 type OST interface {
 	ActualizarOST(ost []Cancion_info) error
 	NuevaCancion(c Cancion_info) error
-	Cancion(titulo string) error
+	Cancion(titulo string) (*Cancion_info, error)
 }
 
 func (b *BandaSonora) ActualizarOST(ost []Cancion_info) error {
@@ -45,4 +45,14 @@ func (b *BandaSonora) NuevaCancion(c Cancion_info) error {
 	b.canciones = append(b.canciones, &c)
 
 	return nil
+}
+
+func (b *BandaSonora) Cancion(titulo string) (*Cancion_info, error) {
+	for _, v := range b.canciones {
+		if v.Titulo == titulo {
+			return v, nil
+		}
+	}
+
+	return nil, errors.New("no se ha encontrado la canción especificada")
 }
