@@ -245,7 +245,6 @@ func (c *Cancion_info) QuitarDislike() {
 func (c *Cancion_info) ExisteEn(canciones []*Cancion_info) (bool, int) {
 	for i, v := range canciones {
 		if c == v {
-			fmt.Println(v)
 			return true, i
 		}
 	}
