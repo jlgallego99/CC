@@ -14,8 +14,8 @@ type BandaSonora struct {
 }
 
 type OST interface {
-	ActualizarOST(ost []Cancion_info) error
-	NuevaCancion(c Cancion_info) error
+	ActualizarOST(ost []*Cancion_info) error
+	NuevaCancion(c *Cancion_info) error
 	Cancion(titulo string) (*Cancion_info, error)
 }
 
@@ -70,7 +70,7 @@ func NewSerieOST(titulo string, temporada, capitulo int, canciones []*Cancion_in
 	}, nil
 }
 
-func (b *BandaSonora) ActualizarOST(ost []Cancion_info) error {
+func (b *BandaSonora) ActualizarOST(ost []*Cancion_info) error {
 	b.canciones = make([]*Cancion_info, 0)
 
 	for _, v := range ost {
@@ -84,7 +84,7 @@ func (b *BandaSonora) ActualizarOST(ost []Cancion_info) error {
 	return nil
 }
 
-func (b *BandaSonora) NuevaCancion(c Cancion_info) error {
+func (b *BandaSonora) NuevaCancion(c *Cancion_info) error {
 	if existe, _ := c.ExisteEn(b.canciones); existe {
 		return errors.New("la canción ya existe en la OST")
 	}
@@ -93,7 +93,7 @@ func (b *BandaSonora) NuevaCancion(c Cancion_info) error {
 		return errors.New("la canción está vacía")
 	}
 
-	b.canciones = append(b.canciones, &c)
+	b.canciones = append(b.canciones, c)
 
 	return nil
 }
