@@ -19,7 +19,15 @@ type OST interface {
 	Cancion(titulo string) (*Cancion_info, error)
 }
 
-func NewOST(titulo string, canciones []*Cancion_info) (*BandaSonora, error) {
+func NewVideojuegoOST(titulo string, canciones []*Cancion_info) (*BandaSonora, error) {
+	return &BandaSonora{}, nil
+}
+
+func NewPeliculaOST(titulo string, canciones []*Cancion_info) (*BandaSonora, error) {
+	return &BandaSonora{}, nil
+}
+
+func NewSerieOST(titulo string, temporada, capitulo int, canciones []*Cancion_info) (*BandaSonora, error) {
 	return &BandaSonora{}, nil
 }
 
