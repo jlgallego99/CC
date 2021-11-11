@@ -14,13 +14,13 @@ var _ = Describe("Obra", func() {
 	var err_ns, err_np, err_nv error
 
 	Describe("Crear nueva obra", func() {
-		BeforeEach(func() {
-			serie, err_ns = obra.NewSerie("SeriePrueba", 1, 1)
-			pelicula, err_np = obra.NewPelicula("PeliculaPrueba")
-			videojuego, err_nv = obra.NewVideojuego("VideojuegoPrueba")
-		})
-
 		Context("Se crea una obra con todos sus campos", func() {
+			BeforeEach(func() {
+				serie, err_ns = obra.NewSerie("SeriePrueba", 1, 1)
+				pelicula, err_np = obra.NewPelicula("PeliculaPrueba")
+				videojuego, err_nv = obra.NewVideojuego("VideojuegoPrueba")
+			})
+
 			It("No debe dar error", func() {
 				Expect(err_ns).NotTo(HaveOccurred())
 				Expect(err_np).NotTo(HaveOccurred())
@@ -32,9 +32,9 @@ var _ = Describe("Obra", func() {
 				Expect(serie.Temporada()).To(Equal(1))
 				Expect(serie.Capitulo()).To(Equal(1))
 
-				Expect(pelicula.Titulo).To(Equal("PeliculaPrueba"))
+				Expect(pelicula.Titulo()).To(Equal("PeliculaPrueba"))
 
-				Expect(videojuego.Titulo).To(Equal("VideojuegoPrueba"))
+				Expect(videojuego.Titulo()).To(Equal("VideojuegoPrueba"))
 			})
 		})
 
