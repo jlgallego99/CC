@@ -9,8 +9,8 @@ import (
 )
 
 type BandaSonora struct {
-	canciones []*Cancion_info
-	obra      obra.Obra
+	Canciones []*Cancion_info
+	Obra      obra.Obra
 }
 
 type OST interface {
@@ -31,8 +31,8 @@ func NewVideojuegoOST(titulo string, canciones []*Cancion_info) (*BandaSonora, e
 	}
 
 	return &BandaSonora{
-		obra:      v,
-		canciones: canciones,
+		Obra:      v,
+		Canciones: canciones,
 	}, nil
 }
 
@@ -48,8 +48,8 @@ func NewPeliculaOST(titulo string, canciones []*Cancion_info) (*BandaSonora, err
 	}
 
 	return &BandaSonora{
-		obra:      p,
-		canciones: canciones,
+		Obra:      p,
+		Canciones: canciones,
 	}, nil
 }
 
@@ -65,18 +65,20 @@ func NewSerieOST(titulo string, temporada, capitulo int, canciones []*Cancion_in
 	}
 
 	return &BandaSonora{
-		obra:      p,
-		canciones: canciones,
+		Obra:      p,
+		Canciones: canciones,
 	}, nil
 }
 
 func (b *BandaSonora) ActualizarOST(ost []*Cancion_info) error {
-	b.canciones = make([]*Cancion_info, 0)
+	ostAntigua := b.Canciones
+	b.Canciones = make([]*Cancion_info, 0)
 
 	for _, v := range ost {
 		err := b.NuevaCancion(v)
 
 		if err != nil {
+			b.Canciones = ostAntigua
 			return fmt.Errorf("no se ha podido añadir la canción: %s", err)
 		}
 	}
@@ -85,21 +87,21 @@ func (b *BandaSonora) ActualizarOST(ost []*Cancion_info) error {
 }
 
 func (b *BandaSonora) NuevaCancion(c *Cancion_info) error {
-	if existe, _ := c.ExisteEn(b.canciones); existe {
+	if existe, _ := c.ExisteEn(b.Canciones); existe {
 		return errors.New("la canción ya existe en la OST")
 	}
 
-	if reflect.DeepEqual(Cancion_info{}, c) {
+	if reflect.DeepEqual(Cancion_info{}, *c) {
 		return errors.New("la canción está vacía")
 	}
 
-	b.canciones = append(b.canciones, c)
+	b.Canciones = append(b.Canciones, c)
 
 	return nil
 }
 
 func (b *BandaSonora) Cancion(titulo string) (*Cancion_info, error) {
-	for _, v := range b.canciones {
+	for _, v := range b.Canciones {
 		if v.Titulo == titulo {
 			return v, nil
 		}
