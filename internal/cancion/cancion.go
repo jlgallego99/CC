@@ -2,8 +2,11 @@ package cancion
 
 import (
 	"errors"
+	"fmt"
 	"math"
 	"reflect"
+
+	"github.com/google/uuid"
 )
 
 type Genero int
@@ -51,15 +54,15 @@ const (
 )
 
 type Cancion_info struct {
-	Titulo          string
-	Compositor      string
-	Genero          Genero
-	Likes           int
-	Dislikes        int
-	Sensaciones     []Sensacion
-	Momento         Momento
-	Momento_exacto  string
-	Momento_minutos string
+	Id             uuid.UUID
+	Titulo         string
+	Compositor     string
+	Genero         Genero
+	Likes          int
+	Dislikes       int
+	Sensaciones    []Sensacion
+	Momento        Momento
+	Momento_exacto string
 }
 
 func (s *Sensacion) Valid() error {
@@ -68,11 +71,45 @@ func (s *Sensacion) Valid() error {
 		Triunfo, Sueño, Epicidad, Desafio:
 		return nil
 	default:
-		return errors.New("Sensación no válida")
+		return errors.New("sensación no válida")
 	}
 }
 
-func NewCancionInfo(titulo string, compositor string, genero Genero, momento Momento, momento_minutos string) {
+func (g *Genero) Valid() error {
+	switch *g {
+	case Genero_Desconocido, Rock, Pop, Ambiental, Electronica, Funk, Jazz, Orquesta, Vocal:
+		return nil
+	default:
+		return errors.New("género no válido")
+	}
+}
+
+func NewCancion(titulo string, compositor string, genero Genero) (*Cancion_info, error) {
+	if titulo == "" {
+		return &Cancion_info{}, errors.New("título de la canción vacío")
+	}
+
+	if compositor == "" {
+		return &Cancion_info{}, errors.New("compositor vacío")
+	}
+
+	err := genero.Valid()
+
+	if err != nil {
+		return &Cancion_info{}, fmt.Errorf("error al añadir el género: %s", err)
+	}
+
+	return &Cancion_info{
+		Id:             uuid.New(),
+		Titulo:         titulo,
+		Compositor:     compositor,
+		Genero:         genero,
+		Likes:          0,
+		Dislikes:       0,
+		Sensaciones:    make([]Sensacion, 0),
+		Momento:        Momento_Desconocido,
+		Momento_exacto: "",
+	}, nil
 }
 
 type Cancion interface {
@@ -84,7 +121,7 @@ type Cancion interface {
 	Dislike()
 	QuitarLike()
 	QuitarDislike()
-	ExisteEn(canciones []Cancion_info) bool
+	ExisteEn(canciones []*Cancion_info) bool
 }
 
 func (c *Cancion_info) PorcentajeLikeDislike() (float64, float64) {
@@ -205,9 +242,9 @@ func (c *Cancion_info) QuitarDislike() {
 	}
 }
 
-func (c *Cancion_info) ExisteEn(canciones []Cancion_info) (bool, int) {
+func (c *Cancion_info) ExisteEn(canciones []*Cancion_info) (bool, int) {
 	for i, v := range canciones {
-		if reflect.DeepEqual(*c, v) {
+		if c == v {
 			return true, i
 		}
 	}

@@ -2,135 +2,71 @@ package obra
 
 import (
 	"errors"
-	"reflect"
-
-	"github.com/jlgallego99/OSTfind/internal/cancion"
+	"strconv"
 )
 
-type Obra interface {
-	Canciones() []cancion.Cancion_info
-	Momento() string
-	NuevaCancion(c cancion.Cancion_info) error
-}
-
 type Videojuego struct {
-	Titulo string
-	OST    []cancion.Cancion_info
+	titulo string
 }
 
 type Pelicula struct {
-	Titulo string
-	OST    []cancion.Cancion_info
+	titulo string
 }
 
 type Serie struct {
-	Titulo    string
-	Temporada int
-	Capitulo  int
-	OST       []cancion.Cancion_info
+	titulo    string
+	temporada int
+	capitulo  int
 }
 
-func (v *Videojuego) Canciones() []cancion.Cancion_info {
-	return nil
+type Obra interface {
+	Titulo() string
 }
 
-func (p *Pelicula) Canciones() []cancion.Cancion_info {
-	return nil
+func (v Videojuego) Titulo() string {
+	return v.titulo
 }
 
-func (s *Serie) Canciones() []cancion.Cancion_info {
-	return nil
+func (p Pelicula) Titulo() string {
+	return p.titulo
 }
 
-func (v *Videojuego) Momento() string {
-	return ""
+func (s Serie) Titulo() string {
+	return s.titulo + "-" + strconv.Itoa(s.temporada) + "-" + strconv.Itoa(s.capitulo)
 }
 
-func (p *Pelicula) Momento() string {
-	return ""
-}
-
-func (s *Serie) Momento() string {
-	return ""
-}
-
-func (v *Videojuego) NuevaCancion(c cancion.Cancion_info) error {
-	if existe, _ := c.ExisteEn(v.OST); existe {
-		return errors.New("La canción ya existe en la OST")
-	}
-
-	if reflect.DeepEqual(cancion.Cancion_info{}, c) {
-		return errors.New("La canción está vacía")
-	}
-
-	v.OST = append(v.OST, c)
-
-	return nil
-}
-
-func (p *Pelicula) NuevaCancion(c cancion.Cancion_info) error {
-	if existe, _ := c.ExisteEn(p.OST); existe {
-		return errors.New("La canción ya existe en la OST")
-	}
-
-	if reflect.DeepEqual(cancion.Cancion_info{}, c) {
-		return errors.New("La canción está vacía")
-	}
-
-	p.OST = append(p.OST, c)
-
-	return nil
-}
-
-func (s *Serie) NuevaCancion(c cancion.Cancion_info) error {
-	if existe, _ := c.ExisteEn(s.OST); existe {
-		return errors.New("La canción ya existe en la OST")
-	}
-
-	if reflect.DeepEqual(cancion.Cancion_info{}, c) {
-		return errors.New("La canción está vacía")
-	}
-
-	s.OST = append(s.OST, c)
-
-	return nil
-}
-
-func NewVideojuego(titulo string, canciones []cancion.Cancion_info) (Videojuego, error) {
+func NewVideojuego(titulo string) (Videojuego, error) {
 	if titulo == "" {
-		return Videojuego{}, errors.New("El videojuego no tiene título")
+		return Videojuego{}, errors.New("el videojuego no tiene título")
 	}
 
 	return Videojuego{
-		Titulo: titulo,
-		OST:    canciones,
+		titulo: titulo,
 	}, nil
 }
 
-func NewPelicula(titulo string, canciones []cancion.Cancion_info) (Pelicula, error) {
+func NewPelicula(titulo string) (Pelicula, error) {
 	if titulo == "" {
-		return Pelicula{}, errors.New("La película no tiene título")
+		return Pelicula{}, errors.New("la película no tiene título")
 	}
 
 	return Pelicula{
-		Titulo: titulo,
-		OST:    canciones,
+		titulo: titulo,
 	}, nil
 }
 
-func NewSerie(titulo string, temporada, capitulo int, canciones []cancion.Cancion_info) (Serie, error) {
+func NewSerie(titulo string, temporada, capitulo int) (Serie, error) {
 	if titulo == "" {
-		return Serie{}, errors.New("La serie no tiene título")
+		return Serie{}, errors.New("la serie no tiene título")
 	}
 
 	if capitulo <= 0 || temporada <= 0 {
-		return Serie{}, errors.New("El capítulo y temporada de la serie no es correcta")
+		return Serie{}, errors.New("el capítulo y temporada de la serie no es correcta")
 	}
 
 	return Serie{
-		Titulo:    titulo,
-		Temporada: temporada,
-		Capitulo:  capitulo,
-		OST:       canciones,
+		titulo:    titulo,
+		temporada: temporada,
+		capitulo:  capitulo,
 	}, nil
 }

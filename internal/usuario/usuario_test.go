@@ -17,11 +17,7 @@ var _ = Describe("Usuario", func() {
 	var pelicula obra.Pelicula
 	var videojuego obra.Videojuego
 
-	var cancionesVacio []cancion.Cancion_info
-	var canciones []cancion.Cancion_info
-
 	var err error
-	var err_s, err_p, err_v error
 	var err_ns, err_np, err_nv error
 
 	var sensaciones []cancion.Sensacion
@@ -30,28 +26,24 @@ var _ = Describe("Usuario", func() {
 	BeforeEach(func() {
 		colaborador = usuario.Colaborador{
 			Nombre:             "PepeColabora",
-			CancionesFavoritas: make([]cancion.Cancion_info, 0),
-			CancionesOdiadas:   make([]cancion.Cancion_info, 0),
+			CancionesFavoritas: make([]*cancion.Cancion_info, 0),
+			CancionesOdiadas:   make([]*cancion.Cancion_info, 0),
 		}
 
 		cancionCorrecta = cancion.Cancion_info{
-			Titulo:          "a",
-			Compositor:      "b",
-			Genero:          cancion.Ambiental,
-			Likes:           0,
-			Dislikes:        0,
-			Sensaciones:     make([]cancion.Sensacion, 0),
-			Momento:         cancion.Ciudad,
-			Momento_exacto:  "",
-			Momento_minutos: "",
+			Titulo:         "a",
+			Compositor:     "b",
+			Genero:         cancion.Ambiental,
+			Likes:          0,
+			Dislikes:       0,
+			Sensaciones:    make([]cancion.Sensacion, 0),
+			Momento:        cancion.Ciudad,
+			Momento_exacto: "",
 		}
 
 		serie, err_ns = colaborador.CrearSerie("SeriePrueba", 1, 1, make([]cancion.Cancion_info, 0))
 		pelicula, err_np = colaborador.CrearPelicula("PeliculaPrueba", make([]cancion.Cancion_info, 0))
 		videojuego, err_nv = colaborador.CrearVideojuego("VideojuegoPrueba", make([]cancion.Cancion_info, 0))
-		cancionesVacio = make([]cancion.Cancion_info, 5)
-		canciones = make([]cancion.Cancion_info, 0)
-		canciones = append(canciones, cancionCorrecta)
 
 		sensaciones = []cancion.Sensacion{cancion.Alegria, cancion.Ansiedad, cancion.Ansiedad, cancion.Miedo, cancion.Miedo, cancion.Desafio, cancion.Tristeza}
 		sensacionesNuevas = []cancion.Sensacion{cancion.Alegria, cancion.Ansiedad, cancion.Desafio, cancion.Sueño}
@@ -59,103 +51,70 @@ var _ = Describe("Usuario", func() {
 
 	Describe("Dar like o dislike a una canción", func() {
 		Context("No se le he dado aún el like a la canción", func() {
+			BeforeEach(func() {
+				err = colaborador.Like(&cancionCorrecta)
+			})
+
+			It("La canción debe tener exactamente un like", func() {
+				Expect(cancionCorrecta.Likes).To(Equal(1))
+			})
+
 			It("No debe tener error", func() {
-				err := colaborador.Like(cancionCorrecta)
+				Expect(err).NotTo(HaveOccurred())
+			})
+		})
+
+		Context("No se le he dado aún el dislike a la canción", func() {
+			BeforeEach(func() {
+				err = colaborador.Dislike(&cancionCorrecta)
+			})
+
+			It("La canción debe tener exactamente un dislike", func() {
+				Expect(cancionCorrecta.Dislikes).To(Equal(1))
+			})
+
+			It("No debe tener error", func() {
 				Expect(err).NotTo(HaveOccurred())
 			})
 		})
 
 		Context("Se le ha dado ya el like a la canción", func() {
 			BeforeEach(func() {
-				colaborador.Like(cancionCorrecta)
+				colaborador.Like(&cancionCorrecta)
 			})
 
 			It("Debe tener error", func() {
-				err := colaborador.Like(cancionCorrecta)
+				err := colaborador.Like(&cancionCorrecta)
 				Expect(err).To(HaveOccurred())
 			})
 
 			It("Debe tener la canción en su lista de canciones favoritas", func() {
-				Expect(colaborador.CancionesFavoritas[0]).To(Equal(cancionCorrecta))
+				Expect(colaborador.CancionesFavoritas[0]).To(Equal(&cancionCorrecta))
 			})
 
 			It("Si se le da dislike se debe quitar el like", func() {
-				colaborador.Dislike(cancionCorrecta)
+				colaborador.Dislike(&cancionCorrecta)
 				Expect(colaborador.CancionesFavoritas).To(BeEmpty())
 			})
 		})
 
 		Context("Se le ha dado ya el dislike a la canción", func() {
 			BeforeEach(func() {
-				colaborador.Dislike(cancionCorrecta)
+				colaborador.Dislike(&cancionCorrecta)
 			})
 
 			It("Debe tener error", func() {
-				err := colaborador.Dislike(cancionCorrecta)
+				err := colaborador.Dislike(&cancionCorrecta)
 				Expect(err).To(HaveOccurred())
 			})
 
 			It("Debe tener la canción en su lista de canciones favoritas", func() {
-				Expect(colaborador.CancionesOdiadas[0]).To(Equal(cancionCorrecta))
+				Expect(colaborador.CancionesOdiadas[0]).To(Equal(&cancionCorrecta))
 			})
 
 			It("Si se le da like se debe quitar el dislike", func() {
-				colaborador.Like(cancionCorrecta)
+				colaborador.Like(&cancionCorrecta)
 				Expect(colaborador.CancionesOdiadas).To(BeEmpty())
-			})
-		})
-	})
-
-	Describe("Actualizar la OST de una obra", func() {
-		BeforeEach(func() {
-			err_s = colaborador.ActualizarOST(&serie, canciones)
-			err_p = colaborador.ActualizarOST(&pelicula, canciones)
-			err_v = colaborador.ActualizarOST(&videojuego, canciones)
-		})
-
-		Context("La obra no existe", func() {
-			It("Debe dar error", func() {
-				err := colaborador.ActualizarOST(nil, cancionesVacio)
-
-				Expect(err).To(HaveOccurred())
-			})
-		})
-
-		Context("La obra existe", func() {
-			It("Las canciones se deben haber añadido", func() {
-				Expect(serie.OST).To(Equal(canciones))
-				Expect(pelicula.OST).To(Equal(canciones))
-				Expect(videojuego.OST).To(Equal(canciones))
-			})
-
-			It("No debe dar error", func() {
-				Expect(err_s).NotTo(HaveOccurred())
-				Expect(err_p).NotTo(HaveOccurred())
-				Expect(err_v).NotTo(HaveOccurred())
-			})
-		})
-
-		Context("La nueva OST está vacía", func() {
-			It("Debe dar error", func() {
-				err_s = colaborador.ActualizarOST(&serie, cancionesVacio)
-				err_p = colaborador.ActualizarOST(&pelicula, cancionesVacio)
-				err_v = colaborador.ActualizarOST(&videojuego, cancionesVacio)
-
-				Expect(err_s).To(HaveOccurred())
-				Expect(err_p).To(HaveOccurred())
-				Expect(err_v).To(HaveOccurred())
-			})
-		})
-
-		Context("Se añaden canciones que ya existen en la OST", func() {
-			It("Debe dar error", func() {
-				err_s = colaborador.ActualizarOST(&serie, canciones)
-				err_p = colaborador.ActualizarOST(&pelicula, canciones)
-				err_v = colaborador.ActualizarOST(&videojuego, canciones)
-
-				Expect(err_s).To(HaveOccurred())
-				Expect(err_p).To(HaveOccurred())
-				Expect(err_v).To(HaveOccurred())
 			})
 		})
 	})
@@ -202,7 +161,7 @@ var _ = Describe("Usuario", func() {
 			})
 
 			It("La canción está en la lista de colaboradas del usuario", func() {
-				Expect(colaborador.CancionesColaboradas[0]).To(Equal(cancionCorrecta))
+				Expect(colaborador.CancionesColaboradas[0]).To(Equal(&cancionCorrecta))
 			})
 
 			It("No debe dar error", func() {
@@ -224,7 +183,7 @@ var _ = Describe("Usuario", func() {
 			})
 
 			It("La canción debe seguir en la lista de colaboradas del usuario", func() {
-				Expect(colaborador.CancionesColaboradas[0]).To(Equal(cancionCorrecta))
+				Expect(colaborador.CancionesColaboradas[0]).To(Equal(&cancionCorrecta))
 			})
 
 			It("No debe dar error", func() {
@@ -242,16 +201,11 @@ var _ = Describe("Usuario", func() {
 			})
 
 			It("Debe tener todos los campos iguales", func() {
-				Expect(serie.Titulo).To(Equal("SeriePrueba"))
-				Expect(serie.Temporada).To(Equal(1))
-				Expect(serie.Capitulo).To(Equal(1))
-				Expect(serie.OST).To(Equal([]cancion.Cancion_info{}))
+				Expect(serie.Titulo()).To(Equal("SeriePrueba-1-1"))
 
-				Expect(pelicula.Titulo).To(Equal("PeliculaPrueba"))
-				Expect(pelicula.OST).To(Equal([]cancion.Cancion_info{}))
+				Expect(pelicula.Titulo()).To(Equal("PeliculaPrueba"))
 
-				Expect(videojuego.Titulo).To(Equal("VideojuegoPrueba"))
-				Expect(videojuego.OST).To(Equal([]cancion.Cancion_info{}))
+				Expect(videojuego.Titulo()).To(Equal("VideojuegoPrueba"))
 			})
 		})
 
