@@ -1,11 +1,10 @@
 version: '3'
 
 tasks:
-  check:
+  build:
     desc: Comprueba que los paquetes compilan bien y no tienen errores
     cmds:
-      - go build -v ./internal/cancion
-      - go build -v ./internal/obra
+      - go build -v ./...
 
   test:
     desc: Ejecuta todos los tests definidos para el proyecto
