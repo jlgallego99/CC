@@ -1,6 +1,11 @@
 version: '3'
 
 tasks:
+  installdeps:
+    desc: Instala las dependencias del proyecto
+    cmds:
+      - go get -d -v ./...
+
   build:
     desc: Comprueba que los paquetes compilan bien y no tienen errores
     cmds:
