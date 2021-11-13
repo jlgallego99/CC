@@ -5,11 +5,13 @@ FROM alpine:3.14
 # Como root, actualizar todos los paquetes básicos de Alpine y crear usuario no root
 USER root
 
-# Solo el root puede usar apk, si no da error de permiso denegado
+# Solo el root puede instalar las aplicaciones, si no da error de permiso denegado
 RUN apk update && apk upgrade \
     && adduser -S ostfind \
     && apk add --no-cache go \
-    && mkdir -p /app/test
+    && apk add --no-cache curl \
+    && mkdir -p /app/test \
+    && sh -c "$(curl --location https://taskfile.dev/install.sh)" -- -d -b /usr/local/bin
 
 # Se cambia a un usuario que no sea root
 USER ostfind
@@ -23,9 +25,8 @@ COPY go.sum .
 # Se copia el archivo que contiene las instrucciones del gestor de tareas del host a dentro del docker
 COPY Taskfile.yml .
 
-# Se instala el lenguaje Go, el gestor de tareas y las dependencias
-RUN go install github.com/go-task/task/v3/cmd/task@latest && \
-    go mod download
+# Se instalan las dependencias
+RUN go mod download
 
 # Ejecuta lo que se quiere cuando se inicia el contenedor, en este caso pasa los tests usando el gestor de tareas
 CMD ["task", "test"]
