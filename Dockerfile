@@ -8,13 +8,18 @@ USER root
 # Solo el root puede usar apk, si no da error de permiso denegado
 RUN apk update && apk upgrade \
     && adduser -S ostfind \
-    && apk add --no-cache go
+    && apk add --no-cache go \
+    && mkdir -p /app/test
 
 # Se cambia a un usuario que no sea root
 USER ostfind
 
+# Se hace cd al directorio donde se va a ejecutar todo
+WORKDIR /app/test
+
 # Se copia el archivo que contiene las dependencias del host a dentro del docker
-COPY go.mod go.sum ./
+COPY go.mod .
+COPY go.sum .
 # Se copia el archivo que contiene las instrucciones del gestor de tareas del host a dentro del docker
 COPY Taskfile.yml .
 
