@@ -3,8 +3,7 @@
 FROM alpine:3.14
 
 # Como root, actualizar todos los paquetes básicos de Alpine
-RUN apk update && \
-    apk upgrade &&
+RUN apk update && apk upgrade
 
 # Se cambia a un usuario que no sea root
 USER ostfind
