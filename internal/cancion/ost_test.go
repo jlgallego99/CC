@@ -37,16 +37,72 @@ var _ = Describe("OST", func() {
 
 	Describe("Crear OSTs", func() {
 		Context("La OST es correcta", func() {
-			It("No debe dar error", func() {
-				Expect(err_s).NotTo(HaveOccurred())
-				Expect(err_p).NotTo(HaveOccurred())
-				Expect(err_v).NotTo(HaveOccurred())
+			BeforeEach(func() {
+				ost_v, err_v = cancion.NewVideojuegoOST("VideojuegoPrueba", canciones)
+				ost_p, err_p = cancion.NewPeliculaOST("PeliculaPrueba", canciones)
+				ost_s, err_s = cancion.NewSerieOST("SeriePrueba", 1, 1, canciones)
 			})
 
 			It("No debe estar vacía", func() {
 				Expect(ost_s).NotTo(Equal(cancion.BandaSonora{}))
 				Expect(ost_p).NotTo(Equal(cancion.BandaSonora{}))
 				Expect(ost_v).NotTo(Equal(cancion.BandaSonora{}))
+			})
+
+			It("La obra y lista de canciones deben ser las introducidas", func() {
+				Expect(ost_s.Canciones).To(Equal(canciones))
+				Expect(ost_p.Canciones).To(Equal(canciones))
+				Expect(ost_v.Canciones).To(Equal(canciones))
+
+				Expect(ost_s.Obra.Titulo()).To(Equal("SeriePrueba-1-1"))
+				Expect(ost_p.Obra.Titulo()).To(Equal("PeliculaPrueba"))
+				Expect(ost_v.Obra.Titulo()).To(Equal("VideojuegoPrueba"))
+			})
+
+			It("No debe dar error", func() {
+				Expect(err_s).NotTo(HaveOccurred())
+				Expect(err_p).NotTo(HaveOccurred())
+				Expect(err_v).NotTo(HaveOccurred())
+			})
+		})
+
+		Context("La OST es incorrecta", func() {
+			BeforeEach(func() {
+				ost_v, err_v = cancion.NewVideojuegoOST("VideojuegoPrueba", nil)
+				ost_p, err_p = cancion.NewPeliculaOST("PeliculaPrueba", nil)
+				ost_s, err_s = cancion.NewSerieOST("SeriePrueba", 1, 1, nil)
+			})
+
+			It("La lista de cancion debe estar vacía", func() {
+				Expect(ost_s).To(Equal(&cancion.BandaSonora{}))
+				Expect(ost_p).To(Equal(&cancion.BandaSonora{}))
+				Expect(ost_v).To(Equal(&cancion.BandaSonora{}))
+			})
+
+			It("Debe dar error", func() {
+				Expect(err_s).To(HaveOccurred())
+				Expect(err_p).To(HaveOccurred())
+				Expect(err_v).To(HaveOccurred())
+			})
+		})
+
+		Context("La obra es incorrecta", func() {
+			BeforeEach(func() {
+				ost_v, err_v = cancion.NewVideojuegoOST("", nil)
+				ost_p, err_p = cancion.NewPeliculaOST("", nil)
+				ost_s, err_s = cancion.NewSerieOST("", -1, 1, nil)
+			})
+
+			It("La lista de cancion debe estar vacía", func() {
+				Expect(ost_s).To(Equal(&cancion.BandaSonora{}))
+				Expect(ost_p).To(Equal(&cancion.BandaSonora{}))
+				Expect(ost_v).To(Equal(&cancion.BandaSonora{}))
+			})
+
+			It("Debe dar error", func() {
+				Expect(err_s).To(HaveOccurred())
+				Expect(err_p).To(HaveOccurred())
+				Expect(err_v).To(HaveOccurred())
 			})
 		})
 	})
