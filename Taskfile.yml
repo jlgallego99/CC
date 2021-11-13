@@ -15,3 +15,8 @@ tasks:
     desc: Ejecuta todos los tests definidos para el proyecto
     cmds:
       - go test -v ./...
+
+  dockertest:
+    desc: Ejecuta el contenedor docker, que pasa los tests del proyecto
+    cmds:
+      - docker run -t -v $(pwd):/app/test -it ostfind
