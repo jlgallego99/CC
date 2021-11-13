@@ -14,13 +14,13 @@ RUN apk update && apk upgrade \
 USER ostfind
 
 # Se copia el archivo que contiene las dependencias del host a dentro del docker
-COPY go.mod .
+COPY go.mod go.sum ./
 # Se copia el archivo que contiene las instrucciones del gestor de tareas del host a dentro del docker
 COPY Taskfile.yml .
 
 # Se instala el lenguaje Go, el gestor de tareas y las dependencias
 RUN go install github.com/go-task/task/v3/cmd/task@latest && \
-    task installdeps
+    go mod download
 
 # Ejecuta lo que se quiere cuando se inicia el contenedor, en este caso pasa los tests usando el gestor de tareas
 CMD ["task", "test"]
