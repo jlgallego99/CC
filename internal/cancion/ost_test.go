@@ -10,6 +10,7 @@ var _ = Describe("OST", func() {
 	var err_s, err_p, err_v error
 	var ost_s, ost_p, ost_v *cancion.BandaSonora
 	var cancionCorrecta *cancion.Cancion_info
+	var cancionObtenida *cancion.Cancion_info
 	var canciones []*cancion.Cancion_info
 	var cancionesVacio []*cancion.Cancion_info
 
@@ -36,16 +37,72 @@ var _ = Describe("OST", func() {
 
 	Describe("Crear OSTs", func() {
 		Context("La OST es correcta", func() {
-			It("No debe dar error", func() {
-				Expect(err_s).NotTo(HaveOccurred())
-				Expect(err_p).NotTo(HaveOccurred())
-				Expect(err_v).NotTo(HaveOccurred())
+			BeforeEach(func() {
+				ost_v, err_v = cancion.NewVideojuegoOST("VideojuegoPrueba", canciones)
+				ost_p, err_p = cancion.NewPeliculaOST("PeliculaPrueba", canciones)
+				ost_s, err_s = cancion.NewSerieOST("SeriePrueba", 1, 1, canciones)
 			})
 
 			It("No debe estar vacía", func() {
 				Expect(ost_s).NotTo(Equal(cancion.BandaSonora{}))
 				Expect(ost_p).NotTo(Equal(cancion.BandaSonora{}))
 				Expect(ost_v).NotTo(Equal(cancion.BandaSonora{}))
+			})
+
+			It("La obra y lista de canciones deben ser las introducidas", func() {
+				Expect(ost_s.Canciones).To(Equal(canciones))
+				Expect(ost_p.Canciones).To(Equal(canciones))
+				Expect(ost_v.Canciones).To(Equal(canciones))
+
+				Expect(ost_s.Obra.Titulo()).To(Equal("SeriePrueba-1-1"))
+				Expect(ost_p.Obra.Titulo()).To(Equal("PeliculaPrueba"))
+				Expect(ost_v.Obra.Titulo()).To(Equal("VideojuegoPrueba"))
+			})
+
+			It("No debe dar error", func() {
+				Expect(err_s).NotTo(HaveOccurred())
+				Expect(err_p).NotTo(HaveOccurred())
+				Expect(err_v).NotTo(HaveOccurred())
+			})
+		})
+
+		Context("La OST es incorrecta", func() {
+			BeforeEach(func() {
+				ost_v, err_v = cancion.NewVideojuegoOST("VideojuegoPrueba", nil)
+				ost_p, err_p = cancion.NewPeliculaOST("PeliculaPrueba", nil)
+				ost_s, err_s = cancion.NewSerieOST("SeriePrueba", 1, 1, nil)
+			})
+
+			It("La lista de cancion debe estar vacía", func() {
+				Expect(ost_s).To(Equal(&cancion.BandaSonora{}))
+				Expect(ost_p).To(Equal(&cancion.BandaSonora{}))
+				Expect(ost_v).To(Equal(&cancion.BandaSonora{}))
+			})
+
+			It("Debe dar error", func() {
+				Expect(err_s).To(HaveOccurred())
+				Expect(err_p).To(HaveOccurred())
+				Expect(err_v).To(HaveOccurred())
+			})
+		})
+
+		Context("La obra es incorrecta", func() {
+			BeforeEach(func() {
+				ost_v, err_v = cancion.NewVideojuegoOST("", nil)
+				ost_p, err_p = cancion.NewPeliculaOST("", nil)
+				ost_s, err_s = cancion.NewSerieOST("", -1, 1, nil)
+			})
+
+			It("La lista de cancion debe estar vacía", func() {
+				Expect(ost_s).To(Equal(&cancion.BandaSonora{}))
+				Expect(ost_p).To(Equal(&cancion.BandaSonora{}))
+				Expect(ost_v).To(Equal(&cancion.BandaSonora{}))
+			})
+
+			It("Debe dar error", func() {
+				Expect(err_s).To(HaveOccurred())
+				Expect(err_p).To(HaveOccurred())
+				Expect(err_v).To(HaveOccurred())
 			})
 		})
 	})
@@ -184,6 +241,50 @@ var _ = Describe("OST", func() {
 				Expect(err_s).NotTo(HaveOccurred())
 				Expect(err_p).NotTo(HaveOccurred())
 				Expect(err_v).NotTo(HaveOccurred())
+			})
+		})
+	})
+
+	Describe("Devolver una canción de la OST por su nombre", func() {
+		BeforeEach(func() {
+			err_s = ost_s.NuevaCancion(cancionCorrecta)
+			err_p = ost_p.NuevaCancion(cancionCorrecta)
+			err_v = ost_v.NuevaCancion(cancionCorrecta)
+		})
+
+		Context("La canción existe en la OST", func() {
+			BeforeEach(func() {
+				cancionObtenida, err_s = ost_s.Cancion("a")
+				cancionObtenida, err_p = ost_p.Cancion("a")
+				cancionObtenida, err_v = ost_v.Cancion("a")
+			})
+
+			It("La canción devuelta debe ser la que se quiere", func() {
+				Expect(cancionObtenida).To(Equal(cancionCorrecta))
+			})
+
+			It("No debe dar error", func() {
+				Expect(err_s).NotTo(HaveOccurred())
+				Expect(err_p).NotTo(HaveOccurred())
+				Expect(err_v).NotTo(HaveOccurred())
+			})
+		})
+
+		Context("La canción no existe en la OST", func() {
+			BeforeEach(func() {
+				cancionObtenida, err_s = ost_s.Cancion("Noexiste")
+				cancionObtenida, err_p = ost_p.Cancion("Noexiste")
+				cancionObtenida, err_v = ost_v.Cancion("Noexiste")
+			})
+
+			It("La canción devuelta debe ser nula", func() {
+				Expect(cancionObtenida).To(BeNil())
+			})
+
+			It("Debe dar error", func() {
+				Expect(err_s).To(HaveOccurred())
+				Expect(err_p).To(HaveOccurred())
+				Expect(err_v).To(HaveOccurred())
 			})
 		})
 	})
