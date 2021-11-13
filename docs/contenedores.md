@@ -19,6 +19,8 @@ Sin embargo, el gestor de tareas Task no existe en el repositorio de paquetes de
 
 Con todo esto ya se tiene un [Dockerfile](../Dockerfile) completo y listo para poder ejecutar los tests de OSTfind. Dentro de él se encuentran comentarios sobre las decisiones tomadas en cada línea, que vienen a representar lo estudiado en este documento. Principalmente se ha buscado reducir el número de capas usando una sola instrucción *RUN* para instalar múltiples paquetes y se ha usado un usuario no privilegiado para ejecutar las tareas. Tanto el lenguaje como el gestor de tareas los debe instalar el root puesto que un usuario no root no tiene permisos para instalar paquetes con apk.
 
+Se probó a usar la imagen de alpine oficial de Golang, sin embargo quedaba una imagen de mas de 500MB, teniendo ademas que instalar el paquete *build-base* en el dockerfile puesto que sin gcc no se puede ejecutar go. Con la imagen actual se tiene un tamaño de unos 450MB, que no he podido reducir más debido a que la mayoría de ese espacio pertenece a la instalación del lenguaje, y es necesario para ejecutar los tests. Si lo que hiciese el docker fuese ejecutar un binario, se podría hacer con una imagen super ligera en la que primero se compile y se genere un ejecutable, y luego este se copie a una imagen de scratch vacia donde simplemente se ejecute, pero no es el caso.
+
 Es importante tener en cuenta que este contenedor no contiene los fuentes del proyecto, si no que se ejecutará a partir del repositorio de código, redirigiendo los fuentes en una ejecución del contenedor docker (que está en DockerHub), con la siguiente orden:
 ```
 docker run -t -v `pwd`:/app/test jlgallego99/OSTfind
