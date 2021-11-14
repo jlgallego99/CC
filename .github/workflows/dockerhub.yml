@@ -32,4 +32,4 @@ jobs:
           context: .
           push: true
           # user será jlgallego99, la app será ostfind y latest es el tag (última versión)
-          tags: user/app:latest
+          tags: jlgallego99/ostfind:latest
