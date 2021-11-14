@@ -19,4 +19,4 @@ tasks:
   dockertest:
     desc: Ejecuta el contenedor docker, que pasa los tests del proyecto
     cmds:
-      - docker run -t -v $(pwd):/app/test -it ostfind
+      - docker run -t -v $(pwd):/app/test jlgallego99/ostfind
