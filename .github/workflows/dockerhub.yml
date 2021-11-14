@@ -7,22 +7,29 @@ on:
     branches:
       - 'main'
 
+# Todas las acciones que va a ejecutar este workflow se listan aquí
 jobs:
   docker:
+    # Especificar el ambiente donde ejecutar el workflow, en este caso linux es lo más adecuado y rápido
     runs-on: ubuntu-latest
     steps:
+      # Comprobar el estado del repositorio para que el propio workflow pueda acceder a él
       - name: Checkout
         uses: actions/checkout@v2
 
+      # Hacer login en DockerHub
       - name: Login to DockerHub
         uses: docker/login-action@v1
         with:
+          # Accede a los secretos del repo de github
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_PASSWORD }}
 
+      # Construye el contenedor y lo sube a dockerhub
       - name: Build and push
         uses: docker/build-push-action@v2
         with:
           context: .
           push: true
+          # user será jlgallego99, la app será ostfind y latest es el tag (última versión)
           tags: user/app:latest
