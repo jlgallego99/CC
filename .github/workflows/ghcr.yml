@@ -12,6 +12,11 @@ jobs:
   docker:
     # Especificar el ambiente donde ejecutar el workflow, en este caso linux es lo más adecuado y rápido
     runs-on: ubuntu-latest
+    # Permisos de lectura de contenido del repo y write para poder crear el paquete con el contenedor
+    permissions:
+      contents: read
+      packages: write
+
     steps:
       # Comprobar el estado del repositorio para que el propio workflow pueda acceder a él
       - name: Checkout
