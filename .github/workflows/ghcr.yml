@@ -24,7 +24,7 @@ jobs:
 
       # Hacer login en GHCR
       - name: Login to Github Container Registry
-        uses: docker/login-action@v1.10.0 # Última versión tageada de la acción
+        uses: docker/login-action@f054a8b539a109f9f41c372932f1ae047eff08c9
         with:
           # El registro donde se va a hacer login para luego subir el contenedor (ghcr)
           registry: ghcr.io
@@ -40,7 +40,7 @@ jobs:
 
       # Construye el contenedor y lo sube a GHCR
       - name: Build and push
-        uses: docker/build-push-action@v2
+        uses: docker/build-push-action@ad44023a93711e3deb337508980b4b5e9bcdc5dc
         with:
           context: .
           # Indica que se sube la imagen al registro si ha compilado
