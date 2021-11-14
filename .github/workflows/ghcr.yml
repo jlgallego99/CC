@@ -31,6 +31,13 @@ jobs:
           username: ${{ github.actor }} # Variable de entorno que simplemente extrae el nombre de usuario del que lo llama (jlgallego99)
           password: ${{ secrets.GITHUB_TOKEN }} # Acceder de forma normal a la contraseña en los secretos del repo (esta la genera las github actions automaticamente)
 
+      # Extraer los tags de la imagen docker para usarlo luego al construirla
+      - name: Extract metadata (tags, labels) for Docker
+        id: meta
+        uses: docker/metadata-action@98669ae865ea3cffbcbaa878cf57c20bbf1c6c38
+        with:
+          images: ghcr.io/ostfind # Nombre de la imagen docker a compilar
+
       # Construye el contenedor y lo sube a GHCR
       - name: Build and push
         uses: docker/build-push-action@v2
@@ -38,5 +45,6 @@ jobs:
           context: .
           # Indica que se sube la imagen al registro si ha compilado
           push: true
-          # user será jlgallego99, la app será ostfind y latest es el tag (última versión)
-          tags: ghcr.io/ostfind:latest
+          # Coger los metadatos extraídos y crear el contenedor con ese tag
+          tags: ${{ steps.meta.outputs.tags }}
+          labels: ${{ steps.meta.outputs.labels }}
