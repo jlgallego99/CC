@@ -1,4 +1,4 @@
-name: DockerHub jlgallego99/ostfind
+name: GHCR jlgallego99/ostfind
 
 # El evento que activa este workflow en este caso es el de "push"
 # Cada vez que se actualice la rama principal (main) del repositorio, se construirá y subirá el contenedor
@@ -17,15 +17,16 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v2
 
-      # Hacer login en DockerHub
-      - name: Login to DockerHub
+      # Hacer login en GHCR
+      - name: Login to Github Container Registry
         uses: docker/login-action@v1.10.0 # Última versión tageada de la acción
         with:
-          # Accede a los secretos del repo de github
-          username: ${{ secrets.DOCKERHUB_USERNAME }}
-          password: ${{ secrets.DOCKERHUB_PASSWORD }}
+          # El registro donde se va a hacer login para luego subir el contenedor (ghcr)
+          registry: ghcr.io
+          username: ${{ github.actor }} # Variable de entorno que simplemente extrae el nombre de usuario del que lo llama (jlgallego99)
+          password: ${{ secrets.GITHUB_TOKEN }} # Acceder de forma normal a la contraseña en los secretos del repo (esta la genera las github actions automaticamente)
 
-      # Construye el contenedor y lo sube a dockerhub
+      # Construye el contenedor y lo sube a GHCR
       - name: Build and push
         uses: docker/build-push-action@v2
         with:
