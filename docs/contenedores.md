@@ -38,9 +38,9 @@ El [workflow](../.github/workflows/dockerhub.yml) contiene comentarios explicand
 En cada una de las las tareas que hace el workflow se usan distintas github actions con un tag determinado que identifica a un commit concreto de esa acción, esto nos asegura que es una versión que funciona, eligiendo en este caso la última por ser la más estable y utilizada. Estas tareas son: 
 - Comprobar el estado del repositorio para que el propio workflow pueda acceder a él
 - Hacer login en la cuenta de DockerHub
-- Construir la imagen y subirla a DockerHub
+- Construir el contenedor y subirlo a DockerHub
 
-En la documentación se nos recomendaban otras acciones que no se han puesto, como QEMU que sirve para virtualizar y construir en más plataformas, Buildx para construir imágenes multiplataforma o extraer metadatos de github para nombrar los tags, pero no es necesario puesto que solo vamos a usar docker y dockerhub y vamos a subir siempre una imagen latest, es decir última versión, indicándoselo directamente a la acción de construir y subir. 
+En la documentación se nos recomendaban otras acciones que no se han puesto, como QEMU que sirve para virtualizar y construir en más plataformas, Buildx para construir imágenes multiplataforma o extraer metadatos de github para nombrar los tags, pero no es necesario puesto que solo vamos a usar docker y dockerhub y vamos a subir siempre un contenedor latest, es decir última versión, indicándoselo directamente a la acción de construir y subir. 
 
 Con esto, se nos queda un workflow muy simple y fácil que nos permite subir el contenedor automáticamente.
 
