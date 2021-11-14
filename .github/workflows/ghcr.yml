@@ -39,4 +39,4 @@ jobs:
           # Indica que se sube la imagen al registro si ha compilado
           push: true
           # user será jlgallego99, la app será ostfind y latest es el tag (última versión)
-          tags: jlgallego99/ostfind:latest
+          tags: ghcr.io/ostfind:latest
