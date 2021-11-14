@@ -1,13 +1,22 @@
 version: '3'
 
 tasks:
-  check:
+  installdeps:
+    desc: Instala las dependencias del proyecto
+    cmds:
+      - go get -d -v ./...
+
+  build:
     desc: Comprueba que los paquetes compilan bien y no tienen errores
     cmds:
-      - go build -v ./internal/cancion
-      - go build -v ./internal/obra
+      - go build -v ./...
 
   test:
     desc: Ejecuta todos los tests definidos para el proyecto
     cmds:
       - go test -v ./...
+
+  dockertest:
+    desc: Ejecuta el contenedor docker, que pasa los tests del proyecto
+    cmds:
+      - docker run -t -v $(pwd):/app/test jlgallego99/ostfind
