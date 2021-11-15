@@ -7,9 +7,10 @@ on:
     branches:
       - 'main'
 
+# Definir variables de entorno
 env:
-  REGISTRY: ghcr.io
-  IMAGE_NAME: ${{ github.repository }}
+  REGISTRY: ghcr.io # La dirección del Github Container Registry
+  IMAGE_NAME: ${{ github.repository }} # Coge el nombre del repositorio de github para ponérselo de nombre a la imagen
 
 # Todas las acciones que va a ejecutar este workflow se listan aquí
 jobs:
@@ -28,7 +29,7 @@ jobs:
 
       # Hacer login en GHCR
       - name: Login to Github Container Registry
-        uses: docker/login-action@f054a8b539a109f9f41c372932f1ae047eff08c9
+        uses: docker/login-action@v1.10.0 # Última versión tageada de la acción
         with:
           # El registro donde se va a hacer login para luego subir el contenedor (ghcr)
           registry: ghcr.io
@@ -38,13 +39,13 @@ jobs:
       # Extraer los tags de la imagen docker para usarlo luego al construirla
       - name: Extract metadata (tags, labels) for Docker
         id: meta
-        uses: docker/metadata-action@98669ae865ea3cffbcbaa878cf57c20bbf1c6c38
+        uses: docker/metadata-action@98669ae865ea3cffbcbaa878cf57c20bbf1c6c38 # Versión recomendada por la documentación y más usada en github
         with:
           images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }} # Nombre de la imagen docker a compilar
 
       # Construye el contenedor y lo sube a GHCR
       - name: Build and push
-        uses: docker/build-push-action@ad44023a93711e3deb337508980b4b5e9bcdc5dc
+        uses: docker/build-push-action@v2
         with:
           context: .
           # Indica que se sube la imagen al registro si ha compilado
