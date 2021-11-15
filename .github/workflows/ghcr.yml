@@ -7,6 +7,10 @@ on:
     branches:
       - 'main'
 
+env:
+  REGISTRY: ghcr.io
+  IMAGE_NAME: ${{ github.repository }}
+
 # Todas las acciones que va a ejecutar este workflow se listan aquí
 jobs:
   docker:
@@ -36,7 +40,7 @@ jobs:
         id: meta
         uses: docker/metadata-action@98669ae865ea3cffbcbaa878cf57c20bbf1c6c38
         with:
-          images: ghcr.io/ostfind # Nombre de la imagen docker a compilar
+          images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }} # Nombre de la imagen docker a compilar
 
       # Construye el contenedor y lo sube a GHCR
       - name: Build and push
