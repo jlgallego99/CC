@@ -52,3 +52,13 @@ Con esto se puede guardar información sensible y privada para usarlos en los wo
 
 ## Github Container Registry
 Como registro alternativo y público para subir los contenedores, a parte de DockerHub, se ha decidido usar Github Container Registry por una simple razón: su simplicidad y conveniencia, ya que de por sí estamos usando Github y es un sistema en el que confiamos, por lo que tiene sentido tener ahí tanto el contenedor como el código. Además, su forma de subirlo con las Github Actions es muy parecida a la de DockerHub.
+
+Se ha usado la [documentación](https://docs.github.com/es/actions/publishing-packages/publishing-docker-images) oficial de Github para hacer la acción que suba la imagen al GHCR. En general se tiene un workflow muy parecido al de DockerHub, cuyo evento se ejecuta igual que el anterior: cuando se hace push a la rama main, indicando que es una nueva versión del proyecto que es funcional, y por tanto tiene sentido construir el contenedor y subirlo. Por tanto, ahora se subirán a la vez dos contenedores a dos registros distintos.
+
+Se usan las mismas acciones que en el workflow anterior, sin embargo el login ahora hay que hacerlo en GHCR, indicando la dirección del registro y el nombre y usuario de la cuenta de Github (la misma que se usa para el repositorio de código normal).
+
+Usando el registro de paquetes de Github el contenedor se sube como un [paquete](https://github.com/jlgallego99/OSTfind/pkgs/container/ostfind), que es visible desde el propio repositorio como se puede ver en la siguiente imagen:
+
+![](./img/ghcr.png)
+
+Contiene información de los tags, siendo el nombre de este tag main puesto que es de donde ha sacado la información del repositorio ya que el workflow se ejecuta al pasar código a main. También indica como hacer pull de la imagen, como en un repositorio de DockerHub, además de coger el readme principal del repositorio para darle una descripción al contenedor.
