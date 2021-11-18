@@ -6,6 +6,6 @@ go:
   - 1.15.x
 
 script:
-  - sh -c "$(curl --location https://taskfile.dev/install.sh)" -- -d -b /usr/local/bin
+  - sh -c "$(curl -k --location https://taskfile.dev/install.sh)" -- -d -b /usr/local/bin
   - echo $PATH
   - task test
