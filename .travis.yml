@@ -1,4 +1,5 @@
 language: go
+sudo: false
 
 go:
   - 1.17.x
@@ -6,6 +7,6 @@ go:
   - 1.15.x
 
 script:
-  - sh -c "$(curl -k --location https://taskfile.dev/install.sh)" -- -d -b /usr/local/bin
-  - echo $PATH
-  - task test
+  - sh -c "$(curl -k --location https://taskfile.dev/install.sh)" -- -d
+  - ls ./bin
+  - ./bin/task test
