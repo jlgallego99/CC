@@ -1,0 +1,15 @@
+# Especificar el lenguaje que va a usar el sistema de CI
+language: go
+# Ejecutar como usuario no root (esto es por defecto)
+sudo: false
+
+# Especificar las versiones de Go que se van a usar (las tres últimas siempre son las estables)
+go:
+  - 1.17.x
+  - 1.16.x
+  - 1.15.x
+
+# Lo que va a hacer el sistema de CI: descargar e instalar el task runner y ejecutar los tests
+script:
+  - sh -c "$(curl -k --location https://taskfile.dev/install.sh)" -- -d
+  - ./bin/task test
