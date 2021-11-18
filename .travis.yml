@@ -1,0 +1,10 @@
+language: go
+
+go:
+  - 1.17.x
+  - 1.16.x
+  - 1.15.x
+
+script:
+  - curl -sL https://taskfile.dev/install.sh | sh
+  - ./bin/task test
