@@ -1,3 +1,5 @@
+[![Build Status](https://app.travis-ci.com/jlgallego99/OSTfind.svg?branch=main)](https://app.travis-ci.com/jlgallego99/OSTfind)
+
 # OSTfind
 Sistema colaborativo en el cual los usuarios pueden buscar dónde y cuándo suena una canción de una banda sonora de una película, serie o videojuego, y recibir recomendaciones en base a sus preferencias. Desarrollado como proyecto de la asignatura Cloud Computing del Máster en Ingeniería Informática. 
 
