@@ -17,5 +17,10 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v2
 
+      # Instalar el gestor de tareas para poder usarlo
+      - name: Install task runner
+        run: sh -c "$(curl -k --location https://taskfile.dev/install.sh)" -- -d
+
+      # Ejecutar los tests del contenedor de DockerHub usando el gestor de tareas
       - name: Run docker tests
-        run: docker run -t -v $(pwd):/app/test jlgallego99/ostfind
+        run: ./bin/task test
