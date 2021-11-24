@@ -5,7 +5,7 @@ name: Tests Docker
 on:
   push:
     branches:
-      - 'hito-4'
+      - 'main'
 
 # Todas las acciones que va a ejecutar este workflow se listan aquí
 jobs:
@@ -14,6 +14,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       # Comprobar el estado del repositorio para que el propio workflow pueda acceder a él
+      # Así se podrán redirigir los fuentes al docker
       - name: Checkout
         uses: actions/checkout@v2
 
