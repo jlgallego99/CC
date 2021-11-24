@@ -1,7 +1,8 @@
 name: Tests Docker
 
 # El evento que activa este workflow en este caso es el de "push"
-# Cada vez que se actualice la rama principal (main) del repositorio, se ejecutar
+# Cada vez que se actualice la rama principal (main) del repositorio
+# Se ejecutarán los tests del contenedor docker
 on:
   push:
     branches:
