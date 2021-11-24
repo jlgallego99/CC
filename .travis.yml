@@ -1,6 +1,7 @@
 # Especificar el lenguaje que va a usar el sistema de CI
 language: go
 
+# Especificar que sólo se ejecute el CI en main
 branches:
   only:
   - main
