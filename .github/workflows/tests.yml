@@ -1,8 +1,8 @@
 name: Tests Docker
 
 # El evento que activa este workflow en este caso es el de "push"
-# Cada vez que se actualice la rama principal (main) del repositorio
-# Se ejecutarán los tests del contenedor docker
+# Cada vez que se actualice la rama principal (main) del repositorio 
+# se ejecutarán los tests del contenedor docker
 on:
   push:
     branches:
@@ -23,6 +23,6 @@ jobs:
       - name: Install task runner
         run: sh -c "$(curl -k --location https://taskfile.dev/install.sh)" -- -d
 
-      # Ejecutar los tests del contenedor de DockerHub usando el gestor de tareas
+      # Ejecutar los tests del contenedor de DockerHub usando el gestor de tareas ya instalado
       - name: Run docker tests
         run: ./bin/task dockertest
