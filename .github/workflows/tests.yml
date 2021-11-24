@@ -1,0 +1,21 @@
+name: Tests Docker
+
+# El evento que activa este workflow en este caso es el de "push"
+# Cada vez que se actualice la rama principal (main) del repositorio, se construirá y subirá el contenedor
+on:
+  push:
+    branches:
+      - 'hito-4'
+
+# Todas las acciones que va a ejecutar este workflow se listan aquí
+jobs:
+  docker:
+    # Especificar el ambiente donde ejecutar el workflow, en este caso linux es lo más adecuado y rápido
+    runs-on: ubuntu-latest
+    steps:
+      # Comprobar el estado del repositorio para que el propio workflow pueda acceder a él
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Run docker tests
+        run: docker run -t -v $(pwd):/app/test jlgallego99/ostfind
