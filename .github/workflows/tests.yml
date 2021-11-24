@@ -23,4 +23,4 @@ jobs:
 
       # Ejecutar los tests del contenedor de DockerHub usando el gestor de tareas
       - name: Run docker tests
-        run: ./bin/task test
+        run: ./bin/task dockertest
