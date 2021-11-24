@@ -1,7 +1,9 @@
 # Especificar el lenguaje que va a usar el sistema de CI
 language: go
-# Ejecutar como usuario no root (esto es por defecto)
-sudo: false
+
+branches:
+  only:
+  - main
 
 # Especificar las versiones de Go que se van a usar (las dos últimas siempre son las que tienen soporte)
 go:
