@@ -7,8 +7,8 @@ import (
 func startRoutes() *gin.Engine {
 	router := gin.Default()
 
-	router.POST("/osts/:obra/:ost", NewOST)
-	router.GET("/osts/:obra/:ost", GetOST)
+	router.POST("/osts/:obra/:ost", newOST)
+	router.GET("/osts/:obra/:ost", getOST)
 
 	return router
 }
