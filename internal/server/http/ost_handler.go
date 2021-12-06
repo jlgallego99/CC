@@ -67,6 +67,8 @@ func getOST(c *gin.Context) {
 
 	for _, ost := range osts {
 		if ost.Obra.Titulo() == ostName {
+			err = nil
+
 			c.JSON(http.StatusOK, gin.H{
 				"message": "OST encontrada",
 				"ost": gin.H{
@@ -74,10 +76,12 @@ func getOST(c *gin.Context) {
 					"canciones": ost.Canciones,
 				},
 			})
+		} else {
+			err = errors.New("no existe esa OST")
 		}
 	}
 
 	if err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"error": "no existe esa OST"})
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 	}
 }
