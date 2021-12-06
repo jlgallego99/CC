@@ -11,8 +11,19 @@ import (
 // Guardar temporalmente las OSTs en una variable global
 var osts []*cancion.BandaSonora
 
+type Cancion_msg struct {
+	Titulo     string `json:"titulo"`
+	Compositor string `json:"compositor"`
+	Genero     string `json:"genero"`
+}
+
+type Canciones_msg struct {
+	Canciones []Cancion_msg `json:"canciones"`
+}
+
 func newOST(c *gin.Context) {
 	var ost *cancion.BandaSonora
+	var canciones []*cancion.Cancion_info
 	var err error
 
 	obra := c.Param("obra")
@@ -36,6 +47,25 @@ func newOST(c *gin.Context) {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 	}
 
+	// Leer canciones del cuerpo de la petición
+	cancionesmsg := new(Canciones_msg)
+	err = c.BindJSON(cancionesmsg)
+	if err != nil {
+		c.AbortWithError(http.StatusBadRequest, err)
+	}
+
+	// Añadir canciones de la ost
+	for _, cmsg := range cancionesmsg.Canciones {
+		can, err := cancion.NewCancion(cmsg.Titulo, cmsg.Compositor, cancion.StringToGenero[cmsg.Genero])
+
+		if err != nil {
+			c.AbortWithError(http.StatusBadRequest, err)
+		}
+
+		canciones = append(canciones, can)
+	}
+
+	ost.ActualizarOST(canciones)
 	osts = append(osts, ost)
 
 	c.JSON(http.StatusOK, gin.H{
