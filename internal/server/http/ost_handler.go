@@ -12,10 +12,11 @@ import (
 var osts []*cancion.BandaSonora
 
 func newOST(c *gin.Context) {
-	obra := c.Param("obra")
-	ostName := c.Param("ost")
 	var ost *cancion.BandaSonora
 	var err error
+
+	obra := c.Param("obra")
+	ostName := c.Param("ost")
 
 	switch obra {
 	case "videojuego":
@@ -26,6 +27,7 @@ func newOST(c *gin.Context) {
 
 	case "pelicula":
 		ost, err = cancion.NewPeliculaOST(ostName, make([]*cancion.Cancion_info, 0))
+
 	default:
 		err = errors.New("no se reconoce el tipo de OST")
 	}
@@ -46,7 +48,36 @@ func newOST(c *gin.Context) {
 }
 
 func getOST(c *gin.Context) {
-	c.JSON(http.StatusOK, gin.H{
-		"nombre": osts[0].Obra.Titulo(),
-	})
+	var err error
+
+	obra := c.Param("obra")
+	ostName := c.Param("ost")
+
+	switch obra {
+	case "videojuego", "serie", "pelicula":
+		err = nil
+
+	default:
+		err = errors.New("no se reconoce el tipo de OST")
+	}
+
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+	}
+
+	for _, ost := range osts {
+		if ost.Obra.Titulo() == ostName {
+			c.JSON(http.StatusOK, gin.H{
+				"message": "OST encontrada",
+				"ost": gin.H{
+					"nombre":    ost.Obra.Titulo(),
+					"canciones": ost.Canciones,
+				},
+			})
+		}
+	}
+
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "no existe esa OST"})
+	}
 }
