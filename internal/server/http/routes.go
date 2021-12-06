@@ -4,7 +4,7 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-func startRoutes() *gin.Engine {
+func StartRoutes() *gin.Engine {
 	router := gin.Default()
 
 	router.POST("/osts/:obra/:ost", newOST)
