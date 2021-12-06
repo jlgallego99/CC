@@ -76,6 +76,8 @@ func getOST(c *gin.Context) {
 					"canciones": ost.Canciones,
 				},
 			})
+
+			return
 		} else {
 			err = errors.New("no existe esa OST")
 		}
