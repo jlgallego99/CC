@@ -1,11 +1,15 @@
 package http
 
 import (
+	"errors"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
 	"github.com/jlgallego99/OSTfind/internal/cancion"
 )
+
+// Guardar temporalmente las OSTs en una variable global
+var osts []*cancion.BandaSonora
 
 func newOST(c *gin.Context) {
 	obra := c.Param("obra")
@@ -22,11 +26,15 @@ func newOST(c *gin.Context) {
 
 	case "pelicula":
 		ost, err = cancion.NewPeliculaOST(ostName, make([]*cancion.Cancion_info, 0))
+	default:
+		err = errors.New("no se reconoce el tipo de OST")
 	}
 
 	if err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 	}
+
+	osts = append(osts, ost)
 
 	c.JSON(http.StatusOK, gin.H{
 		"message": "OST creada",
@@ -38,5 +46,7 @@ func newOST(c *gin.Context) {
 }
 
 func getOST(c *gin.Context) {
-
+	c.JSON(http.StatusOK, gin.H{
+		"nombre": osts[0].Obra.Titulo(),
+	})
 }
