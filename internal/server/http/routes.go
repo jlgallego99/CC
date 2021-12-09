@@ -12,5 +12,7 @@ func SetupRoutes() *gin.Engine {
 	router.GET("/osts", OSTs)
 	router.GET("/osts/:obra/:ostid", getOST)
 
+	router.NoRoute(NoRoute)
+
 	return router
 }

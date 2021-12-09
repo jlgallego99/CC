@@ -139,3 +139,7 @@ func OSTs(c *gin.Context) {
 		"osts":    osts,
 	})
 }
+
+func NoRoute(c *gin.Context) {
+	c.JSON(http.StatusNotFound, gin.H{"message": "Ruta inexistente"})
+}
