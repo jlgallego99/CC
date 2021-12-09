@@ -23,42 +23,6 @@ const (
 	Vocal
 )
 
-/*func (g Genero) String() string {
-	switch g {
-	case Genero_Desconocido:
-		return "desconocido"
-
-	case Rock:
-		return "rock"
-
-	case Pop:
-		return "pop"
-
-	case Ambiental:
-		return "ambiental"
-
-	case Electronica:
-		return "electrónica"
-
-	case Funk:
-		return "funk"
-
-	case Jazz:
-		return "jazz"
-
-	case Orquesta:
-		return "orquesta"
-
-	case Vocal:
-		return "vocal"
-
-	default:
-		return "desconocido"
-	}
-
-	return generoToString[g]
-}*/
-
 var StringToGenero = map[string]Genero{
 	"desconocido": Genero_Desconocido,
 	"rock":        Rock,

@@ -9,6 +9,7 @@ import (
 )
 
 type BandaSonora struct {
+	Id        string
 	Canciones []*Cancion_info
 	Obra      obra.Obra
 }
