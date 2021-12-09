@@ -110,6 +110,7 @@ func getOST(c *gin.Context) {
 			c.JSON(http.StatusOK, gin.H{
 				"message": "OST encontrada",
 				"ost": gin.H{
+					"id":        ost.Id,
 					"nombre":    ost.Obra.Titulo(),
 					"canciones": ost.Canciones,
 				},
