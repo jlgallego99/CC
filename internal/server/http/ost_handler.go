@@ -17,8 +17,10 @@ type Cancion_msg struct {
 	Genero     string `json:"genero"`
 }
 
-type Canciones_msg struct {
+type Ost_msg struct {
 	Nombre    string        `json:"nombre"`
+	Temporada int           `json:"temporada"`
+	Capitulo  int           `json:"capitulo"`
 	Canciones []Cancion_msg `json:"canciones"`
 }
 
@@ -28,7 +30,7 @@ func newOST(c *gin.Context) {
 	var err error
 
 	// Leer cuerpo de la petición
-	cancionesmsg := new(Canciones_msg)
+	cancionesmsg := new(Ost_msg)
 	err = c.BindJSON(cancionesmsg)
 	if err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
@@ -42,7 +44,7 @@ func newOST(c *gin.Context) {
 		ost, err = cancion.NewVideojuegoOST(cancionesmsg.Nombre, make([]*cancion.Cancion_info, 0))
 
 	case "serie":
-		ost, err = cancion.NewSerieOST(cancionesmsg.Nombre, 1, 1, make([]*cancion.Cancion_info, 0))
+		ost, err = cancion.NewSerieOST(cancionesmsg.Nombre, cancionesmsg.Temporada, cancionesmsg.Capitulo, make([]*cancion.Cancion_info, 0))
 
 	case "pelicula":
 		ost, err = cancion.NewPeliculaOST(cancionesmsg.Nombre, make([]*cancion.Cancion_info, 0))
