@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"reflect"
 
+	"github.com/google/uuid"
 	"github.com/jlgallego99/OSTfind/internal/obra"
 )
 
@@ -32,6 +33,7 @@ func NewVideojuegoOST(titulo string, canciones []*Cancion_info) (*BandaSonora, e
 	}
 
 	return &BandaSonora{
+		Id:        uuid.New().String(),
 		Obra:      v,
 		Canciones: canciones,
 	}, nil
@@ -49,6 +51,7 @@ func NewPeliculaOST(titulo string, canciones []*Cancion_info) (*BandaSonora, err
 	}
 
 	return &BandaSonora{
+		Id:        uuid.New().String(),
 		Obra:      p,
 		Canciones: canciones,
 	}, nil
@@ -66,6 +69,7 @@ func NewSerieOST(titulo string, temporada, capitulo int, canciones []*Cancion_in
 	}
 
 	return &BandaSonora{
+		Id:        uuid.New().String(),
 		Obra:      p,
 		Canciones: canciones,
 	}, nil
