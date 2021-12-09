@@ -31,7 +31,9 @@ func newOST(c *gin.Context) {
 	cancionesmsg := new(Canciones_msg)
 	err = c.BindJSON(cancionesmsg)
 	if err != nil {
-		c.AbortWithError(http.StatusBadRequest, err)
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+
+		return
 	}
 
 	obra := c.Param("obra")
@@ -50,7 +52,9 @@ func newOST(c *gin.Context) {
 	}
 
 	if err != nil {
-		c.AbortWithError(http.StatusBadRequest, err)
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+
+		return
 	}
 
 	// Añadir canciones de la ost
@@ -58,7 +62,9 @@ func newOST(c *gin.Context) {
 		can, err := cancion.NewCancion(cmsg.Titulo, cmsg.Compositor, cancion.StringToGenero[cmsg.Genero])
 
 		if err != nil {
-			c.AbortWithError(http.StatusBadRequest, err)
+			c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+
+			return
 		}
 
 		canciones = append(canciones, can)
@@ -92,7 +98,9 @@ func getOST(c *gin.Context) {
 	}
 
 	if err != nil {
-		c.AbortWithError(http.StatusBadRequest, err)
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+
+		return
 	}
 
 	for _, ost := range osts {
@@ -115,5 +123,7 @@ func getOST(c *gin.Context) {
 
 	if err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+
+		return
 	}
 }
