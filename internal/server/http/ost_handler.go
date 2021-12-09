@@ -18,6 +18,7 @@ type Cancion_msg struct {
 }
 
 type Canciones_msg struct {
+	Nombre    string        `json:"nombre"`
 	Canciones []Cancion_msg `json:"canciones"`
 }
 
@@ -26,18 +27,23 @@ func newOST(c *gin.Context) {
 	var canciones []*cancion.Cancion_info
 	var err error
 
-	obra := c.Param("obra")
-	ostName := c.Param("ost")
+	// Leer cuerpo de la petición
+	cancionesmsg := new(Canciones_msg)
+	err = c.BindJSON(cancionesmsg)
+	if err != nil {
+		c.AbortWithError(http.StatusBadRequest, err)
+	}
 
+	obra := c.Param("obra")
 	switch obra {
 	case "videojuego":
-		ost, err = cancion.NewVideojuegoOST(ostName, make([]*cancion.Cancion_info, 0))
+		ost, err = cancion.NewVideojuegoOST(cancionesmsg.Nombre, make([]*cancion.Cancion_info, 0))
 
 	case "serie":
-		ost, err = cancion.NewSerieOST(ostName, 1, 1, make([]*cancion.Cancion_info, 0))
+		ost, err = cancion.NewSerieOST(cancionesmsg.Nombre, 1, 1, make([]*cancion.Cancion_info, 0))
 
 	case "pelicula":
-		ost, err = cancion.NewPeliculaOST(ostName, make([]*cancion.Cancion_info, 0))
+		ost, err = cancion.NewPeliculaOST(cancionesmsg.Nombre, make([]*cancion.Cancion_info, 0))
 
 	default:
 		err = errors.New("no se reconoce el tipo de OST")
@@ -45,13 +51,6 @@ func newOST(c *gin.Context) {
 
 	if err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
-	}
-
-	// Leer canciones del cuerpo de la petición
-	cancionesmsg := new(Canciones_msg)
-	err = c.BindJSON(cancionesmsg)
-	if err != nil {
-		c.AbortWithError(http.StatusBadRequest, err)
 	}
 
 	// Añadir canciones de la ost
@@ -71,6 +70,7 @@ func newOST(c *gin.Context) {
 	c.JSON(http.StatusOK, gin.H{
 		"message": "OST creada",
 		"ost": gin.H{
+			"id":        ost.Id,
 			"nombre":    ost.Obra.Titulo(),
 			"canciones": ost.Canciones,
 		},
