@@ -3,11 +3,10 @@ package http
 import (
 	"errors"
 	"net/http"
-	"reflect"
-	"strings"
 
 	"github.com/gin-gonic/gin"
 	"github.com/jlgallego99/OSTfind/internal/cancion"
+	o "github.com/jlgallego99/OSTfind/internal/obra"
 )
 
 // Guardar temporalmente las OSTs en una variable global
@@ -108,19 +107,29 @@ func getOST(c *gin.Context) {
 	}
 
 	for _, ost := range osts {
-		if ost.Id == ostId && strings.EqualFold(reflect.TypeOf(ost).String(), obra) {
-			err = nil
+		if ost.Id == ostId {
+			if _, obraCorrecta := ost.Obra.(o.Videojuego); obraCorrecta && obra == "videojuego" {
+				err = nil
+			} else if _, obraCorrecta := ost.Obra.(o.Serie); obraCorrecta && obra == "serie" {
+				err = nil
+			} else if _, obraCorrecta := ost.Obra.(o.Pelicula); obraCorrecta && obra == "pelicula" {
+				err = nil
+			} else {
+				err = errors.New("No existe esa OST para " + obra)
+			}
 
-			c.JSON(http.StatusOK, gin.H{
-				"message": "OST encontrada",
-				"ost": gin.H{
-					"id":        ost.Id,
-					"nombre":    ost.Obra.Titulo(),
-					"canciones": ost.Canciones,
-				},
-			})
+			if err == nil {
+				c.JSON(http.StatusOK, gin.H{
+					"message": "OST encontrada",
+					"ost": gin.H{
+						"id":        ost.Id,
+						"nombre":    ost.Obra.Titulo(),
+						"canciones": ost.Canciones,
+					},
+				})
 
-			return
+				return
+			}
 		} else {
 			err = errors.New("no existe esa OST")
 		}
