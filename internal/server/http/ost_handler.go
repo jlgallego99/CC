@@ -50,7 +50,7 @@ func newOST(c *gin.Context) {
 	}
 
 	if err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		c.AbortWithError(http.StatusBadRequest, err)
 	}
 
 	// Añadir canciones de la ost
@@ -92,7 +92,7 @@ func getOST(c *gin.Context) {
 	}
 
 	if err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		c.AbortWithError(http.StatusBadRequest, err)
 	}
 
 	for _, ost := range osts {
