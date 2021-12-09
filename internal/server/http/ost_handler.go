@@ -132,3 +132,10 @@ func getOST(c *gin.Context) {
 		return
 	}
 }
+
+func OSTs(c *gin.Context) {
+	c.JSON(http.StatusOK, gin.H{
+		"message": "Todas las OSTs del sistema",
+		"osts":    osts,
+	})
+}
