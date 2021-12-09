@@ -3,6 +3,7 @@ package http
 import (
 	"errors"
 	"net/http"
+	"reflect"
 
 	"github.com/gin-gonic/gin"
 	"github.com/jlgallego99/OSTfind/internal/cancion"
@@ -106,7 +107,7 @@ func getOST(c *gin.Context) {
 	}
 
 	for _, ost := range osts {
-		if ost.Id == ostId {
+		if ost.Id == ostId && reflect.TypeOf(ost).String() == obra {
 			err = nil
 
 			c.JSON(http.StatusOK, gin.H{
