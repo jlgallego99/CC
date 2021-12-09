@@ -87,7 +87,7 @@ func getOST(c *gin.Context) {
 	var err error
 
 	obra := c.Param("obra")
-	ostName := c.Param("ost")
+	ostId := c.Param("ostid")
 
 	switch obra {
 	case "videojuego", "serie", "pelicula":
@@ -104,7 +104,7 @@ func getOST(c *gin.Context) {
 	}
 
 	for _, ost := range osts {
-		if ost.Obra.Titulo() == ostName {
+		if ost.Id == ostId {
 			err = nil
 
 			c.JSON(http.StatusOK, gin.H{
