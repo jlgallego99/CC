@@ -73,20 +73,18 @@ var _ = Describe("Routes", func() {
 			body_s, _ := json.Marshal(nuevaOst_s)
 			req_s, _ = http.NewRequest("POST", "/osts/videojuego", bytes.NewReader(body_s))
 			router.ServeHTTP(w_s, req_s)
+
+			res_v = &Respuesta{}
+			err_v = json.Unmarshal(w_v.Body.Bytes(), res_v)
+
+			res_p = &Respuesta{}
+			err_p = json.Unmarshal(w_p.Body.Bytes(), res_p)
+
+			res_s = &Respuesta{}
+			err_s = json.Unmarshal(w_s.Body.Bytes(), res_s)
 		})
 
 		Context("La OST es correcta", func() {
-			BeforeEach(func() {
-				res_v = &Respuesta{}
-				err_v = json.Unmarshal(w_v.Body.Bytes(), res_v)
-
-				res_p = &Respuesta{}
-				err_p = json.Unmarshal(w_p.Body.Bytes(), res_p)
-
-				res_s = &Respuesta{}
-				err_s = json.Unmarshal(w_s.Body.Bytes(), res_s)
-			})
-
 			It("El JSON de respuesta no debe tener errores", func() {
 				Expect(err_v).NotTo(HaveOccurred())
 				Expect(err_p).NotTo(HaveOccurred())
@@ -101,6 +99,20 @@ var _ = Describe("Routes", func() {
 				Expect(res_v.OST.Nombre).To(Equal("OST Prueba"))
 				Expect(res_p.OST.Nombre).To(Equal("OST Prueba"))
 				Expect(res_s.OST.Nombre).To(Equal("OST Prueba"))
+
+				Expect(res_v.OST.Canciones[0].Titulo).To(Equal("Cancion 1"))
+				Expect(res_p.OST.Canciones[0].Titulo).To(Equal("Cancion 1"))
+				Expect(res_s.OST.Canciones[0].Titulo).To(Equal("Cancion 1"))
+				Expect(res_v.OST.Canciones[1].Titulo).To(Equal("Cancion 2"))
+				Expect(res_p.OST.Canciones[1].Titulo).To(Equal("Cancion 2"))
+				Expect(res_s.OST.Canciones[1].Titulo).To(Equal("Cancion 2"))
+
+				Expect(res_v.OST.Canciones[0].Compositor).To(Equal("Compositor 1"))
+				Expect(res_p.OST.Canciones[0].Compositor).To(Equal("Compositor 1"))
+				Expect(res_s.OST.Canciones[0].Compositor).To(Equal("Compositor 1"))
+				Expect(res_v.OST.Canciones[1].Compositor).To(Equal("Compositor 2"))
+				Expect(res_p.OST.Canciones[1].Compositor).To(Equal("Compositor 2"))
+				Expect(res_s.OST.Canciones[1].Compositor).To(Equal("Compositor 2"))
 			})
 
 			It("La OST debería tener dos canciones", func() {
