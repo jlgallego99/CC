@@ -18,6 +18,11 @@ type Respuesta struct {
 	OST     OST_Respuesta `json:"ost"`
 }
 
+type Respuesta_multi struct {
+	Message string          `json:"message"`
+	OSTs    []OST_Respuesta `json:"osts"`
+}
+
 type OST_Respuesta struct {
 	Id        string                 `json:"id"`
 	Nombre    string                 `json:"nombre"`
@@ -25,16 +30,17 @@ type OST_Respuesta struct {
 }
 
 var _ = Describe("Routes", func() {
-	var router *gin.Engine
+	var router = server.SetupRoutes()
 	var w_v, w_p, w_s *httptest.ResponseRecorder
 	var req_v, req_p, req_s *http.Request
 	var nuevaOst_pv, nuevaOst_s gin.H
 	var res_v, res_p, res_s *Respuesta
+	var resm_v /*, resm_p, resm_s*/ *Respuesta_multi
 	var canciones []gin.H
 	var err_v, err_p, err_s error
+	//var id_v /*, id_p, id_s*/ string
 
 	BeforeEach(func() {
-		router = server.SetupRoutes()
 		w_v = httptest.NewRecorder()
 		w_p = httptest.NewRecorder()
 		w_s = httptest.NewRecorder()
@@ -58,32 +64,34 @@ var _ = Describe("Routes", func() {
 			"capitulo":  1,
 			"canciones": canciones,
 		}
+
+		body_v, _ := json.Marshal(nuevaOst_pv)
+		req_v, _ = http.NewRequest("POST", "/osts/videojuego", bytes.NewReader(body_v))
+		router.ServeHTTP(w_v, req_v)
+
+		body_p, _ := json.Marshal(nuevaOst_pv)
+		req_p, _ = http.NewRequest("POST", "/osts/pelicula", bytes.NewReader(body_p))
+		router.ServeHTTP(w_p, req_p)
+
+		body_s, _ := json.Marshal(nuevaOst_s)
+		req_s, _ = http.NewRequest("POST", "/osts/serie", bytes.NewReader(body_s))
+		router.ServeHTTP(w_s, req_s)
+
+		res_v = &Respuesta{}
+		err_v = json.Unmarshal(w_v.Body.Bytes(), res_v)
+
+		res_p = &Respuesta{}
+		err_p = json.Unmarshal(w_p.Body.Bytes(), res_p)
+
+		res_s = &Respuesta{}
+		err_s = json.Unmarshal(w_s.Body.Bytes(), res_s)
+
+		//id_v = res_v.OST.Id
+		//id_p = res_p.OST.Id
+		//id_s = res_s.OST.Id
 	})
 
 	Describe("Crear una banda sonora con POST", func() {
-		BeforeEach(func() {
-			body_v, _ := json.Marshal(nuevaOst_pv)
-			req_v, _ = http.NewRequest("POST", "/osts/videojuego", bytes.NewReader(body_v))
-			router.ServeHTTP(w_v, req_v)
-
-			body_p, _ := json.Marshal(nuevaOst_pv)
-			req_p, _ = http.NewRequest("POST", "/osts/videojuego", bytes.NewReader(body_p))
-			router.ServeHTTP(w_p, req_p)
-
-			body_s, _ := json.Marshal(nuevaOst_s)
-			req_s, _ = http.NewRequest("POST", "/osts/videojuego", bytes.NewReader(body_s))
-			router.ServeHTTP(w_s, req_s)
-
-			res_v = &Respuesta{}
-			err_v = json.Unmarshal(w_v.Body.Bytes(), res_v)
-
-			res_p = &Respuesta{}
-			err_p = json.Unmarshal(w_p.Body.Bytes(), res_p)
-
-			res_s = &Respuesta{}
-			err_s = json.Unmarshal(w_s.Body.Bytes(), res_s)
-		})
-
 		Context("La OST es correcta", func() {
 			It("El JSON de respuesta no debe tener errores", func() {
 				Expect(err_v).NotTo(HaveOccurred())
@@ -98,7 +106,7 @@ var _ = Describe("Routes", func() {
 
 				Expect(res_v.OST.Nombre).To(Equal("OST Prueba"))
 				Expect(res_p.OST.Nombre).To(Equal("OST Prueba"))
-				Expect(res_s.OST.Nombre).To(Equal("OST Prueba"))
+				Expect(res_s.OST.Nombre).To(Equal("OST Prueba-1-1"))
 
 				Expect(res_v.OST.Canciones[0].Titulo).To(Equal("Cancion 1"))
 				Expect(res_p.OST.Canciones[0].Titulo).To(Equal("Cancion 1"))
@@ -122,10 +130,42 @@ var _ = Describe("Routes", func() {
 			})
 
 			It("El código HTTP debe ser 200", func() {
-				Expect(w_v.Code).To(Equal(200))
-				Expect(w_p.Code).To(Equal(200))
-				Expect(w_s.Code).To(Equal(200))
+				Expect(w_v.Code).To(Equal(http.StatusOK))
+				Expect(w_p.Code).To(Equal(http.StatusOK))
+				Expect(w_s.Code).To(Equal(http.StatusOK))
 			})
 		})
 	})
+
+	Describe("Recuperar las OSTs con GET", func() {
+		BeforeEach(func() {
+			w_v = httptest.NewRecorder()
+			w_p = httptest.NewRecorder()
+			w_s = httptest.NewRecorder()
+
+			req_v, _ = http.NewRequest("GET", "/osts", nil)
+			router.ServeHTTP(w_v, req_v)
+
+			resm_v = &Respuesta_multi{}
+			err_v = json.Unmarshal(w_v.Body.Bytes(), resm_v)
+		})
+
+		Context("Se han registrado anteriormente OSTs", func() {
+			It("El JSON de respuesta no debe tener errores", func() {
+				Expect(err_v).NotTo(HaveOccurred())
+			})
+
+			It("Se tienen todas las OSTs", func() {
+				Expect(len(resm_v.OSTs)).To(Equal(18))
+			})
+
+			It("El código HTTP debe ser 200", func() {
+				Expect(w_v.Code).To(Equal(http.StatusOK))
+			})
+		})
+	})
+
+	/*Describe("Cualquier ruta no definida", func() {
+
+	})*/
 })
