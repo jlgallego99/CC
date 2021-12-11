@@ -1,4 +1,4 @@
-package http_test
+package server_test
 
 import (
 	"testing"
@@ -9,5 +9,5 @@ import (
 
 func TestHttp(t *testing.T) {
 	RegisterFailHandler(Fail)
-	RunSpecs(t, "Http Suite")
+	RunSpecs(t, "Server Suite")
 }
