@@ -32,8 +32,8 @@ func newOST(c *gin.Context) {
 	var err error
 
 	// Leer cuerpo de la petición
-	cancionesmsg := new(Ost_msg)
-	err = c.BindJSON(cancionesmsg)
+	ostmsg := new(Ost_msg)
+	err = c.BindJSON(ostmsg)
 	if err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 
@@ -43,13 +43,13 @@ func newOST(c *gin.Context) {
 	obra := c.Param("obra")
 	switch obra {
 	case "videojuego":
-		ost, err = cancion.NewVideojuegoOST(cancionesmsg.Nombre, make([]*cancion.Cancion_info, 0))
+		ost, err = cancion.NewVideojuegoOST(ostmsg.Nombre, make([]*cancion.Cancion_info, 0))
 
 	case "serie":
-		ost, err = cancion.NewSerieOST(cancionesmsg.Nombre, cancionesmsg.Temporada, cancionesmsg.Capitulo, make([]*cancion.Cancion_info, 0))
+		ost, err = cancion.NewSerieOST(ostmsg.Nombre, ostmsg.Temporada, ostmsg.Capitulo, make([]*cancion.Cancion_info, 0))
 
 	case "pelicula":
-		ost, err = cancion.NewPeliculaOST(cancionesmsg.Nombre, make([]*cancion.Cancion_info, 0))
+		ost, err = cancion.NewPeliculaOST(ostmsg.Nombre, make([]*cancion.Cancion_info, 0))
 
 	default:
 		err = errors.New("no se reconoce el tipo de OST")
@@ -62,7 +62,7 @@ func newOST(c *gin.Context) {
 	}
 
 	// Añadir canciones de la ost
-	for _, cmsg := range cancionesmsg.Canciones {
+	for _, cmsg := range ostmsg.Canciones {
 		can, err := cancion.NewCancion(cmsg.Titulo, cmsg.Compositor, cancion.StringToGenero[cmsg.Genero])
 
 		if err != nil {
