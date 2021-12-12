@@ -6,6 +6,11 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
+type Config struct {
+	Host string
+	Port string
+}
+
 func SetupRoutes() *gin.Engine {
 	router := gin.New()
 
