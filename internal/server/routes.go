@@ -5,7 +5,7 @@ import (
 )
 
 func SetupRoutes() *gin.Engine {
-	router := gin.Default()
+	router := gin.New()
 
 	router.POST("/osts/:obra", newOST)
 
