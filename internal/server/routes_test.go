@@ -140,8 +140,6 @@ var _ = Describe("Routes", func() {
 	Describe("Recuperar las OSTs con GET", func() {
 		BeforeEach(func() {
 			w_v = httptest.NewRecorder()
-			w_p = httptest.NewRecorder()
-			w_s = httptest.NewRecorder()
 
 			req_v, _ = http.NewRequest("GET", "/osts", nil)
 			router.ServeHTTP(w_v, req_v)
@@ -165,7 +163,53 @@ var _ = Describe("Routes", func() {
 		})
 	})
 
-	/*Describe("Cualquier ruta no definida", func() {
+	Describe("Cualquier ruta no definida", func() {
+		Context("Rutas inexistentes", func() {
+			BeforeEach(func() {
+				w_v = httptest.NewRecorder()
 
-	})*/
+				req_v, _ = http.NewRequest("GET", "/no/existe", nil)
+				router.ServeHTTP(w_v, req_v)
+
+				res_v = &Respuesta{}
+				err_v = json.Unmarshal(w_v.Body.Bytes(), res_v)
+			})
+
+			It("Debe dar error 404", func() {
+				Expect(w_v.Code).To(Equal(http.StatusNotFound))
+			})
+
+			It("El mensaje de error debe ser correcto", func() {
+				Expect(res_v.Message).To(Equal("Ruta inexistente"))
+			})
+
+			It("El JSON de respuesta no debe tener errores", func() {
+				Expect(err_v).NotTo(HaveOccurred())
+			})
+		})
+
+		Context("Usar método incorrecto en rutas existentes", func() {
+			BeforeEach(func() {
+				w_v = httptest.NewRecorder()
+
+				req_v, _ = http.NewRequest("POST", "/osts", nil)
+				router.ServeHTTP(w_v, req_v)
+
+				res_v = &Respuesta{}
+				err_v = json.Unmarshal(w_v.Body.Bytes(), res_v)
+			})
+
+			It("Debe dar error 404", func() {
+				Expect(w_v.Code).To(Equal(http.StatusNotFound))
+			})
+
+			It("El mensaje de error debe ser correcto", func() {
+				Expect(res_v.Message).To(Equal("Ruta inexistente"))
+			})
+
+			It("El JSON de respuesta no debe tener errores", func() {
+				Expect(err_v).NotTo(HaveOccurred())
+			})
+		})
+	})
 })
