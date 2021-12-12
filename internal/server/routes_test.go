@@ -65,27 +65,6 @@ var _ = Describe("Routes", func() {
 			"canciones": canciones,
 		}
 
-		body_v, _ := json.Marshal(nuevaOst_pv)
-		req_v, _ = http.NewRequest("POST", "/osts/videojuego", bytes.NewReader(body_v))
-		router.ServeHTTP(w_v, req_v)
-
-		body_p, _ := json.Marshal(nuevaOst_pv)
-		req_p, _ = http.NewRequest("POST", "/osts/pelicula", bytes.NewReader(body_p))
-		router.ServeHTTP(w_p, req_p)
-
-		body_s, _ := json.Marshal(nuevaOst_s)
-		req_s, _ = http.NewRequest("POST", "/osts/serie", bytes.NewReader(body_s))
-		router.ServeHTTP(w_s, req_s)
-
-		res_v = &Respuesta{}
-		err_v = json.Unmarshal(w_v.Body.Bytes(), res_v)
-
-		res_p = &Respuesta{}
-		err_p = json.Unmarshal(w_p.Body.Bytes(), res_p)
-
-		res_s = &Respuesta{}
-		err_s = json.Unmarshal(w_s.Body.Bytes(), res_s)
-
 		//id_v = res_v.OST.Id
 		//id_p = res_p.OST.Id
 		//id_s = res_s.OST.Id
@@ -93,6 +72,29 @@ var _ = Describe("Routes", func() {
 
 	Describe("Crear una banda sonora con POST", func() {
 		Context("La OST es correcta", func() {
+			BeforeEach(func() {
+				body_v, _ := json.Marshal(nuevaOst_pv)
+				req_v, _ = http.NewRequest("POST", "/osts/videojuego", bytes.NewReader(body_v))
+				router.ServeHTTP(w_v, req_v)
+
+				body_p, _ := json.Marshal(nuevaOst_pv)
+				req_p, _ = http.NewRequest("POST", "/osts/pelicula", bytes.NewReader(body_p))
+				router.ServeHTTP(w_p, req_p)
+
+				body_s, _ := json.Marshal(nuevaOst_s)
+				req_s, _ = http.NewRequest("POST", "/osts/serie", bytes.NewReader(body_s))
+				router.ServeHTTP(w_s, req_s)
+
+				res_v = &Respuesta{}
+				err_v = json.Unmarshal(w_v.Body.Bytes(), res_v)
+
+				res_p = &Respuesta{}
+				err_p = json.Unmarshal(w_p.Body.Bytes(), res_p)
+
+				res_s = &Respuesta{}
+				err_s = json.Unmarshal(w_s.Body.Bytes(), res_s)
+			})
+
 			It("El JSON de respuesta no debe tener errores", func() {
 				Expect(err_v).NotTo(HaveOccurred())
 				Expect(err_p).NotTo(HaveOccurred())
@@ -135,6 +137,91 @@ var _ = Describe("Routes", func() {
 				Expect(w_s.Code).To(Equal(http.StatusOK))
 			})
 		})
+
+		Context("El JSON es incorrecto", func() {
+			BeforeEach(func() {
+				// JSON que le faltan llaves y json vacio
+				nuevaOst_pv := "\"nombre\": \"OST Prueba\", \"canciones\": [{ \"titulo\": \"Cancion 1\", \"compositor\": \"Compositor 1\", \"genero\": \"Rock\" }"
+				nuevaOst_s := ""
+
+				raw := json.RawMessage(nuevaOst_pv)
+				body_v, _ := json.Marshal(raw)
+				req_v, _ = http.NewRequest("POST", "/osts/videojuego", bytes.NewReader(body_v))
+				router.ServeHTTP(w_v, req_v)
+
+				body_p, _ := json.Marshal(raw)
+				req_p, _ = http.NewRequest("POST", "/osts/pelicula", bytes.NewReader(body_p))
+				router.ServeHTTP(w_p, req_p)
+
+				raw = json.RawMessage(nuevaOst_s)
+				body_s, _ := json.Marshal(raw)
+				req_s, _ = http.NewRequest("POST", "/osts/serie", bytes.NewReader(body_s))
+				router.ServeHTTP(w_s, req_s)
+
+				res_v = &Respuesta{}
+				err_v = json.Unmarshal(w_v.Body.Bytes(), res_v)
+
+				res_p = &Respuesta{}
+				err_p = json.Unmarshal(w_p.Body.Bytes(), res_p)
+
+				res_s = &Respuesta{}
+				err_s = json.Unmarshal(w_s.Body.Bytes(), res_s)
+			})
+
+			It("El código HTTP debe ser 400", func() {
+				Expect(w_v.Code).To(Equal(http.StatusBadRequest))
+				Expect(w_p.Code).To(Equal(http.StatusBadRequest))
+				Expect(w_s.Code).To(Equal(http.StatusBadRequest))
+			})
+
+			It("El JSON de respuesta no debe tener errores", func() {
+				Expect(err_v).NotTo(HaveOccurred())
+				Expect(err_p).NotTo(HaveOccurred())
+				Expect(err_s).NotTo(HaveOccurred())
+			})
+		})
+
+		Context("Los campos del cuerpo tienen valores incorrectos", func() {
+			BeforeEach(func() {
+				nuevaOst_pv := "{\"nombre\": \"\", \"canciones\": [{ \"titulo\": \"Cancion 1\", \"compositor\": \"Compositor 1\", \"genero\": \"Rock\" }]}"
+				nuevaOst_s := "{\"nombre\": \"Serie1\", \"canciones\": [{ \"titulo\": \"Cancion 1\", \"compositor\": \"Compositor 1\", \"genero\": \"Generoquenoexiste\" }]}"
+
+				raw := json.RawMessage(nuevaOst_pv)
+				body_v, _ := json.Marshal(raw)
+				req_v, _ = http.NewRequest("POST", "/osts/videojuego", bytes.NewReader(body_v))
+				router.ServeHTTP(w_v, req_v)
+
+				body_p, _ := json.Marshal(raw)
+				req_p, _ = http.NewRequest("POST", "/osts/pelicula", bytes.NewReader(body_p))
+				router.ServeHTTP(w_p, req_p)
+
+				raw = json.RawMessage(nuevaOst_s)
+				body_s, _ := json.Marshal(raw)
+				req_s, _ = http.NewRequest("POST", "/osts/serie", bytes.NewReader(body_s))
+				router.ServeHTTP(w_s, req_s)
+
+				res_v = &Respuesta{}
+				err_v = json.Unmarshal(w_v.Body.Bytes(), res_v)
+
+				res_p = &Respuesta{}
+				err_p = json.Unmarshal(w_p.Body.Bytes(), res_p)
+
+				res_s = &Respuesta{}
+				err_s = json.Unmarshal(w_s.Body.Bytes(), res_s)
+			})
+
+			It("El código HTTP debe ser 400", func() {
+				Expect(w_v.Code).To(Equal(http.StatusBadRequest))
+				Expect(w_p.Code).To(Equal(http.StatusBadRequest))
+				Expect(w_s.Code).To(Equal(http.StatusBadRequest))
+			})
+
+			It("El JSON de respuesta no debe tener errores", func() {
+				Expect(err_v).NotTo(HaveOccurred())
+				Expect(err_p).NotTo(HaveOccurred())
+				Expect(err_s).NotTo(HaveOccurred())
+			})
+		})
 	})
 
 	Describe("Recuperar las OSTs con GET", func() {
@@ -154,7 +241,7 @@ var _ = Describe("Routes", func() {
 			})
 
 			It("Se tienen todas las OSTs", func() {
-				Expect(len(resm_v.OSTs)).To(Equal(18))
+				Expect(len(resm_v.OSTs)).To(Equal(12))
 			})
 
 			It("El código HTTP debe ser 200", func() {

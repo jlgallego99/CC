@@ -35,7 +35,7 @@ func newOST(c *gin.Context) {
 	ostmsg := new(Ost_msg)
 	err = c.BindJSON(ostmsg)
 	if err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		c.JSON(http.StatusBadRequest, gin.H{"message": err.Error()})
 
 		return
 	}
@@ -56,7 +56,7 @@ func newOST(c *gin.Context) {
 	}
 
 	if err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		c.JSON(http.StatusBadRequest, gin.H{"message": err.Error()})
 
 		return
 	}
@@ -66,7 +66,7 @@ func newOST(c *gin.Context) {
 		can, err := cancion.NewCancion(cmsg.Titulo, cmsg.Compositor, cancion.StringToGenero[cmsg.Genero])
 
 		if err != nil {
-			c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+			c.JSON(http.StatusBadRequest, gin.H{"message": err.Error()})
 
 			return
 		}
@@ -102,7 +102,7 @@ func getOST(c *gin.Context) {
 	}
 
 	if err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		c.JSON(http.StatusBadRequest, gin.H{"message": err.Error()})
 
 		return
 	}
@@ -127,7 +127,7 @@ func getOST(c *gin.Context) {
 	}
 
 	if err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		c.JSON(http.StatusBadRequest, gin.H{"message": err.Error()})
 
 		return
 	}
