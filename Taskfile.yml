@@ -1,10 +1,10 @@
 version: '3'
 
 tasks:
-  installdeps:
-    desc: Instala las dependencias del proyecto
+  install:
+    desc: Instala los ficheros en el GOPATH de la máquina
     cmds:
-      - go get -d -v ./...
+      - echo "Aún no se tiene un main"
 
   build:
     desc: Comprueba que los paquetes compilan bien y no tienen errores
@@ -15,6 +15,11 @@ tasks:
     desc: Ejecuta todos los tests definidos para el proyecto
     cmds:
       - go test -v ./...
+
+  installdeps:
+    desc: Instala las dependencias del proyecto
+    cmds:
+      - go mod download
 
   dockertest:
     desc: Ejecuta el contenedor docker, que pasa los tests del proyecto
