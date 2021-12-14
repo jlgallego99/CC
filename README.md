@@ -25,10 +25,13 @@ Las [tareas](./docs/tareas.md) de instalación, ejecución de tests, etc se hace
 Se ha creado un [contenedor](./docs/contenedores.md) Docker para aislar y ejecutar los tests en un entorno controlado. También se ha documentado la actualización automática del contenedor.
 
 ### Integración Continua
-:exclamation: Se han configurado sistemas de [Integración Continua](./docs/ci.md) para la ejecución automática de los tests en la rama principal y asegurar la calidad del software.
+Se han configurado sistemas de [Integración Continua](./docs/ci.md) para la ejecución automática de los tests en la rama principal y asegurar la calidad del software.
+
+### Framework web
+:exclamation: Se han estudiado distintos [frameworks web](./docs/web_frameworks.md) para crear un API REST en Go mediante la cual acceder por internet a los recursos de la lógica de negocio. También se ha documentado la elección de la biblioteca para los tests de integración del API REST y la configuración distribuida.
 
 ## Documentación adicional
-Se ha seguido una [guía de buenas prácticas para estructurar proyectos en Go](https://github.com/golang-standards/project-layout). Con esto se ha decidido integrar todo el código del dominio del proyecto en el directorio *internal* debido a que es un directorio típicamente utilizado para el código de biblioteca privado de un proyecto, y en el que en general se engloba todo lo relacionado con la lógica de negocio. Dentro, como exige Go, se tienen distintos subdirectorios para cada distinto paquete.
+:exclamation: Se ha seguido una [guía de buenas prácticas para estructurar aplicaciones web en Go](https://github.com/bnkamalesh/goapp). Se documentan las decisiones tomadas para la [estructura del proyecto](./docs/estructura.md).
 
 Se ha documentado la [configuración inicial de Git](./docs/configuracion_entorno.md).
 

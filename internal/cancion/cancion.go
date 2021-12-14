@@ -23,6 +23,18 @@ const (
 	Vocal
 )
 
+var StringToGenero = map[string]Genero{
+	"desconocido": Genero_Desconocido,
+	"rock":        Rock,
+	"pop":         Pop,
+	"ambiental":   Ambiental,
+	"electronica": Electronica,
+	"funk":        Funk,
+	"jazz":        Jazz,
+	"orquesta":    Orquesta,
+	"vocal":       Vocal,
+}
+
 type Sensacion int
 
 const (
