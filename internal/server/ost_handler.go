@@ -132,7 +132,55 @@ func getOST(c *gin.Context) {
 }
 
 func updateOST(c *gin.Context) {
+	var err error
 
+	obra := c.Param("obra")
+	ostId := c.Param("ostid")
+
+	switch obra {
+	case "videojuego", "serie", "pelicula":
+		err = nil
+
+	default:
+		err = errors.New("no se reconoce el tipo de OST")
+	}
+
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"message": err.Error()})
+
+		return
+	}
+
+	for _, ost := range osts {
+		if ost.Id == ostId && strings.EqualFold("obra."+obra, reflect.TypeOf(ost.Obra).String()) {
+			var ostmsg Ost_msg
+			err = c.BindJSON(&ostmsg)
+			if err != nil {
+				c.JSON(http.StatusBadRequest, gin.H{"message": err.Error()})
+
+				return
+			}
+
+			ost.ActualizarOST(ost.Canciones)
+
+			c.JSON(http.StatusOK, gin.H{
+				"message": "OST actualizada",
+				"ost": gin.H{
+					"id":        ost.Id,
+					"nombre":    ost.Obra.Titulo(),
+					"canciones": ost.Canciones,
+				},
+			})
+
+			return
+		} else {
+			err = errors.New("No existe esa OST para " + obra)
+		}
+	}
+
+	if err != nil {
+		c.JSON(http.StatusNotFound, gin.H{"message": err.Error()})
+	}
 }
 
 func allOsts(c *gin.Context) {
