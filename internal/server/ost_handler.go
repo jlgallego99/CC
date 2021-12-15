@@ -50,9 +50,6 @@ func newOST(c *gin.Context) {
 
 	case "pelicula":
 		ost, err = cancion.NewPeliculaOST(ostmsg.Nombre, make([]*cancion.Cancion_info, 0))
-
-	default:
-		err = errors.New("no se reconoce el tipo de OST")
 	}
 
 	if err != nil {
@@ -93,20 +90,6 @@ func getOST(c *gin.Context) {
 	obra := c.Param("obra")
 	ostId := c.Param("ostid")
 
-	switch obra {
-	case "videojuego", "serie", "pelicula":
-		err = nil
-
-	default:
-		err = errors.New("no se reconoce el tipo de OST")
-	}
-
-	if err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"message": err.Error()})
-
-		return
-	}
-
 	for _, ost := range osts {
 		if ost.Id == ostId && strings.EqualFold("obra."+obra, reflect.TypeOf(ost.Obra).String()) {
 			c.JSON(http.StatusOK, gin.H{
@@ -136,20 +119,6 @@ func updateOST(c *gin.Context) {
 
 	obra := c.Param("obra")
 	ostId := c.Param("ostid")
-
-	switch obra {
-	case "videojuego", "serie", "pelicula":
-		err = nil
-
-	default:
-		err = errors.New("no se reconoce el tipo de OST")
-	}
-
-	if err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"message": err.Error()})
-
-		return
-	}
 
 	for _, ost := range osts {
 		if ost.Id == ostId && strings.EqualFold("obra."+obra, reflect.TypeOf(ost.Obra).String()) {
