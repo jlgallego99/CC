@@ -245,6 +245,52 @@ var _ = Describe("OST", func() {
 		})
 	})
 
+	Describe("Actualizar los datos de la obra", func() {
+		Context("Los datos de la obra son correctos", func() {
+			BeforeEach(func() {
+				err_v = ost_v.ActualizarObra("NuevoTitulo")
+				err_p = ost_p.ActualizarObra("NuevoTitulo")
+				err_s = ost_s.ActualizarObra("NuevoTitulo", 2, 2)
+			})
+
+			It("Se ha modificado el título de la obra correctamente", func() {
+				Expect(ost_v.Obra.Titulo()).To(Equal("NuevoTitulo"))
+				Expect(ost_p.Obra.Titulo()).To(Equal("NuevoTitulo"))
+				Expect(ost_s.Obra.Titulo()).To(Equal("NuevoTitulo-2-2"))
+			})
+
+			It("No debe dar error", func() {
+				Expect(err_v).NotTo(HaveOccurred())
+				Expect(err_p).NotTo(HaveOccurred())
+				Expect(err_s).NotTo(HaveOccurred())
+			})
+		})
+
+		Context("Los datos de obra son incorrectos", func() {
+			BeforeEach(func() {
+				err_v = ost_v.ActualizarObra("")
+				err_p = ost_p.ActualizarObra("")
+				err_s = ost_s.ActualizarObra("NuevoTitulo", 0)
+			})
+
+			It("El título de la obra debe permanecer igual", func() {
+				Expect(ost_s.Obra.Titulo()).To(Equal("SeriePrueba-1-1"))
+				Expect(ost_p.Obra.Titulo()).To(Equal("PeliculaPrueba"))
+				Expect(ost_v.Obra.Titulo()).To(Equal("VideojuegoPrueba"))
+			})
+
+			It("Debe dar error", func() {
+				Expect(err_v).To(HaveOccurred())
+				Expect(err_p).To(HaveOccurred())
+				Expect(err_s).To(HaveOccurred())
+
+				Expect(err_v.Error()).To(Equal("no se ha podido actualizar la obra: el videojuego no tiene título"))
+				Expect(err_p.Error()).To(Equal("no se ha podido actualizar la obra: la película no tiene título"))
+				Expect(err_s.Error()).To(Equal("no se ha podido actualizar la obra: no se ha especificado tanto capítulo como temporada"))
+			})
+		})
+	})
+
 	Describe("Devolver una canción de la OST por su nombre", func() {
 		BeforeEach(func() {
 			err_s = ost_s.NuevaCancion(cancionCorrecta)

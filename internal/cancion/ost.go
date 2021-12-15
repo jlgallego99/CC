@@ -17,6 +17,7 @@ type BandaSonora struct {
 
 type OST interface {
 	ActualizarOST(ost []*Cancion_info) error
+	ActualizarObra(titulo string, captemp ...int) error
 	NuevaCancion(c *Cancion_info) error
 	Cancion(titulo string) (*Cancion_info, error)
 }
@@ -86,6 +87,34 @@ func (b *BandaSonora) ActualizarOST(ost []*Cancion_info) error {
 			b.Canciones = ostAntigua
 			return fmt.Errorf("no se ha podido añadir la canción: %s", err)
 		}
+	}
+
+	return nil
+}
+
+func (b *BandaSonora) ActualizarObra(titulo string, captemp ...int) error {
+	var err error
+	var o obra.Obra
+
+	switch b.Obra.(type) {
+	case obra.Videojuego:
+		o, err = obra.NewVideojuego(titulo)
+
+	case obra.Pelicula:
+		o, err = obra.NewPelicula(titulo)
+
+	case obra.Serie:
+		if len(captemp) != 2 {
+			err = errors.New("no se ha especificado tanto capítulo como temporada")
+		} else {
+			o, err = obra.NewSerie(titulo, captemp[0], captemp[1])
+		}
+	}
+
+	if err != nil {
+		return fmt.Errorf("no se ha podido actualizar la obra: %s", err)
+	} else {
+		b.Obra = o
 	}
 
 	return nil

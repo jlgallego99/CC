@@ -50,9 +50,6 @@ func newOST(c *gin.Context) {
 
 	case "pelicula":
 		ost, err = cancion.NewPeliculaOST(ostmsg.Nombre, make([]*cancion.Cancion_info, 0))
-
-	default:
-		err = errors.New("no se reconoce el tipo de OST")
 	}
 
 	if err != nil {
@@ -93,20 +90,6 @@ func getOST(c *gin.Context) {
 	obra := c.Param("obra")
 	ostId := c.Param("ostid")
 
-	switch obra {
-	case "videojuego", "serie", "pelicula":
-		err = nil
-
-	default:
-		err = errors.New("no se reconoce el tipo de OST")
-	}
-
-	if err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"message": err.Error()})
-
-		return
-	}
-
 	for _, ost := range osts {
 		if ost.Id == ostId && strings.EqualFold("obra."+obra, reflect.TypeOf(ost.Obra).String()) {
 			c.JSON(http.StatusOK, gin.H{
@@ -131,7 +114,60 @@ func getOST(c *gin.Context) {
 	}
 }
 
-func OSTs(c *gin.Context) {
+func updateOST(c *gin.Context) {
+	var err error
+
+	obra := c.Param("obra")
+	ostId := c.Param("ostid")
+
+	for _, ost := range osts {
+		if ost.Id == ostId && strings.EqualFold("obra."+obra, reflect.TypeOf(ost.Obra).String()) {
+			var ostmsg Ost_msg
+			err = c.BindJSON(&ostmsg)
+			if err != nil {
+				c.JSON(http.StatusBadRequest, gin.H{"message": err.Error()})
+
+				return
+			}
+
+			ost.ActualizarObra(ostmsg.Nombre, ostmsg.Temporada, ostmsg.Capitulo)
+
+			// Añadir canciones de la ost
+			var canciones []*cancion.Cancion_info
+			for _, cmsg := range ostmsg.Canciones {
+				can, err := cancion.NewCancion(cmsg.Titulo, cmsg.Compositor, cancion.StringToGenero[cmsg.Genero])
+
+				if err != nil {
+					c.JSON(http.StatusBadRequest, gin.H{"message": err.Error()})
+
+					return
+				}
+
+				canciones = append(canciones, can)
+			}
+			ost.ActualizarOST(canciones)
+
+			c.JSON(http.StatusOK, gin.H{
+				"message": "OST actualizada",
+				"ost": gin.H{
+					"id":        ost.Id,
+					"nombre":    ost.Obra.Titulo(),
+					"canciones": ost.Canciones,
+				},
+			})
+
+			return
+		} else {
+			err = errors.New("No existe esa OST para " + obra)
+		}
+	}
+
+	if err != nil {
+		c.JSON(http.StatusNotFound, gin.H{"message": err.Error()})
+	}
+}
+
+func allOsts(c *gin.Context) {
 	c.JSON(http.StatusOK, gin.H{
 		"message": "Todas las OSTs del sistema",
 		"osts":    osts,
