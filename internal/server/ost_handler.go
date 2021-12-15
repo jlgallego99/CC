@@ -130,7 +130,22 @@ func updateOST(c *gin.Context) {
 				return
 			}
 
-			ost.ActualizarOST(ost.Canciones)
+			ost.ActualizarObra(ostmsg.Nombre, ostmsg.Temporada, ostmsg.Capitulo)
+
+			// Añadir canciones de la ost
+			var canciones []*cancion.Cancion_info
+			for _, cmsg := range ostmsg.Canciones {
+				can, err := cancion.NewCancion(cmsg.Titulo, cmsg.Compositor, cancion.StringToGenero[cmsg.Genero])
+
+				if err != nil {
+					c.JSON(http.StatusBadRequest, gin.H{"message": err.Error()})
+
+					return
+				}
+
+				canciones = append(canciones, can)
+			}
+			ost.ActualizarOST(canciones)
 
 			c.JSON(http.StatusOK, gin.H{
 				"message": "OST actualizada",
